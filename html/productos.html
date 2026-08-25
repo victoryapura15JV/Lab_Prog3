@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Productos - Fiesta Nacional e Internacional del Poncho</title>
+</head>
+<body>
+
+    <header>
+        <h1>Panel del artesano - Gestión de Productos</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="registro_artesano.html">Solicitud de Participación</a></li>
+            <li><a href="productos.html">Gestionar mis Productos</a></li>
+        </ul>
+    </nav>
+
+    <main>
+
+        <section id="seccion-formulario">
+            <h2>Publicar / Modificar Producto</h2>
+            <p>Completa el formulario para registrar un nuevo producto en tu catálogo o actualizar uno existente.</p>
+
+            <form action="productos.html" method="post" enctype="multipart/form-data">
+                
+                <fieldset>
+                    <legend>Datos Básicos del Producto</legend>
+                    
+                    <p>
+                        <label for="nombre">Nombre del Producto:</label><br>
+                        <input type="text" id="nombre" name="nombre" placeholder="Ej: Mate de algarrobo" maxlength="100" required>
+                    </p>
+                    
+                    <p>
+                        <label for="descripcion">Descripción del Producto:</label><br>
+                        <textarea id="descripcion" name="descripcion" rows="4" cols="50" placeholder="Describe los materiales, donde se hizo, de donde viene, etc..." required></textarea>
+                    </p>
+                    
+                    <p>
+                        <label for="rubro">Rubro</label><br>
+                        <select id="rubro" name="rubro">
+                            <option value="ceramica">Cerámica</option>
+                            <option value="madera">Madera / Carpintería</option>
+                            <option value="textil">Textil</option>
+                            <option value="cuero">Cuero / Marroquinería</option>
+                            <option value="orfebreria">Comida</option>
+                            <option value="otros">Otros rubros</option>
+                        </select>
+                    </p>
+                </fieldset>
+
+                <br>
+
+                <fieldset>
+                    <legend>Venta e Inventario</legend>
+                    
+                    <p>
+                        <label for="precio">Precio Unitario ($):</label><br>
+                        <input type="number" id="precio" name="precio" min="0" step="0.01" placeholder="Ej: 8500.00" required>
+                    </p>
+                    
+                    <p>
+                        <label for="stock">Stock Disponible:</label><br>
+                        <input type="number" id="stock" name="stock" min="0" placeholder="Ej: 15" required>
+                    </p>
+                    
+                    <p>
+                        <label for="imagen">Foto de muestra:</label><br>
+                        <input type="file" id="imagen" name="imagen" accept="image/*">
+                    </p>
+                    
+                </fieldset>
+
+                <br>
+
+                <p>
+                    <input type="submit" value="Guardar Producto">
+                    <input type="reset" value="Limpiar Formulario">
+                </p>
+
+            </form>
+        </section>
+
+        <br>
+        <hr>
+        <br>
+
+        <section id="seccion-listado">
+            <h2>Productos Publicados</h2>
+            <p>Lista de tus productos registrados. Puedes editarlos o darlos de baja utilizando los controles de acción.</p>
+
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Imagen</th>
+                        <th>Nombre del Producto</th>
+                        <th>Rubro</th>
+                        <th>Precio</th>
+                        <th>Stock</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>ART-0104</code></td>
+                        <td>[Imagen]</td>
+                        <td><strong>Mate de algarrobo</strong></td>
+                        <td>Madera</td>
+                        <td>$8.500,00</td>
+                        <td>12 unidades</td>
+                        <td>
+                            <a href="#seccion-formulario">Modificar</a> | 
+                            <a href="#">Eliminar</a>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td><code>ART-0215</code></td>
+                        <td>[Imagen]</td>
+                        <td><strong>Poncho de lana de oveja</strong></td>
+                        <td>Textil</td>
+                        <td>$120.000,00</td>
+                        <td>3 unidades</td>
+                        <td>
+                            <a href="#seccion-formulario">Modificar</a> | 
+                            <a href="#">Eliminar</a>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><code>ART-0082</code></td>
+                        <td>[Imagen]</td>
+                        <td><strong>Olla de ceramica</strong></td>
+                        <td>Cerámica</td>
+                        <td>$15.000,00</td>
+                        <td>0 unidades</td>
+                        <td>
+                            <a href="#seccion-formulario">Modificar</a> | 
+                            <a href="#">Eliminar</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>
+            &copy; 2027 <a href="https://micultura.catamarcacapital.gob.ar/" target="_blank" rel="noopener noreferrer" >Ministerio de Cultura de la Provincia de Catamarca</a> - Poncho Digital
+        </p>
+    </footer>
+
+</body>
+</html>
