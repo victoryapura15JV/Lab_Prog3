@@ -2,96 +2,111 @@
 <html lang="es">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/estiloIndex.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/estiloFormlario.css">
         <title>
         Inscripcion de artesano - Fiesta Nacional e Internacional del Poncho
         </title>
     </head>
     <body>
-        <header>
-            <h1><em>Inscripcion de artesanos a la fiesta Nacional del Poncho</em></h1>
-            <p><em>¡Bienvenido/a a la plataforma de inscripción!</em> <br>
-                A través de este formulario podrás postular tu emprendimiento para ser parte de la feria artesanal más grande del país.
-                Ten en cuenta que luego de completar este registro, tu solicitud será evaluada detalladamente por nuestro equipo de administradores. 
-                Posteriormente, te notificaremos si tu participación fue aprobada, si necesitamos que modifiques algún dato, o si la solicitud fue rechazada para la edición de este año.
-            </p>
+        <header class=" py-4 text-center">
+            <div class=" container d-flex flex-column flex-column flex-md-row align-items-center justify-content-center gap-4">
+                <img src="../img/fiesta-del-poncho-catamarca-2026-logo-web-001.png" alt="Logo Edición 55 Fiesta del Poncho" class="logo-header" >
+                <h1><em>Inscripcion de artesanos a la fiesta Nacional del Poncho</em></h1>
+            </div>
+            <div class="mt-3 container d-flex flex-column flex-column flex-md-row align-items-center justify-content-center gap-4">
+                <p><em>¡Bienvenido/a a la plataforma de inscripción!</em> <br>
+                    A través de este formulario podrás postular tu emprendimiento para ser parte de la feria artesanal más grande del país.
+                    Ten en cuenta que luego de completar este registro, tu solicitud será evaluada detalladamente por nuestro equipo de administradores. 
+                    Posteriormente, te notificaremos si tu participación fue aprobada, si necesitamos que modifiques algún dato, o si la solicitud fue rechazada para la edición de este año.
+                </p>
+            </div>
         </header>
-        <nav>
+        <nav class="container my-4">
             <a href="index.html" target="_parent">Volver al inicio</a>
         </nav>
-        <section>
+        <section class="conteiner-fluid  px-4 my-5">
             <h2>Formulario de inscripción</h2>
-            <form action="#" method="post">
-                <fieldset>
-                    <legend>DATOS PERSONALES</legend><br>
-                    <label for="nomyape_artesano">Nombre y Apellido: </label>
-                    <input type="text" id="nomyape_artesano" maxlength="100" required> <br><br>
-                    <label for="dni_artesano">DNI: </label>
-                    <input type="text" id="dni_artesano" minlength="8" maxlength="8" required><br><br>
-                    <label for="edad_artesano">Edad: </label>
-                    <input type="number" id="edad_artesano" max="99" required><br><br>
-                    <label for="tel_artesano">Telefono: </label>
-                    <input type="tel" id="tel_artesano"><br><br>
-                    <label for="gmail_artesano">Correo Electronico: </label>
-                    <input type="email" id="gmail_artesano" placeholder="                     @gmail.com" required>
-                </fieldset>
+            <form action="#" method="post" class="row g-4">
+                <div class="col-12 col-md-6">
+                    <fieldset>
+                        <legend>DATOS PERSONALES</legend><br>
+                        <label for="nomyape_artesano">Nombre y Apellido: </label>
+                        <input type="text" id="nomyape_artesano" maxlength="100" required> <br><br>
+                        <label for="dni_artesano">DNI: </label>
+                        <input type="text" id="dni_artesano" minlength="8" maxlength="8" required><br><br>
+                        <label for="edad_artesano">Edad: </label>
+                        <input type="number" id="edad_artesano" max="99" required><br><br>
+                        <label for="tel_artesano">Telefono: </label>
+                        <input type="tel" id="tel_artesano"><br><br>
+                        <label for="gmail_artesano">Correo Electronico: </label>
+                        <input type="email" id="gmail_artesano" placeholder="                     @gmail.com" required>
+                    </fieldset>
+                </div>
                 <br>
-                <fieldset>
-                    <legend>LUGAR DE PROCEDENCIA</legend><br>
-                    <label for="provincia_artesano">Provincia: </label>
-                    <select id="provincia_artesano" name="provincia" required>
-                        <option value="">Seleccione una provincia</option>
-                        <option value="catamarca">Catamarca</option>
-                        <option value="salta">Salta</option>
-                        <option value="tucuman">Tucumán</option>
-                        <option value="otra">Otra provincia</option>
-                    </select> <br><br>
-                    <label for="localidad_artesano">Localidad: </label>
-                    <select id="localidad_artesano" name="localidad" required>
-                        <option value="">Seleccione una localidad</option>
-                        <option value="capital">Capital</option>
-                        <option value="valleViejo">Valle Viejo</option>
-                        <option value="fme">Fray Mamerto Esquiú</option>
-                        <option value="belen">Belén</option>
-                        <option value="otro">Otra localidad</option>
-                    </select>
-                    <br>
-                </fieldset>
+                <div class="col-12 col-md-6">
+                    <fieldset>
+                        <legend>LUGAR DE PROCEDENCIA</legend><br>
+                        <label for="provincia_artesano">Provincia: </label>
+                        <select id="provincia_artesano" name="provincia" required>
+                            <option value="">Seleccione una provincia</option>
+                            <option value="catamarca">Catamarca</option>
+                            <option value="salta">Salta</option>
+                            <option value="tucuman">Tucumán</option>
+                            <option value="otra">Otra provincia</option>
+                        </select> <br><br>
+                        <label for="localidad_artesano">Localidad: </label>
+                        <select id="localidad_artesano" name="localidad" required>
+                            <option value="">Seleccione una localidad</option>
+                            <option value="capital">Capital</option>
+                            <option value="valleViejo">Valle Viejo</option>
+                            <option value="fme">Fray Mamerto Esquiú</option>
+                            <option value="belen">Belén</option>
+                            <option value="otro">Otra localidad</option>
+                        </select>
+                    </fieldset>
+                </div>
                 <br>
-                <fieldset>
-                    <legend>EMPRENDIMIENTO</legend>
-                    <label for="nom_emprendimiento">Nombre: </label>
-                    <input type="text" id="nom_emprendimiento" required><br><br>
-                    <label for="tiempo_trayectoria">Años de trayectoria: </label>
-                    <input type="number" min="1" id="tiempo_trayectoria" required><br><br>
-                    <label for="historia_emprendimiento">Contanos sobre tu emprendimiento:</label><br><br>
-                    <textarea id="historia_emprendimiento" rows="10" cols="20" placeholder="Ejemplo: Nuestro emprendimiento surgio como..." minlength="20" required></textarea>
-                </fieldset>
+                <div class="col-12 col-md-6">
+                    <fieldset>
+                        <legend>EMPRENDIMIENTO</legend>
+                        <label for="nom_emprendimiento">Nombre: </label>
+                        <input type="text" id="nom_emprendimiento" required><br><br>
+                        <label for="tiempo_trayectoria">Años de trayectoria: </label>
+                        <input type="number" min="1" id="tiempo_trayectoria" required><br><br>
+                        <label for="historia_emprendimiento">Contanos sobre tu emprendimiento:</label><br><br>
+                        <textarea id="historia_emprendimiento" rows="10" cols="20" placeholder="Ejemplo: Nuestro emprendimiento surgio como..." minlength="20" required></textarea>
+                    </fieldset>
+                </div>
                 <br>
-                <fieldset>
-                    <legend>PRODUCTOS</legend>
-                    <label for="rubro_producto">Rubro: </label>
-                    <select name="tipo_rubro" id="rubro_producto" required>
-                        <option value="">Seleccione una opcion</option>
-                        <option value="textiles">Textiles</option>
-                        <option value="masas_regionales">Masas regionales</option>
-                        <option value="ceramica">Ceramica</option>
-                        <option value="comida">Comida</option>
-                    </select>
-                    <br><br>
-                    <label for="productos">Productos principales: </label>
-                    <input type="text" id="productos" minlength="1" required>
-                </fieldset>
+                <div class="col-12 col-md-6">
+                    <fieldset>
+                        <legend>PRODUCTOS</legend>
+                        <label for="rubro_producto">Rubro: </label>
+                        <select name="tipo_rubro" id="rubro_producto" required>
+                            <option value="">Seleccione una opcion</option>
+                            <option value="textiles">Textiles</option>
+                            <option value="masas_regionales">Masas regionales</option>
+                            <option value="ceramica">Ceramica</option>
+                            <option value="comida">Comida</option>
+                        </select>
+                        <br><br>
+                        <label for="productos">Productos principales: </label>
+                        <input type="text" id="productos" minlength="1" required>
+                    </fieldset>
+                </div>
                 <br>
-                <fieldset>
-                    <legend></legend>
-                    <input type="checkbox" id="terminos" required>
-                    <label for="terminos">Acepto todos los terminos y condiciones de este formuario</label>
-                </fieldset>
-                <br>
-                <input type="submit" value="Enviar formulario">
+                <div class="col-12 col-md-6">
+                    <fieldset>
+                        <legend></legend>
+                        <input type="checkbox" id="terminos" required>
+                        <label for="terminos">Acepto todos los terminos y condiciones de este formuario</label><br><br>
+                        <input type="submit" value="Enviar formulario">
+                    </fieldset>
+                </div>  
             </form>
-            <br>
-            
         </section>
         <footer>
             <p>&copy; 2027 <a href="https://micultura.catamarcacapital.gob.ar/" target="_blank" rel="noopener noreferrer" >Ministerio de Cultura de la Provincia de Catamarca</a> - Poncho Digital</p>
