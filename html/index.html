@@ -2,53 +2,64 @@
 <html lang="es">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" >
         <title>Poncho Digital - Fiesta Nacional e Internacional del Poncho</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/estiloIndex.css" rel="stylesheet">
     </head>
     <body>
-        <header>
-            <h1>Poncho Digital</h1>
-            <p>Plataforma oficial de artesanos y productores de la Fiesta Nacional e Internacional del Poncho</p>
+        <header class="py-4 text-center">
+            <div class="container d-flex flex-column flex-md-row align-items-center justify-content-center gap-4">
+                <img src="../img/fiesta-del-poncho-catamarca-2026-logo-web-001.png" alt="Logo Edición 55 Fiesta del Poncho" class="logo-header" >
+                <h1>Poncho Digital</h1>
+                <p>Plataforma oficial de la Fiesta Nacional e Internacional del Poncho</p>
+            </div>
         </header>
-        <nav>
-            <ul>
-                <li><a href="index.html">Inicio</a></li>
-                <li><a href="solictud_artesano.html" target="_parent">Inscripcion Artesanos</a></li>
-                <li><a href="#artesanos">Catálogo de Artesanos</a></li>
-                <li><a href="#mapa-predio">Plano del Predio</a></li>
+        <nav class="container my-4">
+            <ul class="nav flex-column flex-md-row justify-content-md-center">
+                <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+                <li class="nav-item"><a class="nav-link" href="sign_in.html">Iniciar sesion</a>
+                <li class="nav-item"><a class="nav-link" href="solictud_artesano.html" target="_parent">Inscripción Artesanos</a></li>
+                <li class="nav-item"><a class="nav-link" href="#artesanos">Catálogo de Artesanos</a></li>
+                <li class="nav-item"><a class="nav-link" href="#mapa-predio">Plano del Predio</a></li>
             </ul>
         </nav>
-        <main>
-            <section id="bienvenida">
-                <h2>Bienvenidos a la Experiencia Digital del Poncho</h2>
-                <p>
-                    Te damos la bienvenida a <strong>Poncho Digital</strong>, el espacio creado para acercarte a la fiesta de invierno más grande de la Argentina. Descubrí el talento, la dedicación y las creaciones de los maestros artesanos que dan vida a nuestra identidad cultural en cada edición.
-                </p>
-            </section><hr>
-            <section id="descripcion-general">
-                <h2>Sobre la Fiesta y Nuestra Plataforma</h2>
-                <article>
-                    <h3>La Fiesta Nacional e Internacional del Poncho</h3>
+        <main class="container my-4 py-5">
+            <div class="row g-5">
+                <section class="col-12 col-md-6" id="bienvenida">
+                    <h2>Bienvenidos a la Experiencia Digital del Poncho</h2>
                     <p>
-                        Organizada anualmente por el Ministerio de Cultura de la Provincia de Catamarca, la Fiesta del Poncho reúne a miles de visitantes nacionales e internacionales en los distintos pabellones del Predio Ferial. Es el punto de encuentro por excelencia de la producción textil, las artesanías tradicionales, la gastronomía regional y la música folclórica.
+                        Te damos la bienvenida a <strong>Poncho Digital</strong>, el espacio creado para acercarte a la fiesta de invierno más grande de la Argentina. Descubrí el talento, la dedicación y las creaciones de los maestros artesanos que dan vida a nuestra identidad cultural en cada edición.
                     </p>
-                </article>
-                <article>
-                    <h3>¿Qué encontrarás en Poncho Digital?</h3>
-                    <p>
-                        Esta plataforma web fue diseñada para mejorar la experiencia tanto de los visitantes como de los expositores antes, durante y después del evento:
-                    </p>
-                    <ul>
-                        <li><strong>Guía y ubicación:</strong> Consulta de stands y sectores dentro del predio ferial para recorrer la feria de forma ágil.</li>
-                        <li><strong>Catálogo de artesanos:</strong> Información detallada sobre cada expositor, su localidad de origen, trayectoria y galería de productos disponibles.</li>
-                        <li><strong>Gestión para expositores:</strong> Espacio exclusivo para la inscripción de nuevos postulantes y la administración de sus productos publicados.</li>
-                    </ul>
-                </article>
-            </section>
+                </section>
+                <section class="col-12 col-md-6" id="descripcion-general">
+                    <h2>Sobre la Fiesta y Nuestra Plataforma</h2>
+                    <article>
+                        <h3>La Fiesta Nacional e Internacional del Poncho</h3>
+                        <p>
+                            Organizada anualmente por el Ministerio de Cultura de la Provincia de Catamarca, la Fiesta del Poncho reúne a miles de visitantes nacionales e internacionales en los distintos pabellones del Predio Ferial. Es el punto de encuentro por excelencia de la producción textil, las artesanías tradicionales, la gastronomía regional y la música folclórica.
+                        </p>
+                    </article>
+                    <article class="mt-4">
+                        <h3>¿Qué encontrarás en Poncho Digital?</h3>
+                        <p>
+                            Esta plataforma web fue diseñada para mejorar la experiencia tanto de los visitantes como de los expositores antes, durante y después del evento:
+                        </p>
+                        <ul>
+                            <li><strong>Guía y ubicación:</strong> Consulta de stands y sectores dentro del predio ferial para recorrer la feria de forma ágil.</li>
+                            <li><strong>Catálogo de artesanos:</strong> Información detallada sobre cada expositor, su localidad de origen, trayectoria y galería de productos disponibles.</li>
+                            <li><strong>Gestión para expositores:</strong> Espacio exclusivo para la inscripción de nuevos postulantes y la administración de sus productos publicados.</li>
+                        </ul>
+                    </article>
+                </section>
+            </div>
         </main>
-        <footer>
-            <p>
-                &copy; 2027 <a href="https://micultura.catamarcacapital.gob.ar/" target="_blank" rel="noopener noreferrer" >Ministerio de Cultura de la Provincia de Catamarca</a> - Poncho Digital
-            </p>
+        <footer class="my-4 text-center border-top">
+            <div class="container">
+                <p>
+                    &copy; 2027 <a href="https://micultura.catamarcacapital.gob.ar/" target="_blank" rel="noopener noreferrer" >Ministerio de Cultura de la Provincia de Catamarca</a> - Poncho Digital
+                </p>
+            </div>
         </footer>
     </body>
 </html>

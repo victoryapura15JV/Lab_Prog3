@@ -1,0 +1,108 @@
+:root {
+    --azul-oscuro: #2A354E;
+    --amarillo-mostaza: #B0923D;
+    --blanco: #FFFFFF;
+    --negro-texto: #1a1a1a;
+}
+
+body {
+    background-color: var(--blanco);
+    color: var(--negro-texto);
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+main h2, main h3 {
+    color: var(--amarillo-mostaza);
+    font-weight: bold;
+}
+
+header {
+    background-color: var(--azul-oscuro);
+    padding: 2.5rem 15px;
+    margin-top: 0 !important;
+    max-width: 100% !important;
+}
+
+header h1 {
+    color: var(--amarillo-mostaza);
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+header p {
+    color: var(--blanco);
+    font-size: 1.1rem;
+    margin-bottom: 0;
+}
+
+nav.container {
+    background-color: var(--amarillo-mostaza);
+    border-radius: 50px;
+    padding: 10px 20px;
+    width: fit-content;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+nav a, .nav-link {
+    color: var(--blanco) !important;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 8px 16px !important;
+    border-radius: 30px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+nav a:hover, .nav-link:hover {
+    background-color: var(--azul-oscuro);
+    color: var(--amarillo-mostaza) !important;
+}
+
+footer {
+    background-color: var(--azul-oscuro);
+    color: var(--blanco);
+    padding: 2rem 15px;
+    margin-bottom: 0 !important;
+    max-width: 100% !important;
+    border-top: none !important;
+}
+
+footer a {
+    color: var(--amarillo-mostaza);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+footer a:hover {
+    color: var(--blanco);
+    text-decoration: underline;
+}
+
+.logo-header {
+    max-width: 130px;
+    height: auto; 
+    border-radius: 8px;
+}
+
+body {
+    background-color: var(--blanco);
+    color: var(--negro-texto);
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex-grow: 1;
+}
+
+footer p {
+    margin-bottom: 0;
+}
