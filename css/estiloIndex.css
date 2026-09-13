@@ -152,27 +152,21 @@ footer p {
     }
 }
 
-/* =========================================
-   MENÚ INFERIOR MÓVIL (Formato Píldora)
-   ========================================= */
 #mobile-bottom-nav {
     position: fixed;
-    bottom: 20px; /* Despega el menú del borde inferior de la pantalla */
-    left: 20px;   /* Margen izquierdo */
-    right: 20px;  /* Margen derecho */
-    width: auto;  /* Permite que los márgenes definan el ancho automáticamente */
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    width: auto;
     background-color: var(--azul-oscuro);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.4); /* Sombra envolvente para dar efecto flotante */
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
     z-index: 1050;
-    border-radius: 50px; /* Curvatura total en las cuatro esquinas (efecto píldora) */
-    
-    /* Inicia oculto más abajo y transparente */
+    border-radius: 50px;
     transform: translateY(150%);
     opacity: 0;
     transition: all 0.3s ease-in-out;
 }
 
-/* Clase que JS agrega para mostrar el menú */
 #mobile-bottom-nav.mostrar-menu {
     transform: translateY(0);
     opacity: 1;
