@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded",()=>{
             error_dni.textContent = "El dni debe contener 8 digitos";
         }
         else{
-            error_dni.textContent("");
+            error_dni.textContent="";
         }
     })
     //validacion de edad
@@ -65,9 +65,20 @@ document.addEventListener("DOMContentLoaded",()=>{
     //Prevenir que el formulario no se envie si los datos no fueron corregidos 
     const formulario = document.querySelector("form");
     formulario.addEventListener("submit", (evento) => {
-    if (error_dni.textContent !== "" || error.textContent !== "") {
-        evento.preventDefault();
-        alert("Corrige los errores en rojo antes de enviar tu solicitud");
-    }
-});
+        if (error_dni.textContent !== "" || error.textContent !== "") {
+            evento.preventDefault();
+            alert("Corrige los errores en rojo antes de enviar tu solicitud");
+        }
+        if (error_dni.textContent === "" && error.textContent === "") {
+            evento.preventDefault(); 
+            Swal.fire({
+                title: "¡Excelente!",
+                text: "El formulario se completó correctamente.",
+                icon: "success",
+                confirmButtonColor: "#3085d6"
+            }).then(() => {
+                formulario.submit();
+            });
+        }
+    });
 });

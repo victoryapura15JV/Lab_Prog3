@@ -6,7 +6,8 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="../css/estiloIndex.css" rel="stylesheet">
         <link rel="stylesheet" href="../css/estiloFormlario.css">
-        <script src="../javaScript/provincias_localidades.js"></script>
+        <script src="../javaScript/formulario.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <title>
         Inscripcion de artesano - Fiesta Nacional e Internacional del Poncho
         </title>
@@ -25,8 +26,8 @@
                 </p>
             </div>
         </header>
-        <nav class="container my-4">
-            <a href="index.html" target="_parent">Volver al inicio</a>
+        <nav class="container my-4 text-center">
+            <a href="index.html" class="btn-destacado" target="_parent">Volver al inicio</a>
         </nav>
         <section class="conteiner-fluid  px-4 my-5">
             <h2>Formulario de inscripción</h2>
@@ -38,10 +39,10 @@
                         <input type="text" id="nomyape_artesano" maxlength="100" required> <br><br>
                         <label for="dni_artesano">DNI: </label>
                         <input type="text" id="dni_artesano" minlength="8" maxlength="8" required><br><br>
-                        <span id="error_dni" style="color:red"></span>
+                        <span id="error_dni" style="color:red; display: block"></span>
                         <label for="edad_artesano">Edad: </label>
                         <input type="number" id="edad_artesano" min="18" max="99" required><br><br>
-                        <span id="error_edad" style="color:red"></span>
+                        <span id="error_edad" style="color:red"></span><br>
                         <label for="tel_artesano">Telefono: </label>
                         <input type="tel" id="tel_artesano"><br><br>
                         <label for="gmail_artesano">Correo Electronico: </label>
