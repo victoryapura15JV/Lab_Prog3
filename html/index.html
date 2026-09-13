@@ -6,6 +6,7 @@
         <title>Poncho Digital - Fiesta Nacional e Internacional del Poncho</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="../css/estiloIndex.css" rel="stylesheet">
+        <script src="../javaScript/index.js" defer></script>
     </head>
     <body>
         <header class="py-4 text-center">
@@ -15,13 +16,65 @@
                 <p>Plataforma oficial de la Fiesta Nacional e Internacional del Poncho</p>
             </div>
         </header>
-        <nav class="container my-4">
-            <ul class="nav flex-column flex-md-row justify-content-md-center">
-                <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
-                <li class="nav-item"><a class="nav-link" href="sign_in.html">Iniciar sesion</a>
-                <li class="nav-item"><a class="nav-link" href="solictud_artesano.html" target="_parent">Inscripción Artesanos</a></li>
-                <li class="nav-item"><a class="nav-link" href="#artesanos">Catálogo de Artesanos</a></li>
-                <li class="nav-item"><a class="nav-link" href="#mapa-predio">Plano del Predio</a></li>
+        <div class="container my-4" id="main-nav-wrapper">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-4">
+                <ul class="nav flex-column flex-lg-row nav-pildora">
+                    <li class="nav-item w-100 w-lg-auto"><a class="nav-link text-start" href="index.html">Inicio</a></li>
+                    <li class="nav-item w-100 w-lg-auto"><a class="nav-link text-start" href="#artesanos">Catálogo de Artesanos</a></li>
+                    <li class="nav-item w-100 w-lg-auto"><a class="nav-link text-start" href="#mapa-predio">Plano del Predio</a></li>
+                </ul>
+                <ul class="nav flex-column flex-lg-row nav-pildora gap-2">
+                    <li class="nav-item w-100 w-lg-auto mb-2 mb-lg-0">
+                        <form class="buscador-nav w-100">
+                            <input class="buscador-input" type="search" placeholder="Buscar..." aria-label="Buscar">
+                            <button class="buscador-btn" type="submit">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                </svg>
+                            </button>
+                        </form>
+                    </li>
+                    <li class="nav-item w-100 w-lg-auto">
+                        <a class="nav-link text-start btn-destacado" href="#" data-bs-toggle="modal" data-bs-target="#modalLogin">Iniciar sesion</a>                    
+                    </li>
+                    <li class="nav-item w-100 w-lg-auto">
+                        <a class="nav-link text-start" href="solictud_artesano.html" target="_parent">Inscripción Artesanos</a>
+                    </li>
+                </ul>
+                
+            </div>
+        </div>
+        <nav id="mobile-bottom-nav" class="d-lg-none">
+            <ul class="nav justify-content-around p-2">
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center justify-content-center p-3" href="index.html" aria-label="Inicio">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-house-door-fill" viewBox="0 0 16 16">
+                        <path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5Z"/>
+                        </svg>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center justify-content-center p-3" href="#artesanos" aria-label="Catálogo de Artesanos">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-grid-fill" viewBox="0 0 16 16">
+                        <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm-8 8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm8 0A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3z"/>
+                        </svg>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center justify-content-center p-3" href="#" aria-label="Buscar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                        </svg>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center justify-content-center p-3" href="#mapa-predio" aria-label="Plano del Predio">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-map-fill" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.598-.49L10.5.99 5.598.01a.5.5 0 0 0-.196 0l-5 1A.5.5 0 0 0 0 1.5v14a.5.5 0 0 0 .598.49l4.902-.98 4.902.98a.502.502 0 0 0 .196 0l5-1A.5.5 0 0 0 16 14.5V.5zM5 14.09V1.11l.5-.1.5.1v12.98l-.402-.08a.498.498 0 0 0-.196 0L5 14.09zm5 .8V1.91l.402.08a.5.5 0 0 0 .196 0L11 1.91v12.98l-.5.1-.5-.1z"/>
+                        </svg>
+                    </a>
+                </li>
+
             </ul>
         </nav>
         <main class="container my-4 py-5">
@@ -54,12 +107,49 @@
                 </section>
             </div>
         </main>
-        <footer class="my-4 text-center border-top">
+
+        <div class="modal fade" id="modalLogin" tabindex="-1" aria-labelledby="modalLoginLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content p-4 modal-fondo-azul" style="border-radius: 24px; border: 0;">
+                    <button type="button" class="btn-close btn-close-mostaza position-absolute top-0 end-0 m-3 z-3" data-bs-dismiss="modal" aria-label="Cerrar" style="padding: 12px; cursor: pointer;"></button>
+                    <div class="modal-body p-0">
+                        <img src="../img/fiesta-del-poncho-catamarca-2026-logo-web-001.png" alt="Logo Poncho Digital" class="mb-3" style="width: 45px; border-radius: 8px;">
+                        <h2 class="fw-bold mb-2" id="modalLoginLabel" style="color: var(--blanco); font-size: 1.8rem;">Te damos la bienvenida al Poncho Digital</h2>
+                        <p class="mb-4" style="color: var(--blanco); opacity: 0.85;">Inicia sesión y obtén beneficios para tu stand</p>
+                        <form id="formLoginModal">
+                            <div class="form-floating mb-3">
+                                <input type="email" class="form-control input-redondeado" id="loginEmail" placeholder="name@example.com" required>
+                                <label for="loginEmail" style="color: var(--negro-texto);">Correo electrónico</label>
+                            </div>
+                            <div class="form-floating mb-3 position-relative">
+                                <input type="password" class="form-control input-redondeado pe-5" id="loginPassword" placeholder="Contraseña" required>
+                                <label for="loginPassword" style="color: var(--negro-texto);">Contraseña</label>
+                                <button type="button" class="btn border-0 position-absolute top-50 end-0 translate-middle-y me-2" id="btnTogglePassword" style="color: var(--azul-oscuro);">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+                                    <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+                                    <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="mb-4">
+                                <a href="#" class="fw-bold" style="color: var(--amarillo-mostaza); text-decoration: none;">¿Olvidaste tu contraseña?</a>
+                            </div>
+                            <button type="submit" class="btn w-100 mb-3 fw-bold py-2 btn-login-modal">Iniciar sesión</button>
+                            <div class="text-center mt-4">
+                                <a href="solictud_artesano.html" target="_parent" class="fw-bold" style="color: var(--amarillo-mostaza); text-decoration: none;">Inscripcion para artesano / Registrarse</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="mt-4 text-center border-top">
             <div class="container">
                 <p>
                     &copy; 2027 <a href="https://micultura.catamarcacapital.gob.ar/" target="_blank" rel="noopener noreferrer" >Ministerio de Cultura de la Provincia de Catamarca</a> - Poncho Digital
                 </p>
             </div>
         </footer>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>
