@@ -106,14 +106,15 @@ footer p {
 }
 
 .btn-destacado {
-    background-color: var(--amarillo-mostaza)  !important;
+    background-color: var(--azul-oscuro) !important;
     color: var(--blanco) !important;
     border-radius: 30px;
     font-weight: bold;
 }
+
 .btn-destacado:hover {
-    background-color: var(--azul-oscuro) !important;
-    color: var(--amarillo-mostaza) !important;
+    background-color: var(--blanco) !important;
+    color: var(--azul-oscuro) !important;
 }
 
 .buscador-nav {
@@ -202,6 +203,7 @@ footer p {
     border-radius: 30px !important;
     font-size: 1.1rem;
     transition: all 0.3s ease;
+    border: none;
 }
 
 .btn-login-modal:hover {
@@ -227,12 +229,3 @@ input[type="password"]::-ms-clear {
     opacity: 0.7;
 }
 
-.fw-bold{
-    transition: 0.3s;
-}
-
-.fw-bold:hover{
-    color: var(--blanco-) !important;
-    text-decoration: underline !important;
-    cursor: pointer;
-}
