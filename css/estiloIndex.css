@@ -106,14 +106,14 @@ footer p {
 }
 
 .btn-destacado {
-    background-color: var(--azul-oscuro) !important;
+    background-color: var(--amarillo-mostaza)  !important;
     color: var(--blanco) !important;
     border-radius: 30px;
     font-weight: bold;
 }
 .btn-destacado:hover {
-    background-color: var(--blanco) !important;
-    color: var(--azul-oscuro) !important;
+    background-color: var(--azul-oscuro) !important;
+    color: var(--amarillo-mostaza) !important;
 }
 
 .buscador-nav {
@@ -225,4 +225,14 @@ input[type="password"]::-ms-clear {
 
 .btn-close-mostaza:hover {
     opacity: 0.7;
+}
+
+.fw-bold{
+    transition: 0.3s;
+}
+
+.fw-bold:hover{
+    color: var(--blanco-) !important;
+    text-decoration: underline !important;
+    cursor: pointer;
 }

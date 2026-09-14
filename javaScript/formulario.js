@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     const error_dni= document.getElementById("error_dni");
     dni.addEventListener("change",()=>{
         if(dni.value.length != 8 || isNaN(dni.value)){
-            error_dni.textContent = "El dni debe contener 8 digitos";
+            error_dni.textContent = "El DNI debe contener 8 digitos";
         }
         else{
             error_dni.textContent="";
