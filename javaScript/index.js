@@ -1,17 +1,4 @@
 document.addEventListener("DOMContentLoaded", function() {
-    const topNav = document.getElementById('main-nav-wrapper');
-    const bottomNav = document.getElementById('mobile-bottom-nav');
-    const observer = new IntersectionObserver(function(entries) {
-        if (entries[0].isIntersecting) {
-            bottomNav.classList.remove('mostrar-menu');
-        } else {
-            bottomNav.classList.add('mostrar-menu');
-        }
-    }, { 
-        threshold: 0.1
-    });
-
-    observer.observe(topNav);
     const btnOjo = document.getElementById('btnTogglePassword');
     const inputPass = document.getElementById('loginPassword');
 
@@ -28,4 +15,3 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 });
-
