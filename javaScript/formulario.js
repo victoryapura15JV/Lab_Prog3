@@ -1,7 +1,24 @@
 document.addEventListener("DOMContentLoaded",()=>{
     //validacion de dni 
+    const nomyape = document.getElementById("nomyape_artesano");
+    const errorNombre = document.getElementById("error_nombre");
     const dni = document.getElementById("dni_artesano");
     const error_dni= document.getElementById("error_dni");
+    const tel = document.getElementById("tel_artesano");
+    const errorTel = document.getElementById("error_tel");
+    const email = document.getElementById("gmail_artesano");
+    const errorEmail = document.getElementById("error_email");
+    //validacion nombre y apellido
+    if (nomyape) {
+        nomyape.addEventListener("input", () => {
+            if (nomyape.value.trim().length < 3) {
+                errorNombre.textContent = "El nombre y apellido no puede ser tan corto";
+            } else {
+                errorNombre.textContent = "";
+            }
+        });
+    }
+    //validacon dni
     dni.addEventListener("change",()=>{
         if(dni.value.length != 8 || isNaN(dni.value)){
             error_dni.textContent = "El DNI debe contener 8 digitos";
@@ -11,19 +28,60 @@ document.addEventListener("DOMContentLoaded",()=>{
         }
     })
     //validacion de edad
-    const edad = document.getElementById("edad_artesano");
-    const error= document.getElementById("error_edad");
-    edad.addEventListener("change",()=>{
-        if(edad.value < 18 ){
-            error.textContent= "Debes ser mayor de edad para poder inscribirte";
+
+    const fechaNacimiento = document.getElementById("fecha_nacimiento");
+    const errorFecha = document.getElementById("error_fecha");
+    function calcularEdad(fechaString) {
+        const fechaIngresada = new Date(fechaString);
+        const hoy = new Date();
+
+        if (isNaN(fechaIngresada.getTime())) {
+            return null;
         }
-        else if(edad.value > 100){
-            error.textContent="Ingrese una edad valida";
+
+        let edad = hoy.getFullYear() - fechaIngresada.getFullYear();
+        const mes = hoy.getMonth() - fechaIngresada.getMonth();
+
+        if (mes < 0 || (mes === 0 && hoy.getDate() < fechaIngresada.getDate())) {
+            edad--;
+        }
+
+        return edad;
+    }
+    fechaNacimiento.addEventListener("change",()=>{
+        const edad = calcularEdad(fechaNacimiento.value);
+        if(edad === null){
+            errorFecha.textContent= "Ingrese una fecha valida";
+        }
+        else if(edad < 18){
+            errorFecha.textContent="Debe ser mayor de 18 para inscribirte";
+        }
+        else if (edad > 100){
+            errorFecha.textContent="Ingrese una fecha de nacimiento valida";
         }
         else{
-            error.textContent="";
+            errorFecha.textContent=""
         }
     })
+
+    //validacion de numero de telefono
+    tel.addEventListener("input",()=>{
+        const telRegex = /^[0-9\s\-\+\(\)]{6,20}$/;
+        if (!telRegex.test(tel.value.trim())) {
+            errorTel.textContent = "Ingrese un numero de telefono valido";
+        } else {
+            errorTel.textContent = "";
+        }
+    });
+    //validacion de correo electronico
+    email.addEventListener("input", () => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email.value.trim())) {
+            errorEmail.textContent = "Ingrese un correo electronico valido.";
+        } else {
+            errorEmail.textContent = "";
+        }
+    });
     //Provincias con sus correspondientes localidades
     const provincia = document.getElementById("provincia_artesano");
     const localidad = document.getElementById("localidad_artesano");
@@ -65,11 +123,21 @@ document.addEventListener("DOMContentLoaded",()=>{
     //Prevenir que el formulario no se envie si los datos no fueron corregidos 
     const formulario = document.querySelector("form");
     formulario.addEventListener("submit", (evento) => {
-        if (error_dni.textContent !== "" || error.textContent !== "") {
-            evento.preventDefault();
-            alert("Corrige los errores en rojo antes de enviar tu solicitud");
+        const edad = calcularEdad(fechaNacimiento.value);
+        if (edad === null || edad < 18 || edad > 100) {
+            errorFecha.textContent = "Debe ingresar una fecha de nacimiento valida";
         }
-        if (error_dni.textContent === "" && error.textContent === "") {
+        const errores = 
+            errorNombre.textContent !== "" ||
+            error_dni.textContent !== "" ||
+            errorFecha.textContent !== "" ||
+            errorTel.textContent !== "" ||
+            errorEmail.textContent !== "";
+        if (errores) {
+            evento.preventDefault();
+            alert("Corrige los errores antes de enviar tu solicitud");
+        }
+        if (typeof Swal !== "undefined") {
             evento.preventDefault(); 
             Swal.fire({
                 title: "¡Excelente!",
@@ -79,6 +147,8 @@ document.addEventListener("DOMContentLoaded",()=>{
             }).then(() => {
                 formulario.submit();
             });
-        }
+            } else {
+            formulario.submit();
+            }
     });
 });

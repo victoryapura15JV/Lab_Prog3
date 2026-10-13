@@ -37,16 +37,23 @@
                         <legend>DATOS PERSONALES</legend><br>
                         <label for="nomyape_artesano">Nombre y Apellido: </label>
                         <input type="text" id="nomyape_artesano" maxlength="100" required> <br><br>
+                        <span id="error_nombre" style="color:red; display: block"></span><br>
+
                         <label for="dni_artesano">DNI: </label>
                         <input type="text" id="dni_artesano" minlength="8" maxlength="8" required><br><br>
                         <span id="error_dni" style="color:red; display: block"></span>
-                        <label for="edad_artesano">Edad: </label>
-                        <input type="number" id="edad_artesano" min="18" max="99" required><br><br>
-                        <span id="error_edad" style="color:red"></span><br>
+
+                        <label for="fecha_nacimiento">Fecha de Nacimiento: </label>
+                        <input type="date" id="fecha_artesano" required><br><br>
+                        <span id="error_fecha" style="color:red"></span><br>
+
                         <label for="tel_artesano">Telefono: </label>
                         <input type="tel" id="tel_artesano"><br><br>
+                        <span id="error_tel" style="color:red; display: block"></span><br>
+
                         <label for="gmail_artesano">Correo Electronico: </label>
                         <input type="email" id="gmail_artesano" placeholder="                     @gmail.com" required>
+                        <span id="error_email" style="color:red; display: block"></span>
                     </fieldset>
                 </div>
                 <br>
@@ -61,6 +68,8 @@
                             <option value="tucuman">Tucumán</option>
                             <option value="otra">Otra provincia</option>
                         </select> <br><br>
+                        <span id="error_provincia" style="color:red; display: block"></span><br>
+
                         <label for="localidad_artesano">Localidad: </label>
                         <select id="localidad_artesano" name="localidad" required>
                             <option value="">Seleccione una localidad</option>
@@ -70,6 +79,7 @@
                             <option value="belen">Belén</option>
                             <option value="otro">Otra localidad</option>
                         </select>
+                        <span id="error_localidad" style="color:red; display: block"></span>
                     </fieldset>
                 </div>
                 <br>
@@ -78,10 +88,15 @@
                         <legend>EMPRENDIMIENTO</legend>
                         <label for="nom_emprendimiento">Nombre del emprendimiento: </label>
                         <input type="text" id="nom_emprendimiento" required><br><br>
+                        <span id="error_nom_emp" style="color:red; display: block"></span><br>
+
                         <label for="tiempo_trayectoria">Años de trayectoria: </label>
                         <input type="number" min="1" id="tiempo_trayectoria" required><br><br>
+                        <span id="error_trayectoria" style="color:red; display: block"></span><br>
+
                         <label for="historia_emprendimiento">Contanos sobre tu emprendimiento:</label><br><br>
                         <textarea id="historia_emprendimiento" rows="10" cols="20" placeholder="Ejemplo: Nuestro emprendimiento surgio como..." minlength="20" required></textarea>
+                        <span id="error_historia" style="color:red; display: block"></span>
                     </fieldset>
                 </div>
                 <br>
@@ -96,9 +111,12 @@
                             <option value="ceramica">Productos regionales</option>
                             <option value="comida">Productos culturales</option>
                         </select>
-                        <br><br>
+                        <br>
+                        <span id="error_rubro" style="color:red; display: block"></span><br>
+
                         <label for="productos">Productos principales: </label>
                         <input type="text" id="productos" minlength="1" required>
+                        <span id="error_productos" style="color:red; display: block"></span>
                     </fieldset>
                 </div>
                 <br>
@@ -107,6 +125,7 @@
                         <legend></legend>
                         <input type="checkbox" id="terminos" required>
                         <label for="terminos">Acepto todos los terminos y condiciones de este formuario</label><br><br>
+                        <span id="error_terminos" style="color:red; display: block"></span><br>
                         <input type="submit" value="Enviar formulario">
                     </fieldset>
                 </div>  
@@ -115,5 +134,7 @@
         <footer>
             <p>&copy; 2027 <a href="https://micultura.catamarcacapital.gob.ar/" target="_blank" rel="noopener noreferrer" >Ministerio de Cultura de la Provincia de Catamarca</a> - Poncho Digital</p>
         </footer>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="../js/formulario.js"></script>
     </body>
 </html>
