@@ -93,7 +93,7 @@ class Artesano(models.Model):
         blank=True,
         related_name='artesano'
     )
-    # usuario = models.OneToOneField('usuarios.Usuario', on_delete=models.PROTECT, null=True, blank=True, related_name='artesano')
+    usuario = models.OneToOneField('usuarios.Usuario', on_delete=models.PROTECT, null=True, blank=True, related_name='artesano')
 
     materiales = models.CharField(max_length=200, blank=True)
     horarios_asistencia = models.CharField(max_length=150, blank=True)

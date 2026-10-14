@@ -78,8 +78,12 @@ WSGI_APPLICATION = 'laboratorio.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'feria_artesanos_db',
+        'USER': 'postgres',
+        'PASSWORD': 'Lab2026',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -129,3 +133,7 @@ MAILERS = {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
+
+AUTH_USER_MODEL = 'usuarios.Usuario'
+
+
