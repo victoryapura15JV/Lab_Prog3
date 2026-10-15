@@ -13,7 +13,7 @@ class Producto(models.Model):
     nombre = models.CharField(max_length=100)
     categoria = models.CharField(max_length=30, choices=categorias)
     descripcion = models.TextField()
-    imagen = models.ImageField(upload_to='productos/')
+    imagen = models.FileField(upload_to='productos/')
     fecha_publicacion = models.DateTimeField(auto_now_add=True)
     fecha_actualizacion = models.DateTimeField(auto_now=True)
 
