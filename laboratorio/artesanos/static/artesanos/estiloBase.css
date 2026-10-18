@@ -1,0 +1,148 @@
+:root {
+    --azul-oscuro: #2A354E;
+    --amarillo-mostaza: #B0923D;
+    --blanco: #FFFFFF;
+    --negro-texto: #1a1a1a;
+}
+
+body {
+    background-color: var(--blanco);
+    color: var(--negro-texto);
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex-grow: 1;
+}
+
+main h2, main h3 {
+    color: var(--amarillo-mostaza);
+    font-weight: bold;
+}
+
+.fw-bold {
+    transition: 0.3s;
+}
+
+.fw-bold:hover {
+    color: #FFFFFF !important;
+    cursor: pointer;
+}
+
+header {
+    background-color: var(--azul-oscuro);
+    padding: 2.5rem 15px;
+    margin-top: 0 !important;
+    max-width: 100% !important;
+    position: relative; /* Agregado */
+    z-index: 10;
+}
+
+header h1 {
+    color: var(--amarillo-mostaza);
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+header p {
+    color: var(--blanco);
+    font-size: 1.1rem;
+    margin-bottom: 0;
+}
+
+.logo-header {
+    max-width: 130px;
+    height: auto; 
+    border-radius: 8px;
+}
+
+footer {
+    background-color: var(--azul-oscuro);
+    color: var(--blanco);
+    padding: 2rem 15px;
+    margin-bottom: 0 !important;
+    max-width: 100% !important;
+    border-top: none !important;
+    position: relative; /* Agregado */
+    z-index: 10;
+}
+
+footer p {
+    margin-bottom: 0;
+}
+
+footer a {
+    color: var(--amarillo-mostaza);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+footer a:hover {
+    color: var(--blanco);
+    text-decoration: underline;
+}
+
+.modal-fondo-azul {
+    background-color: var(--azul-oscuro) !important;
+}
+
+.modal-backdrop {
+    background-color: rgba(18, 25, 41, 0.85) !important; 
+}
+
+.btn-close-mostaza {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23B0923D'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e") !important;
+    opacity: 1; 
+}
+
+.btn-close-mostaza:hover {
+    opacity: 0.7;
+}
+
+.input-redondeado {
+    border-radius: 16px !important;
+    border: 2px solid transparent !important;
+}
+
+.input-redondeado:focus {
+    border-color: var(--amarillo-mostaza) !important;
+    box-shadow: 0 0 0 0.25rem rgba(176, 146, 61, 0.25) !important;
+}
+
+/* Solo afecta a los campos de contraseña compartidos */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+    display: none !important;
+}
+
+nav a, .nav-link {
+    color: var(--blanco) !important;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 8px 16px !important;
+    border-radius: 30px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+nav a:hover, .nav-link:hover {
+    background-color: var(--azul-oscuro);
+    color: var(--amarillo-mostaza) !important;
+}
+
+.btn-destacado {
+    background-color: var(--azul-oscuro) !important;
+    color: var(--blanco) !important;
+    border-radius: 30px;
+    font-weight: bold;
+}
+
+.btn-destacado:hover {
+    background-color: var(--blanco) !important;
+    color: var(--azul-oscuro) !important;
+}

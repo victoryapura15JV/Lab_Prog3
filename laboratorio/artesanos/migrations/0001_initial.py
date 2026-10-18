@@ -57,8 +57,8 @@ class Migration(migrations.Migration):
                 ('contacto', models.URLField(blank=True)),
                 ('redes', models.URLField(blank=True)),
                 ('visitas', models.IntegerField(default=0)),
-                ('solicitud', models.OneToOneField(on_delete=django.db.models.deletion.PROTECT, related_name='artesano', to='artesanos.solicitud')),
-                ('stand', models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='artesano', to='artesanos.stand')),
+                ('solicitud', models.OneToOneField(on_delete=django.db.models.deletion.PROTECT, related_name='artesanos', to='artesanos.solicitud')),
+                ('stand', models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='artesanos', to='artesanos.stand')),
             ],
             options={
                 'ordering': ('solicitud',),

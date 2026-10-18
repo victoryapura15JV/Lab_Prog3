@@ -14,8 +14,8 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AddField(
-            model_name='artesano',
+            model_name='artesanos',
             name='usuario',
-            field=models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='artesano', to=settings.AUTH_USER_MODEL),
+            field=models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='artesanos', to=settings.AUTH_USER_MODEL),
         ),
     ]

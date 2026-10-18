@@ -84,16 +84,16 @@ class Artesano(models.Model):
     solicitud = models.OneToOneField(
         Solicitud,
         on_delete=models.PROTECT,
-        related_name='artesano'
+        related_name='artesanos'
     )
     stand = models.OneToOneField(
         Stand,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name='artesano'
+        related_name='artesanos'
     )
-    usuario = models.OneToOneField('usuarios.Usuario', on_delete=models.PROTECT, null=True, blank=True, related_name='artesano')
+    usuario = models.OneToOneField('usuarios.Usuario', on_delete=models.PROTECT, null=True, blank=True, related_name='artesanos')
 
     materiales = models.CharField(max_length=200, blank=True)
     horarios_asistencia = models.CharField(max_length=150, blank=True)
