@@ -1,0 +1,19 @@
+# Entornos virtuales
+.venv/
+venv/
+Envs/
+env/
+
+# Archivos de configuración de PyCharm / VS Code
+.idea/
+.vscode/
+
+# Seguridad y claves (no subir contraseñas a GitHub)
+.env
+
+# Archivos temporales de Python
+__pycache__/
+*.pyc
+
+# Base de datos local de prueba si existiera
+db.sqlite3
