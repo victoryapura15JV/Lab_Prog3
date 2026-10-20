@@ -39,7 +39,7 @@
                             </span>
                         </td>
                         <td>
-                            <button class="btn btn-sm btn-primary">Ver mas informacion</button>
+                            <a href="{% url 'artesanos:evaluar_solicitud' solicitud.id %}" class="btn btn-sm btn-primary">Evaluar Solicitud</a>
                         </td>
                     </tr>
                     {% empty %}

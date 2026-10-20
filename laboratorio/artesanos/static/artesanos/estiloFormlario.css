@@ -12,9 +12,9 @@ form legend {
     background-color: var(--azul-oscuro);
     padding: 5px 20px;
     border-radius: 20px;
-    width: auto; 
+    width: auto;
     font-size: 1.1rem;
-    float: none; 
+    float: none;
 }
 form input[type="text"],
 form input[type="number"],

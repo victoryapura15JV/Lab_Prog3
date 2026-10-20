@@ -1,16 +1,17 @@
 document.addEventListener("DOMContentLoaded",()=>{
     //validacion de dni 
-    const nomyape = document.getElementById("nomyape_artesano");
+    const nomyape = document.getElementById("id_nombre_apellido");
     const errorNombre = document.getElementById("error_nombre");
-    const dni = document.getElementById("dni_artesano");
+    const dni = document.getElementById("id_dni");
     const error_dni= document.getElementById("error_dni");
-    const tel = document.getElementById("tel_artesano");
+    const tel = document.getElementById("id_telefono");
     const errorTel = document.getElementById("error_tel");
-    const email = document.getElementById("gmail_artesano");
+    const email = document.getElementById("id_email");
     const errorEmail = document.getElementById("error_email");
     //validacion nombre y apellido
     if (nomyape) {
         nomyape.addEventListener("input", () => {
+            nomyape.value = nomyape.value.replace(/[0-9]/g, '');
             if (nomyape.value.trim().length < 3) {
                 errorNombre.textContent = "El nombre y apellido no puede ser tan corto";
             } else {
@@ -29,7 +30,8 @@ document.addEventListener("DOMContentLoaded",()=>{
     })
     //validacion de edad
 
-    const fechaNacimiento = document.getElementById("fecha_nacimiento");
+    const fechaNacimiento = document.getElementById("id_fecha_nacimiento");
+    fechaNacimiento.type = "date";
     const errorFecha = document.getElementById("error_fecha");
     function calcularEdad(fechaString) {
         const fechaIngresada = new Date(fechaString);
@@ -52,6 +54,9 @@ document.addEventListener("DOMContentLoaded",()=>{
         const edad = calcularEdad(fechaNacimiento.value);
         if(edad === null){
             errorFecha.textContent= "Ingrese una fecha valida";
+        }
+        else if (edad < 0) {
+            errorFecha.textContent = "La fecha no puede ser mayor a la actual";
         }
         else if(edad < 18){
             errorFecha.textContent="Debe ser mayor de 18 para inscribirte";
@@ -83,40 +88,39 @@ document.addEventListener("DOMContentLoaded",()=>{
         }
     });
     //Provincias con sus correspondientes localidades
-    const provincia = document.getElementById("provincia_artesano");
-    const localidad = document.getElementById("localidad_artesano");
+    const provincia = document.getElementById("id_provincia");
+    const localidad = document.getElementById("id_localidad");
     provincia.addEventListener("change", () => {
-        
         let provinciaElegida = provincia.value;
-        if (provinciaElegida === "catamarca") {
+        if (provinciaElegida === "Catamarca") {
             localidad.innerHTML = `
                 <option value="">Seleccione una localidad</option>
-                <option value="capital">Capital</option>
-                <option value="valleViejo">Valle Viejo</option>
-                <option value="fme">Fray Mamerto Esquiú</option>
-                <option value="belen">Belén</option>
+                <option value="Capital">Capital</option>
+                <option value="Valle Viejo">Valle Viejo</option>
+                <option value="Fray Mamerto Esquiu">Fray Mamerto Esquiú</option>
+                <option value="Belen">Belén</option>
             `;
 
-        } else if (provinciaElegida === "salta") {
+        } else if (provinciaElegida === "Salta") {
             
             localidad.innerHTML = `
                 <option value="">Seleccione una localidad</option>
-                <option value="capital">Capital</option>
-                <option value="cafayate">Cafayate</option>
-                <option value="tartagal">Tartagal</option>
+                <option value="Capital">Capital</option>
+                <option value="Cafayate">Cafayate</option>
+                <option value="Tartagal">Tartagal</option>
             `;
 
-        } else if (provinciaElegida === "tucuman") {
+        } else if (provinciaElegida === "Tucuman") {
             
             localidad.innerHTML = `
                 <option value="">Seleccione una localidad</option>
-                <option value="capital">Capital</option>
-                <option value="tafi">Tafí del Valle</option>
-                <option value="yerba">Yerba Buena</option>`;
+                <option value="Capital">Capital</option>
+                <option value="Tafi del Valle">Tafí del Valle</option>
+                <option value="Yerba Buena">Yerba Buena</option>`;
         } else {
             localidad.innerHTML = `
                 <option value="">Seleccione una localidad</option>
-                <option value="otro">Otra localidad</option>
+                <option value="Otra">Otra localidad</option>
             `;
         }
     });
@@ -124,7 +128,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     const formulario = document.querySelector("form");
     formulario.addEventListener("submit", (evento) => {
         const edad = calcularEdad(fechaNacimiento.value);
-        if (edad === null || edad < 18 || edad > 100) {
+        if (edad === null || edad < 18 || edad > 100 || edad < 0){
             errorFecha.textContent = "Debe ingresar una fecha de nacimiento valida";
         }
         const errores = 
@@ -137,18 +141,5 @@ document.addEventListener("DOMContentLoaded",()=>{
             evento.preventDefault();
             alert("Corrige los errores antes de enviar tu solicitud");
         }
-        if (typeof Swal !== "undefined") {
-            evento.preventDefault(); 
-            Swal.fire({
-                title: "¡Excelente!",
-                text: "El formulario se completó correctamente.",
-                icon: "success",
-                confirmButtonColor: "#3085d6"
-            }).then(() => {
-                formulario.submit();
-            });
-            } else {
-            formulario.submit();
-            }
     });
 });
