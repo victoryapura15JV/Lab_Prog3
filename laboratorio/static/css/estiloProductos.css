@@ -1,0 +1,60 @@
+/* Estilos de la app productos (usa las variables definidas en estiloBase.css) */
+#formulario-producto fieldset {
+    border: 2px solid var(--azul-oscuro);
+    border-radius: 16px;
+    padding: 1.5rem;
+}
+
+#formulario-producto legend {
+    float: none;
+    width: auto;
+    padding: 0 .75rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--azul-oscuro);
+}
+
+.img-miniatura-tabla {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.btn-modificar {
+    background-color: var(--azul-oscuro);
+    color: var(--blanco);
+}
+
+.btn-modificar:hover {
+    background-color: var(--amarillo-mostaza);
+    color: var(--blanco);
+}
+
+.btn-eliminar {
+    background-color: #a33a3a;
+    color: var(--blanco);
+}
+
+.btn-eliminar:hover {
+    background-color: #7d2a2a;
+    color: var(--blanco);
+}
+
+.tarjeta-producto {
+    border: 0;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .12);
+}
+
+.img-producto-card {
+    height: 220px;
+    object-fit: cover;
+}
+
+.etiqueta-categoria {
+    background-color: var(--amarillo-mostaza);
+    color: var(--blanco);
+}

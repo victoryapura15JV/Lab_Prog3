@@ -1,0 +1,22 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block titulo %}Modificar producto - Poncho Digital{% endblock %}
+
+{% block contenido_principal %}
+    <link rel="stylesheet" href="{% static 'css/estiloProductos.css' %}">
+
+    <section id="seccion-formulario">
+        <h2 class="text-center mb-1">Modificar producto</h2>
+        <p class="text-center text-muted mb-4">{{ artesano.solicitud.nombre_emprendimiento }}</p>
+        {% include 'productos/_mensajes.html' %}
+        {% if producto.imagen %}
+            <div class="text-center mb-3">
+                <p class="mb-1 small text-muted">Imagen actual</p>
+                <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" class="img-miniatura-tabla">
+            </div>
+        {% endif %}
+        {% include 'productos/_form_producto.html' with modo_edicion=True texto_boton="Guardar cambios" %}
+    </section>
+
+    <script src="{% static 'javaScript/productos.js' %}"></script>
+{% endblock %}

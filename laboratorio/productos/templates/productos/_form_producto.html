@@ -1,0 +1,37 @@
+<form id="formulario-producto" method="post" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+    <fieldset>
+        <legend>Datos del producto</legend>
+        <div class="row g-3">
+            <div class="col-12 col-md-6">
+                <label for="nombre" class="form-label">Nombre:</label>
+                {{ formulario.nombre }}
+                {% for error in formulario.nombre.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+            </div>
+            <div class="col-12 col-md-6">
+                <label for="categoria" class="form-label">Categoría:</label>
+                {{ formulario.categoria }}
+                {% for error in formulario.categoria.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+            </div>
+            <div class="col-12">
+                <label for="descripcion" class="form-label">Descripción:</label>
+                {{ formulario.descripcion }}
+                {% for error in formulario.descripcion.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+            </div>
+            <div class="col-12 col-md-6">
+                <label for="imagen" class="form-label">Imagen:</label>
+                {{ formulario.imagen }}
+                {% for error in formulario.imagen.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-destacado">{{ texto_boton|default:"Guardar" }}</button>
+                {% if modo_edicion %}
+                    <a href="{% url 'productos:gestionar' artesano.id %}" class="btn btn-outline-secondary">Cancelar</a>
+                {% else %}
+                    <button type="reset" class="btn btn-outline-secondary">Limpiar</button>
+                {% endif %}
+            </div>
+        </div>
+        <div id="mensaje-error" class="text-danger mt-2">{% for error in formulario.non_field_errors %}{{ error }}{% endfor %}</div>
+    </fieldset>
+</form>

@@ -1,4 +1,4 @@
-// Elementos del formulario
+// Elementos del formulario (los ids los genera ProductoForm con auto_id='%s')
 
 const formulario = document.getElementById("formulario-producto");
 const nombre = document.getElementById("nombre");
@@ -8,118 +8,90 @@ const imagen = document.getElementById("imagen");
 const mensajeError = document.getElementById("mensaje-error");
 
 
-// Validación del producto
+// Validación del producto en el navegador (el servidor valida de nuevo en ProductoForm)
 
-formulario.addEventListener("submit", function(event) {
+if (formulario) {
+    formulario.addEventListener("submit", function(event) {
 
-    event.preventDefault();
+        mensajeError.textContent = "";
 
-    mensajeError.textContent = "";
+        if (nombre.value.trim() === "") {
+            event.preventDefault();
+            mensajeError.textContent = "Debe ingresar el nombre del producto.";
+            nombre.focus();
+            return;
+        }
 
-    if (nombre.value.trim() === "") {
-        mensajeError.textContent = "Debe ingresar el nombre del producto.";
-        nombre.focus();
-        return;
-    }
+        if (categoria.value === "") {
+            event.preventDefault();
+            mensajeError.textContent = "Debe seleccionar una categoría.";
+            categoria.focus();
+            return;
+        }
 
-    if (categoria.value === "") {
-        mensajeError.textContent = "Debe seleccionar una categoría.";
-        categoria.focus();
-        return;
-    }
+        if (descripcion.value.trim() === "") {
+            event.preventDefault();
+            mensajeError.textContent = "Debe ingresar una descripción.";
+            descripcion.focus();
+            return;
+        }
 
-    if (descripcion.value.trim() === "") {
-        mensajeError.textContent = "Debe ingresar una descripción.";
-        descripcion.focus();
-        return;
-    }
-
-    if (descripcion.value.trim().length < 10) {
-        mensajeError.textContent = "La descripción debe ser más detallada.";
-        descripcion.focus();
-        return;
-    }
-
-    formulario.submit();
-});
+        if (descripcion.value.trim().length < 10) {
+            event.preventDefault();
+            mensajeError.textContent = "La descripción debe ser más detallada.";
+            descripcion.focus();
+            return;
+        }
+        // Si todo está bien, el formulario se envía al servidor (Django).
+    });
+}
 
 
 // Vista previa de la imagen
 
-imagen.addEventListener("change", function() {
+if (imagen) {
+    imagen.addEventListener("change", function() {
 
-    if (imagen.files.length > 0) {
+        if (imagen.files.length > 0) {
 
-        const archivo = imagen.files[0];
-        const lector = new FileReader();
+            const archivo = imagen.files[0];
+            const lector = new FileReader();
 
-        lector.addEventListener("load", function() {
+            lector.addEventListener("load", function() {
 
-            let preview = document.getElementById("preview-foto");
+                let preview = document.getElementById("preview-foto");
 
-            if (preview === null) {
-                preview = document.createElement("div");
-                preview.id = "preview-foto";
-                imagen.parentNode.appendChild(preview);
-            }
+                if (preview === null) {
+                    preview = document.createElement("div");
+                    preview.id = "preview-foto";
+                    imagen.parentNode.appendChild(preview);
+                }
 
-            preview.innerHTML = "";
+                preview.innerHTML = "";
 
-            const foto = document.createElement("img");
+                const foto = document.createElement("img");
 
-            foto.src = lector.result;
-            foto.alt = "Vista previa de la imagen";
-            foto.className = "img-miniatura-tabla";
+                foto.src = lector.result;
+                foto.alt = "Vista previa de la imagen";
+                foto.className = "img-miniatura-tabla mt-2";
 
-            preview.appendChild(foto);
-        });
+                preview.appendChild(foto);
+            });
 
-        lector.readAsDataURL(archivo);
-    }
-});
-
-
-// Eliminar productos
-
-const botonesEliminar = document.querySelectorAll(".btn-eliminar");
-
-botonesEliminar.forEach(function(boton) {
-
-    boton.addEventListener("click", function(event) {
-
-        event.preventDefault();
-
-        if (confirm("¿Desea eliminar este producto?")) {
-            boton.closest("tr").remove();
+            lector.readAsDataURL(archivo);
         }
     });
-});
+}
 
 
-// Modificar productos
+// Eliminar productos: confirmación antes de enviar el formulario POST al servidor
 
-const botonesModificar = document.querySelectorAll(".btn-modificar");
+document.querySelectorAll(".form-eliminar").forEach(function(form) {
 
-botonesModificar.forEach(function(boton) {
+    form.addEventListener("submit", function(event) {
 
-    boton.addEventListener("click", function(event) {
-
-        event.preventDefault();
-
-        const fila = boton.closest("tr");
-
-        nombre.value = fila.cells[0].textContent.trim();
-
-        const textoCategoria = fila.cells[1].textContent.trim();
-
-        for (let i = 0; i < categoria.options.length; i++) {
-
-            if (categoria.options[i].textContent === textoCategoria) {
-                categoria.selectedIndex = i;
-                break;
-            }
+        if (!confirm("¿Desea eliminar este producto?")) {
+            event.preventDefault();
         }
-
-        descripcion.value = fila.cells[2].textContent.trim();
     });
 });

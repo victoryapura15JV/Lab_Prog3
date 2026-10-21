@@ -1,0 +1,54 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block titulo %}Mis productos - Poncho Digital{% endblock %}
+
+{% block contenido_principal %}
+    <link rel="stylesheet" href="{% static 'css/estiloProductos.css' %}">
+
+    <section id="seccion-formulario">
+        <h2 class="text-center mb-1">Carga de productos</h2>
+        <p class="text-center text-muted mb-4">{{ artesano.solicitud.nombre_emprendimiento }}</p>
+        {% include 'productos/_mensajes.html' %}
+        {% include 'productos/_form_producto.html' %}
+    </section>
+
+    <hr class="my-5">
+
+    <section id="seccion-listado">
+        <h2 class="text-center mb-4">Listado de productos</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered align-middle text-center">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Categoría</th>
+                        <th>Descripción</th>
+                        <th>Imagen</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for producto in productos %}
+                    <tr>
+                        <td>{{ producto.nombre }}</td>
+                        <td>{{ producto.categoria }}</td>
+                        <td>{{ producto.descripcion|truncatechars:90 }}</td>
+                        <td><img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" class="img-miniatura-tabla"></td>
+                        <td>
+                            <a href="{% url 'productos:modificar' producto.id %}" class="btn btn-sm btn-modificar">Modificar</a>
+                            <form action="{% url 'productos:eliminar' producto.id %}" method="post" class="d-inline form-eliminar">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-eliminar">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="5" class="text-muted py-4">Todavía no cargaste productos.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <script src="{% static 'javaScript/productos.js' %}"></script>
+{% endblock %}

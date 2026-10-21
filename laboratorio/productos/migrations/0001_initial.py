@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
                 ('imagen', models.ImageField(upload_to='productos/')),
                 ('fecha_publicacion', models.DateTimeField(auto_now_add=True)),
                 ('fecha_actualizacion', models.DateTimeField(auto_now=True)),
-                ('artesanos', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='productos', to='artesanos.artesanos')),
+                ('artesano', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='productos', to='artesanos.artesano')),
             ],
             options={
                 'ordering': ('-fecha_publicacion',),

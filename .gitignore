@@ -17,3 +17,6 @@ __pycache__/
 
 # Base de datos local de prueba si existiera
 db.sqlite3
+
+# Archivos subidos por usuarios
+media/

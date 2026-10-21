@@ -1,0 +1,43 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block titulo %}Catálogo de productos - Poncho Digital{% endblock %}
+
+{% block contenido_principal %}
+    <link rel="stylesheet" href="{% static 'css/estiloProductos.css' %}">
+
+    <section id="seccion-catalogo">
+        <h2 class="text-center mb-4">
+            {% if q %}Resultados para "{{ q }}"{% else %}Productos de la feria{% endif %}
+        </h2>
+
+        <div class="d-flex flex-wrap justify-content-center gap-2 mb-4">
+            <a href="{% url 'productos:catalogo' %}{% if q %}?q={{ q|urlencode }}{% endif %}"
+            class="btn btn-sm {% if not categoria_activa %}btn-destacado{% else %}btn-outline-secondary{% endif %}">Todos</a>
+            {% for valor, etiqueta in categorias %}
+                <a href="?categoria={{ valor|urlencode }}{% if q %}&q={{ q|urlencode }}{% endif %}"
+                class="btn btn-sm {% if categoria_activa == valor %}btn-destacado{% else %}btn-outline-secondary{% endif %}">{{ etiqueta }}</a>
+            {% endfor %}
+        </div>
+
+        <div class="row g-4">
+            {% for producto in productos %}
+            <div class="col-12 col-sm-6 col-lg-4">
+                <div class="card h-100 tarjeta-producto">
+                    <img src="{{ producto.imagen.url }}" class="card-img-top img-producto-card" alt="{{ producto.nombre }}">
+                    <div class="card-body">
+                        <span class="badge etiqueta-categoria mb-2">{{ producto.categoria }}</span>
+                        <h3 class="h5 card-title">{{ producto.nombre }}</h3>
+                        <p class="card-text">{{ producto.descripcion|truncatechars:140 }}</p>
+                    </div>
+                    <div class="card-footer small text-muted">
+                        {{ producto.artesano.solicitud.nombre_emprendimiento }}
+                        {% if producto.artesano.stand %} · {{ producto.artesano.stand.pabellon }}, puesto {{ producto.artesano.stand.numero_puesto }}{% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-center text-muted py-5">No se encontraron productos.</p>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}
