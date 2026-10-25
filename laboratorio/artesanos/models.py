@@ -106,3 +106,13 @@ class Artesano(models.Model):
 
     def __str__(self):
         return f'Artesano: {self.solicitud.nombre_apellido} - {self.solicitud.nombre_emprendimiento}'
+
+class TendenciaBusqueda(models.Model):
+    termino = models.CharField(max_length=100)
+    fecha_busqueda = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ('-fecha_busqueda',)
+
+    def __str__(self):
+        return f"Búsqueda: {self.termino} ({self.fecha_busqueda.strftime('%d/%m/%Y %H:%M')})"

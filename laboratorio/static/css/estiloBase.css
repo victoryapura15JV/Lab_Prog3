@@ -145,3 +145,80 @@ nav a:hover, .nav-link:hover {
     background-color: var(--blanco) !important;
     color: var(--azul-oscuro) !important;
 }
+
+/* =========================================
+   ESTILOS DE PÍLDORA DERECHA (SESIÓN INICIADA)
+   ========================================= */
+
+/* 1. Contenedor principal de la píldora (Siempre Azul) */
+ul.nav-pildora-azul {
+    background-color: var(--azul-oscuro) !important;
+}
+
+/* 2. Botones interactivos (Fondo azul, letras blancas -> Hover mostaza) */
+.btn-pildora-interactiva {
+    background-color: var(--azul-oscuro) !important;
+    color: var(--blanco) !important;
+    border-radius: 30px !important;
+    font-weight: bold !important;
+    padding: 8px 18px !important;
+    transition: all 0.3s ease !important;
+    border: 1px solid rgba(255, 255, 255, 0.15); /* Borde sutil para que parezcan píldoras separadas */
+}
+
+.btn-pildora-interactiva:hover,
+.btn-pildora-interactiva:focus {
+    background-color: var(--amarillo-mostaza) !important;
+    color: var(--blanco) !important;
+    border-color: var(--amarillo-mostaza) !important;
+}
+
+/* 3. Botón del nombre de usuario (Fondo blanco, letras mostaza) */
+.badge-pildora {
+    background-color: var(--blanco) !important;
+    color: var(--amarillo-mostaza) !important;
+    border-radius: 30px !important;
+    font-weight: bold !important;
+    padding: 8px 18px !important;
+    cursor: default;
+}
+/* =========================================
+   ESTILOS PARA MENÚS DESPLEGABLES (DROPDOWNS Y DROPUPS)
+   ========================================= */
+.dropdown-menu-azul {
+    background-color: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin-top: 12px !important;
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* Separación entre botones desplegados */
+}
+
+/* Para que la gota invertida (celular) no se pegue al botón */
+.dropup .dropdown-menu-azul {
+    margin-bottom: 12px !important;
+}
+
+/* Botones del menú (Fondo azul, texto blanco -> Hover: mostaza, texto blanco) */
+.dropdown-item-azul {
+    background-color: var(--azul-oscuro) !important;
+    color: var(--blanco) !important;
+    border-radius: 30px !important;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px 20px !important;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+}
+
+.dropdown-item-azul:hover {
+    background-color: var(--amarillo-mostaza) !important;
+    color: var(--blanco) !important;
+}
+
+/* Ajuste sutil para que el buscador encaje perfecto dentro de la píldora */
+.buscador-nav-pildora {
+    margin: 0;
+    height: 100%;
+}

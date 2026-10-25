@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 
-from artesanos.models import Artesano
+from artesanos.models import Artesano, TendenciaBusqueda
 from .forms import ProductoForm
 from .models import Producto
 
@@ -16,6 +16,7 @@ def catalogo(request):
     if categoria:
         productos = productos.filter(categoria=categoria)
     if q:
+        TendenciaBusqueda.objects.create(termino=q.lower())
         productos = productos.filter(
             Q(nombre__icontains=q)
             | Q(descripcion__icontains=q)

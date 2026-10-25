@@ -1,0 +1,225 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block titulo %}Panel Estratégico - Cliente{% endblock %}
+
+{% block contenido_principal %}
+<!-- Importamos Chart.js para los gráficos interactivos -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="container-fluid py-4">
+    <!-- Encabezado y Botones de Exportación (HU-18) -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold mb-3 mb-md-0" style="color: var(--azul-oscuro);">Panel Estratégico y de Tendencias</h2>
+        <div>
+            <!-- Botones inactivos temporalmente, los activaremos en el Paso 5 -->
+            <button class="btn btn-danger me-2 shadow-sm" disabled>📄 Exportar PDF</button>
+            <button class="btn btn-success shadow-sm" disabled>📊 Exportar Excel</button>
+        </div>
+    </div>
+    
+    <!-- Tarjetas de KPIs (Indicadores Clave) -->
+    <div class="row g-4 mb-5">
+        <div class="col-12 col-sm-6 col-lg-3">
+            <div class="card text-center shadow-sm h-100 border-0" style="background-color: var(--azul-oscuro); color: var(--blanco); border-radius: 15px;">
+                <div class="card-body">
+                    <h5 class="card-title">Total de Stands</h5>
+                    <p class="display-4 fw-bold mb-0">{{ total_stands }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3">
+            <div class="card text-center shadow-sm h-100 border-0" style="background-color: #198754; color: var(--blanco); border-radius: 15px;">
+                <div class="card-body">
+                    <h5 class="card-title">Stands Ocupados</h5>
+                    <p class="display-4 fw-bold mb-0">{{ stands_ocupados }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3">
+            <div class="card text-center shadow-sm h-100 border-0" style="background-color: #6c757d; color: var(--blanco); border-radius: 15px;">
+                <div class="card-body">
+                    <h5 class="card-title">Stands Disponibles</h5>
+                    <p class="display-4 fw-bold mb-0">{{ stands_disponibles }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3">
+            <div class="card text-center shadow-sm h-100 border-0" style="background-color: var(--amarillo-mostaza); color: var(--blanco); border-radius: 15px;">
+                <div class="card-body">
+                    <h5 class="card-title">Ocupación Total</h5>
+                    <p class="display-4 fw-bold mb-0">{{ porcentaje_ocupacion }}%</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fila de Gráficos Interactivos (HU-16) -->
+    <div class="row g-4 mb-5">
+        <div class="col-12 col-lg-4">
+            <div class="card shadow-sm h-100 border-0" style="border-radius: 15px;">
+                <div class="card-body">
+                    <h5 class="card-title text-center mb-4 fw-bold" style="color: var(--azul-oscuro);">Estado de Stands</h5>
+                    <div style="position: relative; height: 300px;">
+                        <canvas id="graficoStands"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-4">
+            <div class="card shadow-sm h-100 border-0" style="border-radius: 15px;">
+                <div class="card-body">
+                    <h5 class="card-title text-center mb-4 fw-bold" style="color: var(--azul-oscuro);">Artesanos por Rubro</h5>
+                    <div style="position: relative; height: 300px;">
+                        <canvas id="graficoRubros"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-4">
+            <div class="card shadow-sm h-100 border-0" style="border-radius: 15px;">
+                <div class="card-body">
+                    <h5 class="card-title text-center mb-4 fw-bold" style="color: var(--azul-oscuro);">Distribución Geográfica</h5>
+                    <div style="position: relative; height: 300px;">
+                        <canvas id="graficoLocalidades"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fila de Tablas Top 10 (HU-17) -->
+    <div class="row g-4">
+        <div class="col-12 col-lg-6">
+            <div class="card shadow-sm border-0" style="border-radius: 15px;">
+                <div class="card-body">
+                    <h5 class="card-title mb-3 fw-bold" style="color: var(--amarillo-mostaza);">Top 10: Tendencias de Búsqueda</h5>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-dark" style="background-color: var(--azul-oscuro);">
+                                <tr>
+                                    <th>Ranking</th>
+                                    <th>Término Buscado</th>
+                                    <th>Consultas</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for busqueda in top_busquedas %}
+                                <tr>
+                                    <td>#{{ forloop.counter }}</td>
+                                    <td class="fw-bold">{{ busqueda.termino|title }}</td>
+                                    <td>{{ busqueda.total }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="3" class="text-center text-muted py-3">Aún no hay búsquedas registradas.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-6">
+            <div class="card shadow-sm border-0" style="border-radius: 15px;">
+                <div class="card-body">
+                    <h5 class="card-title mb-3 fw-bold" style="color: var(--amarillo-mostaza);">Top 10: Stands Más Visitados</h5>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-dark" style="background-color: var(--azul-oscuro);">
+                                <tr>
+                                    <th>Ranking</th>
+                                    <th>Emprendimiento</th>
+                                    <th>Ubicación</th>
+                                    <th>Visitas</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for artesano in top_artesanos %}
+                                <tr>
+                                    <td>#{{ forloop.counter }}</td>
+                                    <td class="fw-bold">{{ artesano.solicitud.nombre_emprendimiento }}</td>
+                                    <td>
+                                        {% if artesano.stand %}
+                                            {{ artesano.stand.pabellon }} - Puesto {{ artesano.stand.numero_puesto }}
+                                        {% else %}
+                                            <span class="badge bg-warning text-dark">Sin Asignar</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ artesano.visitas }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted py-3">Aún no hay artesanos con visitas.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Gráfico de Stands (Circular)
+    const ctxStands = document.getElementById('graficoStands').getContext('2d');
+    new Chart(ctxStands, {
+        type: 'doughnut',
+        data: {
+            labels: ['Ocupados', 'Disponibles'],
+            datasets: [{
+                data: [{{ stands_ocupados }}, {{ stands_disponibles }}],
+                backgroundColor: ['#198754', '#6c757d'],
+                borderWidth: 0
+            }]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
+    });
+
+    // Gráfico de Rubros (Barras)
+    const rubrosLabels = [];
+    const rubrosData = [];
+    {% for item in artesanos_por_rubro %}
+        rubrosLabels.push('{{ item.rubro }}');
+        rubrosData.push({{ item.total }});
+    {% endfor %}
+
+    new Chart(document.getElementById('graficoRubros').getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: rubrosLabels,
+            datasets: [{
+                label: 'Artesanos',
+                data: rubrosData,
+                backgroundColor: '#B0923D', // Amarillo Mostaza
+            }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+    });
+
+    // Gráfico de Localidades (Barras)
+    const localidadesLabels = [];
+    const localidadesData = [];
+    {% for item in artesanos_por_localidad %}
+        localidadesLabels.push('{{ item.localidad }}');
+        localidadesData.push({{ item.total }});
+    {% endfor %}
+
+    new Chart(document.getElementById('graficoLocalidades').getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: localidadesLabels,
+            datasets: [{
+                label: 'Artesanos',
+                data: localidadesData,
+                backgroundColor: '#2A354E', // Azul Oscuro
+            }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+    });
+</script>
+{% endblock %}
