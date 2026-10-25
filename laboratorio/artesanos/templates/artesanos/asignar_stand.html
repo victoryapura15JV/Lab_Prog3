@@ -1,8 +1,9 @@
 {% extends 'base/base.html' %}
-
+{% load static %}
 {% block titulo %}Panel de Administrador - Asignar Stand{% endblock %}
 
 {% block contenido_principal %}
+    <link rel="stylesheet" href="{% static 'artesanos/estiloPaneles.css' %}">
     <div class="container mt-5" style="max-width: 600px;">
         <div class="card shadow-sm">
             <div class="card-header bg-dark text-white">
@@ -12,7 +13,19 @@
                 <p><strong>Emprendimiento:</strong> {{ artesano.solicitud.nombre_emprendimiento }}</p>
                 <p><strong>Titular:</strong> {{ artesano.solicitud.nombre_apellido }}</p>
                 <hr>
-
+                {% if artesano.stand %}
+                    <div class="alert alert-info d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>Stand Asignado:</strong> {{ artesano.stand.pabellon }} - Puesto {{ artesano.stand.numero_puesto }}
+                        </div>
+                        <form method="POST" class="m-0">
+                            {% csrf_token %}
+                            <button type="submit" name="desasignar" class="btn btn-sm btn-danger">Quitar Stand</button>
+                        </form>
+                    </div>
+                {% else %}
+                    <div class="alert alert-warning py-2">Este artesano aún no tiene un stand asignado.</div>
+                {% endif %}
                 <form method="POST">
                     {% csrf_token %}
                     <div class="mb-4">

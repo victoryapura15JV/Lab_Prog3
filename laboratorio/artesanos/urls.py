@@ -8,4 +8,5 @@ urlpatterns = [
     path('panel/inscriptos/', views.listar_solicitudes, name='listar_solicitudes'),
     path('evaluar/solicitud/<int:solicitud_id>/', views.evaluar_solicitud, name='evaluar_solicitud'),
     path('panel/asignarstand/<int:artesano_id>/', views.asignar_stand, name='asignar_stand'),
+    path('estadosolicitud/', views.estado_solicitud, name='estado_solicitud'),
 ]
