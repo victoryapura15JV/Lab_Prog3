@@ -1,0 +1,474 @@
+:root {
+
+    --azul-medio: #3F4F76;
+    --azul-claro: #F3F5FA;
+    --mostaza-claro: #F6EFD9;
+    --mostaza-suave: #E0C77A;
+    --mostaza-oscuro: #8A6F22;
+    --borde-suave: #D3D9E5;
+    --borde-campo: #BCC5D6;
+    --sombra-panel: 0 14px 34px -14px rgba(42, 53, 78, 0.4);
+
+    --franja-poncho: linear-gradient(90deg,
+        var(--azul-oscuro)      0   16%,
+        var(--amarillo-mostaza) 16% 24%,
+        var(--mostaza-claro)    24% 27%,
+        var(--azul-medio)       27% 50%,
+        var(--amarillo-mostaza) 50% 55%,
+        var(--mostaza-claro)    55% 58%,
+        var(--amarillo-mostaza) 58% 70%,
+        var(--azul-oscuro)      70% 100%);
+}
+
+
+main {
+    --bs-primary-rgb: 42, 53, 78;
+    --bs-dark-rgb: 42, 53, 78;
+    --bs-warning-rgb: 176, 146, 61;
+    --bs-success-rgb: 60, 122, 90;
+    --bs-danger-rgb: 168, 66, 59;
+    --bs-info-rgb: 176, 193, 230;
+    --bs-secondary-rgb: 108, 117, 140;
+    --bs-light-rgb: 246, 239, 217;
+}
+
+
+/* ---------- Títulos de página ---------- */
+
+main h2 {
+    font-size: clamp(1.45rem, 1.05rem + 1.5vw, 2rem);
+}
+
+/* Título + botón "Volver" */
+main .container > .d-flex.justify-content-between {
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+
+/* ---------- Paneles---------- */
+
+main .card {
+    overflow: hidden;
+    background-color: #fff;
+    border: 0;
+    border-radius: 18px !important;
+    box-shadow: var(--sombra-panel) !important;
+}
+
+main .card::before {
+    content: "";
+    flex: 0 0 8px;
+    height: 8px;
+    background: var(--franja-poncho);
+}
+
+main .card-header {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 0;
+    border-radius: 0 !important;
+}
+
+main .card-header h4 {
+    color: var(--mostaza-suave);
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+main .card-body {
+    padding: 1.75rem;
+}
+
+main .card-body p {
+    margin-bottom: 0.6rem;
+    color: #2F384D;
+}
+
+main .card-body p strong {
+    color: var(--azul-oscuro);
+}
+
+main .card-body h5 {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 3px solid var(--amarillo-mostaza);
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+main .card hr {
+    margin: 1.25rem 0;
+    border-color: var(--borde-suave);
+    opacity: 1;
+}
+
+main .card-footer {
+    background-color: var(--azul-claro) !important;
+    border-top: 1px solid var(--borde-suave);
+}
+
+/* Historia del emprendimiento */
+main .bg-light.border.rounded {
+    border-color: transparent !important;
+    border-left: 4px solid var(--amarillo-mostaza) !important;
+    border-radius: 4px 14px 14px 4px !important;
+    line-height: 1.7;
+}
+
+main .bg-light.border.rounded p:last-child {
+    margin-bottom: 0;
+}
+
+
+/* ---------- Listado de solicitudes ---------- */
+
+main .table-responsive {
+    background-image: var(--franja-poncho);
+    background-size: 100% 8px;
+    background-repeat: no-repeat;
+    background-position: top;
+    border-radius: 18px !important;
+    box-shadow: var(--sombra-panel) !important;
+}
+
+/* p-4 de Bootstrap es !important: se pisa igual para dejar aire bajo la franja */
+main .table-responsive.p-4 {
+    padding-top: 2rem !important;
+}
+
+main .table {
+    --bs-table-border-color: var(--borde-suave);
+    --bs-table-hover-bg: var(--mostaza-claro);
+    --bs-table-hover-color: var(--negro-texto);
+    margin-bottom: 0;
+}
+
+main .table-dark {
+    --bs-table-bg: var(--azul-oscuro);
+    --bs-table-border-color: #3B4868;
+}
+
+main .table thead th {
+    padding: 0.9rem 0.75rem;
+    border-bottom: 3px solid var(--amarillo-mostaza);
+    font-size: 0.95rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+main .table thead th:first-child {
+    border-top-left-radius: 10px;
+}
+
+main .table thead th:last-child {
+    border-top-right-radius: 10px;
+}
+
+main .table tbody td {
+    padding: 0.95rem 0.75rem;
+    color: #2F384D;
+}
+
+main .table tbody td strong {
+    color: var(--azul-oscuro);
+}
+
+main .table tbody td:first-child,
+main .table tbody td:last-child {
+    white-space: nowrap;
+}
+
+/* Fila "Todavía no hay artesanos inscriptos" */
+main .table tbody td[colspan] {
+    padding: 2.5rem 1rem;
+    color: #5B6477;
+    white-space: normal;
+}
+
+
+/* ---------- Etiquetas de estado ---------- */
+
+main .badge {
+    padding: 0.5em 1em;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+
+/* ---------- Formularios ---------- */
+
+main .form-label {
+    margin-bottom: 0.4rem;
+    color: var(--azul-oscuro);
+    font-weight: 700;
+}
+
+main label.fw-bold:hover,
+main .form-label:hover {
+    color: var(--azul-oscuro) !important;
+    cursor: default;
+}
+
+main .alert .fw-bold:hover {
+    color: inherit !important;
+    cursor: default;
+}
+
+main .form-control,
+main .form-select {
+    padding: 0.7rem 1rem;
+    color: var(--negro-texto);
+    background-color: #fff;
+    border: 1.5px solid var(--borde-campo);
+    border-radius: 10px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+main .form-select {
+    --bs-form-select-bg-img: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%232A354E' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+    padding-right: 2.5rem;
+    cursor: pointer;
+}
+
+main .form-control:hover,
+main .form-select:hover {
+    border-color: var(--azul-medio);
+}
+
+main .form-control:focus,
+main .form-select:focus {
+    border-color: var(--amarillo-mostaza);
+    box-shadow: 0 0 0 4px rgba(176, 146, 61, 0.22);
+}
+
+main .form-control::placeholder {
+    color: #8E98AD;
+}
+
+main textarea.form-control {
+    min-height: 7rem;
+    resize: vertical;
+}
+
+main .form-control.input-redondeado {
+    border: 1.5px solid var(--borde-campo) !important;
+    border-radius: 10px !important;
+}
+
+main .form-control.input-redondeado:hover {
+    border-color: var(--azul-medio) !important;
+}
+
+main .form-control.input-redondeado:focus {
+    border-color: var(--amarillo-mostaza) !important;
+    box-shadow: 0 0 0 4px rgba(176, 146, 61, 0.22) !important;
+}
+
+
+/* ---------- Botones ---------- */
+
+main .btn {
+    padding: 0.55rem 1.5rem;
+    border-radius: 999px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+main .btn-sm {
+    padding: 0.35rem 1.1rem;
+    font-size: 0.875rem;
+}
+
+main .btn:focus-visible {
+    outline: 3px solid rgba(176, 146, 61, 0.55);
+    outline-offset: 2px;
+    box-shadow: none;
+}
+
+/* Acción principal: azul, y mostaza al pasar el mouse */
+main .btn-primary {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: var(--azul-oscuro);
+    --bs-btn-border-color: var(--azul-oscuro);
+    --bs-btn-hover-color: var(--azul-oscuro);
+    --bs-btn-hover-bg: var(--amarillo-mostaza);
+    --bs-btn-hover-border-color: var(--amarillo-mostaza);
+    --bs-btn-active-color: var(--azul-oscuro);
+    --bs-btn-active-bg: var(--mostaza-suave);
+    --bs-btn-active-border-color: var(--mostaza-suave);
+}
+
+main .btn-success {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #3C7A5A;
+    --bs-btn-border-color: #3C7A5A;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #2F6248;
+    --bs-btn-hover-border-color: #2F6248;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #264F3A;
+    --bs-btn-active-border-color: #264F3A;
+}
+
+main .btn-warning {
+    --bs-btn-color: var(--azul-oscuro);
+    --bs-btn-bg: var(--amarillo-mostaza);
+    --bs-btn-border-color: var(--amarillo-mostaza);
+    --bs-btn-hover-color: var(--azul-oscuro);
+    --bs-btn-hover-bg: #C4A650;
+    --bs-btn-hover-border-color: #C4A650;
+    --bs-btn-active-color: var(--azul-oscuro);
+    --bs-btn-active-bg: var(--mostaza-suave);
+    --bs-btn-active-border-color: var(--mostaza-suave);
+}
+
+main .btn-danger {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #A8423B;
+    --bs-btn-border-color: #A8423B;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #8A332D;
+    --bs-btn-hover-border-color: #8A332D;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #6F2923;
+    --bs-btn-active-border-color: #6F2923;
+}
+
+main .btn-outline-secondary {
+    --bs-btn-color: var(--azul-oscuro);
+    --bs-btn-border-color: var(--azul-oscuro);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: var(--azul-oscuro);
+    --bs-btn-hover-border-color: var(--azul-oscuro);
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: var(--azul-medio);
+    --bs-btn-active-border-color: var(--azul-medio);
+}
+
+/* .btn-destacado (estiloBase.css) se vuelve blanco sobre blanco al pasar el mouse */
+main .btn-destacado {
+    border: 2px solid var(--azul-oscuro) !important;
+}
+
+main .btn-destacado:hover {
+    color: var(--azul-oscuro) !important;
+    background-color: var(--amarillo-mostaza) !important;
+    border-color: var(--amarillo-mostaza) !important;
+}
+
+
+/* ---------- Avisos ---------- */
+
+main .alert {
+    padding: 1rem 1.25rem;
+    border: 0;
+    border-left: 5px solid var(--azul-medio);
+    border-radius: 4px 14px 14px 4px;
+}
+
+main .alert-info {
+    color: var(--azul-oscuro);
+    background-color: var(--azul-claro);
+    border-left-color: var(--azul-medio);
+}
+
+main .alert-warning {
+    color: #5E4A12;
+    background-color: var(--mostaza-claro);
+    border-left-color: var(--amarillo-mostaza);
+}
+
+main .alert-success {
+    color: #24553C;
+    background-color: #EAF3EE;
+    border-left-color: #3C7A5A;
+}
+
+main .alert-danger {
+    color: #7A2B26;
+    background-color: #FBEDEC;
+    border-left-color: #A8423B;
+}
+
+main .alert.d-flex {
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+main .alert hr {
+    opacity: 0.2;
+}
+
+main .alert p:last-child {
+    margin-bottom: 0;
+}
+
+
+/* ---------- Resultado de la consulta (resultado_estado.html) ---------- */
+
+main .card-body > h4 {
+    margin-bottom: 0.75rem;
+    color: #5B6477;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+
+/* ---------- Pantallas chicas ---------- */
+
+@media (max-width: 575px) {
+    main .card-body {
+        padding: 1.25rem;
+    }
+
+    main .card-body.p-5 {
+        padding: 2rem 1.25rem !important;
+    }
+
+    main .table-responsive.p-4 {
+        padding: 1.75rem 0.75rem 0.75rem !important;
+    }
+
+    /* Botones de evaluar_solicitud */
+    main .card-footer .d-flex {
+        flex-direction: column;
+    }
+
+    main .card-footer .btn {
+        width: 100%;
+    }
+}
+
+main .card:has(> .card-body.p-5) {
+    border: 3px solid var(--amarillo-mostaza);
+}
+
+/* El h2 trae color inline desde la plantilla: se pisa con !important */
+main .card-body.p-5 h2 {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 0.9rem !important;
+    padding: 0.55rem 1.75rem;
+    color: var(--blanco) !important;
+    background-color: var(--azul-oscuro);
+    border-radius: 30px;
+    font-size: clamp(1.35rem, 1rem + 1.2vw, 1.8rem);
+}
+
+/* "Volver al inicio": azul, y mostaza */
+main .card-body.p-5 .btn-outline-secondary {
+    --bs-btn-color: var(--blanco);
+    --bs-btn-bg: var(--azul-oscuro);
+    --bs-btn-border-color: var(--azul-oscuro);
+    --bs-btn-hover-color: var(--azul-oscuro);
+    --bs-btn-hover-bg: var(--amarillo-mostaza);
+    --bs-btn-hover-border-color: var(--amarillo-mostaza);
+    --bs-btn-active-color: var(--azul-oscuro);
+    --bs-btn-active-bg: var(--mostaza-suave);
+    --bs-btn-active-border-color: var(--mostaza-suave);
+}

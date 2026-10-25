@@ -72,6 +72,7 @@ class Solicitud(models.Model):
     productos_principales = models.CharField(max_length=200)
 
     estado = models.CharField(max_length=15, choices=estados_solicitud, default='Pendiente')
+    justificacion = models.TextField(blank=True, null=True)
     envio = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -94,11 +95,6 @@ class Artesano(models.Model):
         related_name='artesanos'
     )
     usuario = models.OneToOneField('usuarios.Usuario', on_delete=models.PROTECT, null=True, blank=True, related_name='artesanos')
-
-    materiales = models.CharField(max_length=200, blank=True)
-    horarios_asistencia = models.CharField(max_length=150, blank=True)
-    contacto = models.URLField(blank=True)
-    redes = models.URLField(blank=True)
     visitas = models.IntegerField(default=0)
 
     class Meta:

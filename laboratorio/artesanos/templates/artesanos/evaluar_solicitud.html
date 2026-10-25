@@ -1,8 +1,9 @@
 {% extends 'base/base.html' %}
-
+{% load static %}
 {% block titulo %}Evaluar Solicitud - Fiesta del Poncho{% endblock %}
 
 {% block contenido_principal %}
+<link rel="stylesheet" href="{% static 'artesanos/estiloPaneles.css' %}">
     <div class="container mt-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>Panel de Administrador - Evaluación de Solicitud</h2>
@@ -33,23 +34,30 @@
                 <hr>
                 <div>
                     <h5 class="text-primary">Historia del Emprendimiento</h5>
-                    <p class="bg-light p-3 border rounded">{{ solicitud.historia_emprendimiento|linebreaks }}</p>
+                    <div class="bg-light border rounded"> {{ solicitud.historia_emprendimiento|linebreaks }}</div>
                 </div>
             </div>
 
             <div class="card-footer bg-white p-4">
-                <h5 class="mb-3 text-center">Tomar una decisión:</h5>
-                <form method="POST" class="d-flex justify-content-center gap-3">
+                <form method="POST" >
                     {% csrf_token %}
-                    <button type="submit" name="nuevo_estado" value="Aprobado" class="btn btn-success px-4">
-                        Aprobar Solicitud
-                    </button>
-                    <button type="submit" name="nuevo_estado" value="Modificacion" class="btn btn-warning px-4">
-                        Solicitar Modificación
-                    </button>
-                    <button type="submit" name="nuevo_estado" value="Rechazado" class="btn btn-danger px-4">
-                        Rechazar Solicitud
-                    </button>
+                    <div class="mb-4">
+                        <label for="justificacion" class="form-label text-primary fw-bold">
+                            Justificación de rechazo o modificaciones de la solicitud:
+                        </label>
+                        <textarea name="justificacion" id="justificacion" class="form-control" rows="4" placeholder="Escriba aquí el motivo..."></textarea>
+                    </div>
+                    <div class="d-flex justify-content-center gap-3">
+                        <button type="submit" name="nuevo_estado" value="Aprobado" class="btn btn-success px-4">
+                            Aprobar Solicitud
+                        </button>
+                        <button type="submit" name="nuevo_estado" value="Modificacion" class="btn btn-warning px-4">
+                            Solicitar Modificación
+                        </button>
+                        <button type="submit" name="nuevo_estado" value="Rechazado" class="btn btn-danger px-4">
+                            Rechazar Solicitud
+                        </button>
+                        </div>
                 </form>
             </div>
         </div>

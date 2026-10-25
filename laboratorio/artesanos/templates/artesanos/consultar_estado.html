@@ -1,0 +1,32 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block titulo %}Consultar Estado de la Solicitud - Poncho Digital{% endblock %}
+
+{% block contenido_principal %}
+    <link rel="stylesheet" href="{% static 'artesanos/estiloPaneles.css' %}">
+    <div class="container mt-5" style="max-width: 500px;">
+        <div class="card shadow-sm border-0" style="border-radius: 15px;">
+            <div class="card-header text-white text-center" style="background-color: var(--azul-oscuro); border-radius: 15px 15px 0 0;">
+                <h4 class="mb-0 py-2">Consultar Estado</h4>
+            </div>
+        <div class="card-body p-4">
+            <p class="text-center text-muted mb-4">Ingrese su número de solicitud y DNI para verificar el estado de su postulación.</p>
+            
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="numero_solicitud" class="form-label fw-bold">Número de Solicitud (ID):</label>
+                    <input type="number" name="numero_solicitud" id="numero_solicitud" class="form-control input-redondeado" required>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="dni" class="form-label fw-bold">DNI del Titular:</label>
+                    <input type="text" name="dni" id="dni" class="form-control input-redondeado" required>
+                </div>
+                
+                <button type="submit" class="btn w-100 fw-bold py-2 btn-destacado">Consultar</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

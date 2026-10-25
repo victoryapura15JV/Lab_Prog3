@@ -1,7 +1,9 @@
 {% extends 'base/base.html' %}
+{% load static %}
 {% block titulo %}Panel de Inscriptos - Fiesta del Poncho{% endblock %}
 
 {% block contenido_principal %}
+    <link rel="stylesheet" href="{% static 'artesanos/estiloPaneles.css' %}">
     <div class="container mt-5">
         <h2 class="mb-4">Panel de Administrador - Solicitudes Recibidas</h2>
 

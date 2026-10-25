@@ -1,55 +1,323 @@
 
-form fieldset {
-    border: 2px solid var(--azul-oscuro);
-    border-radius: 10px;
-    padding: 25px;
-    background-color: #f9f9f9;
+:root {
+    --mostaza-claro: #F6EFD9;
+    --borde-campo: #BCC5D6;
+    --azul-medio: #3F4F76;
+    --rojo-error: #A8423B;
 }
 
-form legend {
-    color: var(--amarillo-mostaza);
-    font-weight: bold;
-    background-color: var(--azul-oscuro);
-    padding: 5px 20px;
-    border-radius: 20px;
+
+/* ---------- Encabezado de la página ---------- */
+
+main > .text-center h2 {
+    font-size: clamp(1.6rem, 1.1rem + 2vw, 2.25rem);
+    letter-spacing: 0.04em;
+}
+
+main > .text-center p {
+    max-width: 62ch;
+    margin-inline: auto;
+    color: #4a5368;
+    font-size: 1.05rem;
+    line-height: 1.65;
+}
+
+main > section {
+    max-width: 1080px;
+    margin-inline: auto;
+}
+
+main > section > h2 {
+    margin-bottom: 2rem;
+    font-size: 1.5rem;
+}
+
+/* Mensaje de inscripto */
+main > section .alert {
+    margin-bottom: 1.5rem;
+    padding: 1rem 1.25rem;
+    color: var(--azul-oscuro);
+    background-color: #F3F5FA;
+    border: 0;
+    border-left: 5px solid var(--azul-medio);
+    border-radius: 6px 14px 14px 6px;
+}
+
+main > section .alert-success {
+    color: #24553C;
+    background-color: #EAF3EE;
+    border-left-color: #3C7A5A;
+}
+
+main > section .alert-warning {
+    color: #5E4A12;
+    background-color: var(--mostaza-claro);
+    border-left-color: var(--amarillo-mostaza);
+}
+
+main > section .alert-danger {
+    color: #7A2B26;
+    background-color: #FBEDEC;
+    border-left-color: var(--rojo-error);
+}
+
+
+/* ---------- Distribución en dos columnas ---------- */
+
+main form br {
+    display: none;
+}
+
+main form.row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.25rem 1.75rem;
+    margin: 0;
+}
+
+@media (min-width: 768px) {
+    main form.row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+main form.row > div {
     width: auto;
-    font-size: 1.1rem;
+    max-width: none;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+}
+
+/* Orden visual, sin importar el orden del HTML:
+   Datos personales | Emprendimiento  /  Productos | Lugar de procedencia */
+main form.row > div:has([name="nombre_apellido"])       { order: 1; }
+main form.row > div:has([name="nombre_emprendimiento"]) { order: 2; }
+main form.row > div:has([name="rubro"])                 { order: 3; }
+main form.row > div:has([name="provincia"])             { order: 4; }
+
+main form.row > div:last-of-type {
+    grid-column: 1 / -1;
+    order: 5;
+}
+
+
+/* ---------- Tarjetas (fieldset) ---------- */
+
+main form fieldset {
+    height: 100%;
+    min-width: 0;
+    margin: 0;
+    padding: 0.5rem 1.5rem 1.5rem;
+    background-color: var(--blanco);
+    border: 2px solid var(--amarillo-mostaza);
+    border-radius: 18px;
+    box-shadow: 0 14px 30px -18px rgba(42, 53, 78, 0.45);
+}
+
+main form legend {
     float: none;
-}
-form input[type="text"],
-form input[type="number"],
-form input[type="tel"],
-form input[type="email"],
-form select,
-form textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-form input:focus,
-form select:focus,
-form textarea:focus {
-    border-color: var(--azul-oscuro);
-    outline: none;
-    box-shadow: 0 0 8px rgba(42, 53, 78, 0.3);
-}
-
-form input[type="submit"] {
-    background-color: var(--amarillo-mostaza);
+    width: auto;
+    margin: 0 0 0.25rem;
+    padding: 0.4rem 1.25rem;
     color: var(--blanco);
-    font-weight: 600;
-    padding: 10px 30px;
-    border: none;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    margin-top: 20px;
+    background-color: var(--azul-oscuro);
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
 }
 
-form input[type="submit"]:hover {
+main form legend:empty {
+    display: none;
+}
+
+main form fieldset label {
+    display: block;
+    margin: 1.1rem 0 0.35rem;
+    color: var(--azul-oscuro);
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+main form fieldset label:first-of-type {
+    margin-top: 0.75rem;
+}
+
+
+/* ---------- Campos ---------- */
+
+main form input[type="text"],
+main form input[type="number"],
+main form input[type="tel"],
+main form input[type="email"],
+main form input[type="date"],
+main form select,
+main form textarea {
+    display: block;
+    width: 100%;
+    padding: 0.65rem 0.9rem;
+    color: var(--negro-texto);
+    background-color: var(--blanco);
+    border: 1.5px solid var(--borde-campo);
+    border-radius: 10px;
+    font-size: 1rem;
+    line-height: 1.4;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+main form input::placeholder,
+main form textarea::placeholder {
+    color: #8E98AD;
+}
+
+main form input[type="text"]:hover,
+main form input[type="number"]:hover,
+main form input[type="tel"]:hover,
+main form input[type="email"]:hover,
+main form input[type="date"]:hover,
+main form select:hover,
+main form textarea:hover {
+    border-color: var(--azul-medio);
+}
+
+main form input[type="text"]:focus,
+main form input[type="number"]:focus,
+main form input[type="tel"]:focus,
+main form input[type="email"]:focus,
+main form input[type="date"]:focus,
+main form select:focus,
+main form textarea:focus {
+    outline: none;
+    border-color: var(--amarillo-mostaza);
+    box-shadow: 0 0 0 4px rgba(176, 146, 61, 0.22);
+}
+
+main form input:user-invalid,
+main form select:user-invalid,
+main form textarea:user-invalid {
+    border-color: var(--rojo-error);
+    background-color: #FDF4F3;
+}
+
+main form select {
+    appearance: none;
+    padding-right: 2.5rem;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%232A354E' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.9rem center;
+    background-size: 14px 14px;
+    cursor: pointer;
+}
+
+main form textarea {
+    height: 9rem;
+    min-height: 6rem;
+    resize: vertical;
+}
+
+main form span[id^="error_"] {
+    display: block !important;
+    margin-top: 0.3rem;
+    color: var(--rojo-error) !important;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+main form span[id^="error_"]:empty {
+    display: none !important;
+}
+
+
+/* ---------- Términos y botón de envío ---------- */
+
+main form.row > div:last-of-type fieldset {
+    height: auto;
+    padding: 0;
+    text-align: center;
+    background: none;
+    border: 0;
+    box-shadow: none;
+}
+
+main form input[type="checkbox"] {
+    width: 1.2rem;
+    height: 1.2rem;
+    margin: 0;
+    vertical-align: middle;
+    accent-color: var(--azul-oscuro);
+    cursor: pointer;
+}
+
+main form input[type="checkbox"]:focus-visible {
+    outline: 3px solid rgba(176, 146, 61, 0.55);
+    outline-offset: 2px;
+}
+
+main form fieldset label[for="terminos"] {
+    display: inline;
+    margin: 0 0 0 0.5rem;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+/* Botón azul; mostaza al pasar el mouse*/
+main form input[type="submit"] {
+    display: inline-block;
+    margin-top: 1.25rem;
+    padding: 0.7rem 2.75rem;
+    color: var(--blanco);
     background-color: var(--azul-oscuro);
-    color: var(--amarillo-mostaza);
+    border: 2px solid var(--azul-oscuro);
+    border-radius: 999px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+main form input[type="submit"]:hover {
+    color: var(--azul-oscuro);
+    background-color: var(--amarillo-mostaza);
+    border-color: var(--amarillo-mostaza);
+}
+
+main form input[type="submit"]:focus-visible {
+    outline: 3px solid rgba(176, 146, 61, 0.55);
+    outline-offset: 3px;
+}
+
+
+/* ---------- Ventanas de SweetAlert2 (cargado en esta página) ---------- */
+
+.swal2-popup {
+    border-radius: 18px;
+    font-family: inherit;
+}
+
+.swal2-title {
+    color: var(--azul-oscuro);
+}
+
+.swal2-styled.swal2-confirm {
+    padding: 0.6rem 1.8rem;
+    background-color: var(--azul-oscuro) !important;
+    border-radius: 999px;
+}
+
+.swal2-styled.swal2-confirm:focus {
+    box-shadow: 0 0 0 4px rgba(176, 146, 61, 0.35) !important;
+}
+
+
+/* ---------- Pantallas chicas ---------- */
+
+@media (max-width: 575px) {
+    main form fieldset {
+        padding-inline: 1.1rem;
+    }
+
+    main form input[type="submit"] {
+        width: 100%;
+    }
 }
