@@ -1,0 +1,16 @@
+<div class="card h-100 tarjeta-producto">
+    <a href="{% url 'productos:detalle' producto.id %}">
+        <img src="{{ producto.imagen.url }}" class="card-img-top img-producto-card" alt="{{ producto.nombre }}">
+    </a>
+    <div class="card-body">
+        <span class="badge etiqueta-categoria mb-2">{{ producto.categoria }}</span>
+        <h3 class="h5 card-title">
+            <a href="{% url 'productos:detalle' producto.id %}" class="enlace-sin-estilo">{{ producto.nombre }}</a>
+        </h3>
+        <p class="card-text">{{ producto.descripcion|truncatechars:140 }}</p>
+    </div>
+    <div class="card-footer small text-muted d-flex justify-content-between">
+        <a href="{% url 'productos:perfil' producto.artesano.id %}" class="enlace-sin-estilo">{{ producto.artesano.solicitud.nombre_emprendimiento }}</a>
+        <span>♥ {{ producto.likes.count }}</span>
+    </div>
+</div>

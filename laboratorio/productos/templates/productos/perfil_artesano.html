@@ -1,0 +1,53 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block titulo %}{{ solicitud.nombre_emprendimiento }} - Poncho Digital{% endblock %}
+
+{% block contenido_principal %}
+    <link rel="stylesheet" href="{% static 'css/estiloProductos.css' %}">
+
+    <section class="perfil-encabezado mb-4">
+        <span class="badge etiqueta-categoria mb-2">{{ solicitud.rubro }}</span>
+        <h2>{{ solicitud.nombre_emprendimiento }}</h2>
+        <p class="text-muted mb-2">
+            {{ solicitud.localidad }}, {{ solicitud.provincia }}
+            · {{ solicitud.anios_trayectoria }} año{{ solicitud.anios_trayectoria|pluralize }} de trayectoria
+        </p>
+        <p class="fs-5 mb-0">♥ {{ total_likes }} Me gusta en total</p>
+    </section>
+
+    <section class="row g-4 mb-5">
+        <div class="col-12 col-md-7">
+            <h3 class="h5">Nuestra historia</h3>
+            <p>{{ solicitud.historia_emprendimiento|linebreaksbr }}</p>
+        </div>
+        <div class="col-12 col-md-5">
+            <div class="card tarjeta-artesano">
+                <div class="card-body">
+                    <h3 class="h5">Información</h3>
+                    <ul class="list-unstyled mb-0">
+                        {% if artesano.stand %}
+                            <li><strong>Stand:</strong> {{ artesano.stand.pabellon }}, puesto {{ artesano.stand.numero_puesto }}</li>
+                        {% endif %}
+                        {% if artesano.materiales %}<li><strong>Materiales:</strong> {{ artesano.materiales }}</li>{% endif %}
+                        {% if artesano.horarios_asistencia %}<li><strong>Horarios:</strong> {{ artesano.horarios_asistencia }}</li>{% endif %}
+                        {% if artesano.contacto %}<li><a href="{{ artesano.contacto }}" target="_blank" rel="noopener noreferrer">Contacto</a></li>{% endif %}
+                        {% if artesano.redes %}<li><a href="{{ artesano.redes }}" target="_blank" rel="noopener noreferrer">Redes sociales</a></li>{% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="productos-artesano">
+        <h3 class="mb-3">Productos de {{ solicitud.nombre_emprendimiento }}</h3>
+        <div class="row g-4">
+            {% for producto in productos %}
+            <div class="col-12 col-sm-6 col-lg-4">
+                {% include 'productos/_tarjeta_producto.html' %}
+            </div>
+            {% empty %}
+            <p class="text-muted">Este artesano todavía no publicó productos.</p>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}

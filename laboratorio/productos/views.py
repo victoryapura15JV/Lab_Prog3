@@ -1,10 +1,14 @@
 from django.contrib import messages
-from django.db.models import Q
+from django.db import IntegrityError, transaction
+from django.db.models import F, Q
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.http import require_POST
 
 from artesanos.models import Artesano, TendenciaBusqueda
-from .forms import ProductoForm
-from .models import Producto
+from .forms import ProductoForm, ComentarioForm
+from .models import Producto, Like
+from .visitante import obtener_visitor_id, guardar_cookie
 
 
 def catalogo(request):
@@ -77,9 +81,100 @@ def eliminar_producto(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
     artesano_id = producto.artesano_id
 
-    # Solo se elimina por POST (el botón del listado envía un formulario con csrf_token).
+    
     if request.method == 'POST':
         producto.delete()
         messages.success(request, 'Producto eliminado.')
 
     return redirect('productos:gestionar', artesano_id=artesano_id)
+
+def detalle_producto(request, producto_id):
+    producto = get_object_or_404(
+        Producto.objects.select_related('artesano__solicitud', 'artesano__stand'),
+        id=producto_id
+    )
+    visitor_id, es_nuevo = obtener_visitor_id(request)
+
+    otros_productos = (
+        producto.artesano.productos
+        .exclude(id=producto.id)
+        .select_related('artesano__solicitud', 'artesano__stand')[:4]
+    )
+
+    respuesta = render(request, 'productos/producto_detalle.html', {
+        'producto': producto,
+        'artesano': producto.artesano,
+        'total_likes': producto.likes.count(),
+        'liked': producto.likes.filter(visitor_id=visitor_id).exists(),
+        'comentarios': producto.comentarios.filter(visible=True),
+        'ya_comento': producto.comentarios.filter(visitor_id=visitor_id).exists(),
+        'formulario': ComentarioForm(),
+        'otros_productos': otros_productos,
+    })
+    if es_nuevo:
+        guardar_cookie(respuesta, visitor_id)
+    return respuesta
+
+
+@require_POST
+def dar_like(request, producto_id):
+    """Alterna el 'Me gusta' del visitante: el primer clic lo da y el segundo lo quita."""
+    producto = get_object_or_404(Producto, id=producto_id)
+    visitor_id, es_nuevo = obtener_visitor_id(request)
+
+    like, creado = Like.objects.get_or_create(producto=producto, visitor_id=visitor_id)
+    if not creado:
+        like.delete()
+
+    respuesta = JsonResponse({'liked': creado, 'total': producto.likes.count()})
+    if es_nuevo:
+        guardar_cookie(respuesta, visitor_id)
+    return respuesta
+
+
+@require_POST
+def comentar(request, producto_id):
+    producto = get_object_or_404(Producto, id=producto_id)
+    visitor_id, es_nuevo = obtener_visitor_id(request)
+    formulario = ComentarioForm(request.POST)
+
+    if producto.comentarios.filter(visitor_id=visitor_id).exists():
+        messages.error(request, 'Ya comentaste este producto.')
+    elif formulario.is_valid():
+        comentario = formulario.save(commit=False)
+        comentario.producto = producto
+        comentario.visitor_id = visitor_id
+        try:
+            with transaction.atomic():
+                comentario.save()
+            messages.success(request, 'Gracias por tu comentario.')
+        except IntegrityError:
+            messages.error(request, 'Ya comentaste este producto.')
+    else:
+        for errores in formulario.errors.values():
+            for error in errores:
+                messages.error(request, error)
+
+    respuesta = redirect('productos:detalle', producto_id=producto.id)
+    if es_nuevo:
+        guardar_cookie(respuesta, visitor_id)
+    return respuesta
+
+
+def perfil_artesano(request, artesano_id):
+    artesano = get_object_or_404(
+        Artesano.objects.select_related('solicitud', 'stand'),
+        id=artesano_id
+    )
+
+    Artesano.objects.filter(id=artesano.id).update(visitas=F('visitas') + 1)
+
+    productos = artesano.productos.select_related('artesano__solicitud', 'artesano__stand')
+    total_likes = Like.objects.filter(producto__artesano=artesano).count()
+
+    return render(request, 'productos/perfil_artesano.html', {
+        'artesano': artesano,
+        'solicitud': artesano.solicitud,
+        'productos': productos,
+        'total_likes': total_likes,
+    })

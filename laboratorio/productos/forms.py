@@ -2,7 +2,7 @@ import os
 
 from django import forms
 
-from .models import Producto
+from .models import Producto, Comentario
 
 EXTENSIONES_VALIDAS = ('.jpg', '.jpeg', '.png', '.webp')
 TAMANIO_MAXIMO_MB = 5
@@ -47,3 +47,24 @@ class ProductoForm(forms.ModelForm):
             if imagen.size > TAMANIO_MAXIMO_MB * 1024 * 1024:
                 raise forms.ValidationError(f'La imagen no puede superar los {TAMANIO_MAXIMO_MB} MB.')
         return imagen
+
+class ComentarioForm(forms.ModelForm):
+    class Meta:
+        model = Comentario
+        fields = ['nombre', 'texto']
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Tu nombre'}),
+            'texto': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Escribí tu comentario'}),
+        }
+
+    def clean_nombre(self):
+        nombre = self.cleaned_data['nombre'].strip()
+        if len(nombre) < 2:
+            raise forms.ValidationError('Ingresá tu nombre.')
+        return nombre
+
+    def clean_texto(self):
+        texto = self.cleaned_data['texto'].strip()
+        if len(texto) < 3:
+            raise forms.ValidationError('El comentario es demasiado corto.')
+        return texto

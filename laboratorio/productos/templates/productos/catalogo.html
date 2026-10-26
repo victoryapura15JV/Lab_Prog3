@@ -22,18 +22,7 @@
         <div class="row g-4">
             {% for producto in productos %}
             <div class="col-12 col-sm-6 col-lg-4">
-                <div class="card h-100 tarjeta-producto">
-                    <img src="{{ producto.imagen.url }}" class="card-img-top img-producto-card" alt="{{ producto.nombre }}">
-                    <div class="card-body">
-                        <span class="badge etiqueta-categoria mb-2">{{ producto.categoria }}</span>
-                        <h3 class="h5 card-title">{{ producto.nombre }}</h3>
-                        <p class="card-text">{{ producto.descripcion|truncatechars:140 }}</p>
-                    </div>
-                    <div class="card-footer small text-muted">
-                        {{ producto.artesano.solicitud.nombre_emprendimiento }}
-                        {% if producto.artesano.stand %} · {{ producto.artesano.stand.pabellon }}, puesto {{ producto.artesano.stand.numero_puesto }}{% endif %}
-                    </div>
-                </div>
+                {% include 'productos/_tarjeta_producto.html' %}
             </div>
             {% empty %}
             <p class="text-center text-muted py-5">No se encontraron productos.</p>

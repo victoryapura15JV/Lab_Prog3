@@ -1,0 +1,97 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block titulo %}{{ producto.nombre }} - Poncho Digital{% endblock %}
+
+{% block contenido_principal %}
+    <link rel="stylesheet" href="{% static 'css/estiloProductos.css' %}">
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'productos:catalogo' %}">Productos</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ producto.nombre }}</li>
+        </ol>
+    </nav>
+
+    {% include 'productos/_mensajes.html' %}
+
+    <section class="row g-4 mb-5">
+        <div class="col-12 col-md-6">
+            <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" class="img-fluid rounded-4 w-100 img-detalle">
+        </div>
+
+        <div class="col-12 col-md-6">
+            <span class="badge etiqueta-categoria mb-2">{{ producto.categoria }}</span>
+            <h2 class="mb-3">{{ producto.nombre }}</h2>
+
+            <button type="button" id="btn-like"
+                    class="btn btn-like {% if liked %}activo{% endif %}"
+                    data-url="{% url 'productos:like' producto.id %}"
+                    data-csrf="{{ csrf_token }}"
+                    aria-pressed="{{ liked|yesno:'true,false' }}">
+                <span class="icono-like">{% if liked %}♥{% else %}♡{% endif %}</span>
+                Me gusta (<span id="total-likes">{{ total_likes }}</span>)
+            </button>
+
+            <p class="mt-4">{{ producto.descripcion|linebreaksbr }}</p>
+
+            <div class="card tarjeta-artesano mt-4">
+                <div class="card-body">
+                    <p class="small text-muted mb-1">Creado por</p>
+                    <h3 class="h5 mb-1">{{ artesano.solicitud.nombre_emprendimiento }}</h3>
+                    <p class="small mb-3">
+                        {{ artesano.solicitud.localidad }}
+                        {% if artesano.stand %} · {{ artesano.stand.pabellon }}, puesto {{ artesano.stand.numero_puesto }}{% endif %}
+                    </p>
+                    <a href="{% url 'productos:perfil' artesano.id %}" class="btn btn-destacado btn-sm">Ver perfil del artesano</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="comentarios" class="mb-5">
+        <h3 class="mb-3">Comentarios ({{ comentarios|length }})</h3>
+
+        {% if ya_comento %}
+            <p class="text-muted">Ya dejaste tu comentario en este producto. ¡Gracias!</p>
+        {% else %}
+            <form method="post" action="{% url 'productos:comentar' producto.id %}" class="mb-4">
+                {% csrf_token %}
+                <div class="row g-2">
+                    <div class="col-12 col-md-4">{{ formulario.nombre }}</div>
+                    <div class="col-12 col-md-8">{{ formulario.texto }}</div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-destacado">Publicar comentario</button>
+                    </div>
+                </div>
+            </form>
+        {% endif %}
+
+        {% for comentario in comentarios %}
+            <div class="comentario mb-3">
+                <div class="d-flex justify-content-between">
+                    <strong>{{ comentario.nombre }}</strong>
+                    <span class="small text-muted">{{ comentario.creado|date:"d/m/Y" }}</span>
+                </div>
+                <p class="mb-0">{{ comentario.texto|linebreaksbr }}</p>
+            </div>
+        {% empty %}
+            <p class="text-muted">Todavía no hay comentarios. ¡Sé el primero!</p>
+        {% endfor %}
+    </section>
+
+    {% if otros_productos %}
+    <section id="otros-productos" class="mb-4">
+        <h3 class="mb-3">Más productos de {{ artesano.solicitud.nombre_emprendimiento }}</h3>
+        <div class="row g-4">
+            {% for otro in otros_productos %}
+            <div class="col-12 col-sm-6 col-lg-3">
+                {% include 'productos/_tarjeta_producto.html' with producto=otro %}
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <script src="{% static 'javaScript/interacciones.js' %}"></script>
+{% endblock %}

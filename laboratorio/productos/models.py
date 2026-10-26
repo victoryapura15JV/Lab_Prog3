@@ -1,6 +1,5 @@
 from django.db import models
 
-# Create your models here.
 
 class Producto(models.Model):
     categorias = [
@@ -28,3 +27,35 @@ class Producto(models.Model):
 
     def __str__(self):
         return f'{self.nombre} ({self.artesano.solicitud.nombre_emprendimiento})'
+
+
+class Like(models.Model):
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE, related_name='likes')
+    visitor_id = models.CharField(max_length=36)
+    creado = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['producto', 'visitor_id'], name='un_like_por_visitante')
+        ]
+
+    def __str__(self):
+        return f'Like en {self.producto.nombre}'
+
+
+class Comentario(models.Model):
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE, related_name='comentarios')
+    visitor_id = models.CharField(max_length=36)
+    nombre = models.CharField(max_length=60)
+    texto = models.TextField(max_length=500)
+    visible = models.BooleanField(default=True)  # permite ocultar comentarios desde el admin
+    creado = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ('-creado',)
+        constraints = [
+            models.UniqueConstraint(fields=['producto', 'visitor_id'], name='un_comentario_por_visitante')
+        ]
+
+    def __str__(self):
+        return f'{self.nombre} en {self.producto.nombre}'
