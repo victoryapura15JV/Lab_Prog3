@@ -1,5 +1,9 @@
 import os
 
+import re
+
+from artesanos.models import Solicitud
+
 from django import forms
 
 from .models import Producto, Comentario
@@ -68,3 +72,40 @@ class ComentarioForm(forms.ModelForm):
         if len(texto) < 3:
             raise forms.ValidationError('El comentario es demasiado corto.')
         return texto
+
+    class PerfilArtesanoForm(forms.ModelForm):
+        class Meta:
+            model = Solicitud
+            fields = ['nombre_emprendimiento', 'localidad', 'historia_emprendimiento', 'productos_principales', 'telefono']
+        labels = {
+            'nombre_emprendimiento': 'Nombre del emprendimiento',
+            'localidad': 'Localidad',
+            'historia_emprendimiento': 'Nuestra historia',
+            'productos_principales': 'Productos principales',
+            'telefono': 'Teléfono de contacto',
+        }
+        widgets = {
+            'nombre_emprendimiento': forms.TextInput(attrs={'class': 'form-control'}),
+            'localidad': forms.Select(attrs={'class': 'form-select'}),
+            'historia_emprendimiento': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
+            'productos_principales': forms.TextInput(attrs={'class': 'form-control'}),
+            'telefono': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+    def clean_nombre_emprendimiento(self):
+        nombre = self.cleaned_data['nombre_emprendimiento'].strip()
+        if len(nombre) < 2:
+            raise forms.ValidationError('Ingresá el nombre del emprendimiento.')
+        return nombre
+
+    def clean_historia_emprendimiento(self):
+        historia = self.cleaned_data['historia_emprendimiento'].strip()
+        if len(historia) < 10:
+            raise forms.ValidationError('La historia debe ser más detallada (mínimo 10 caracteres).')
+        return historia
+
+    def clean_telefono(self):
+        telefono = self.cleaned_data['telefono'].strip()
+        if not re.fullmatch(r'[0-9+\-\s]{6,20}', telefono):
+            raise forms.ValidationError('Ingresá un teléfono válido (solo números, espacios, + o -).')
+        return telefono

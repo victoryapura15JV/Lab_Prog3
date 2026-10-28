@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from .forms import SolicitudForm
+from django.views.decorators.http import require_POST
+from usuarios.decoradores import rol_requerido
+from .forms import SolicitudForm, StandForm
 from django.db.models import Count
 from .models import Solicitud, Artesano, Stand, TendenciaBusqueda
 from django.contrib.auth.decorators import login_required
@@ -134,3 +136,57 @@ def estado_solicitud(request):
         return render(request, 'artesanos/resultado_estado.html', {'solicitud': solicitud})
 
     return render(request, 'artesanos/consultar_estado.html')
+
+@rol_requerido('ADMINISTRADOR')
+def listar_stands(request):
+    stands = Stand.objects.select_related('artesanos__solicitud')
+    artesanos = Artesano.objects.select_related('solicitud', 'stand')
+    return render(request, 'artesanos/listar_stands.html', {
+        'stands': stands,
+        'artesanos': artesanos,
+    })
+
+
+@rol_requerido('ADMINISTRADOR')
+def crear_stand(request):
+    if request.method == 'POST':
+        formulario = StandForm(request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            messages.success(request, 'Stand cargado con éxito.')
+            return redirect('artesanos:listar_stands')
+    else:
+        formulario = StandForm()
+    return render(request, 'artesanos/form_stand.html', {
+        'formulario': formulario,
+        'titulo': 'Cargar stand',
+    })
+
+
+@rol_requerido('ADMINISTRADOR')
+def modificar_stand(request, stand_id):
+    stand = get_object_or_404(Stand, id=stand_id)
+    if request.method == 'POST':
+        formulario = StandForm(request.POST, instance=stand)
+        if formulario.is_valid():
+            formulario.save()
+            messages.success(request, 'Stand modificado con éxito.')
+            return redirect('artesanos:listar_stands')
+    else:
+        formulario = StandForm(instance=stand)
+    return render(request, 'artesanos/form_stand.html', {
+        'formulario': formulario,
+        'titulo': 'Modificar stand',
+    })
+
+
+@rol_requerido('ADMINISTRADOR')
+@require_POST
+def eliminar_stand(request, stand_id):
+    stand = get_object_or_404(Stand, id=stand_id)
+    if Artesano.objects.filter(stand=stand).exists():
+        messages.error(request, 'No se puede dar de baja un stand asignado. Quitáselo primero al artesano.')
+    else:
+        stand.delete()
+        messages.success(request, 'Stand dado de baja.')
+    return redirect('artesanos:listar_stands')

@@ -65,7 +65,7 @@
                         <li class="nav-item dropdown w-100 w-lg-auto">
                             <a class="nav-link dropdown-toggle text-center btn-pildora-interactiva" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Mi perfil</a>
                             <ul class="dropdown-menu dropdown-menu-azul shadow-lg">
-                                <li><a class="dropdown-item dropdown-item-azul" href="#">Modificar datos personales</a></li>
+                                <li><a class="dropdown-item dropdown-item-azul" href="{% url 'productos:editar_perfil' %}">Modificar datos personales</a></li>
                                 <li><a class="dropdown-item dropdown-item-azul" href="{% if user.artesanos %}{% url 'productos:gestionar' user.artesanos.id %}{% else %}#{% endif %}">Gestionar productos</a></li>
                             </ul>
                         </li>
@@ -165,7 +165,7 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16"><path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z"/></svg>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-azul shadow-lg mb-2">
-                                <li><a class="dropdown-item dropdown-item-azul" href="#">Modificar perfil</a></li>
+                                <li><a class="dropdown-item dropdown-item-azul" href="{% url 'productos:editar_perfil' %}">Modificar perfil</a></li>
                                 <li><a class="dropdown-item dropdown-item-azul" href="{% if user.artesanos %}{% url 'productos:gestionar' user.artesanos.id %}{% else %}#{% endif %}">Gestionar productos</a></li>
                             </ul>
                         </li>

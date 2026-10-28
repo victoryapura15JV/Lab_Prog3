@@ -4,9 +4,10 @@ from django.db.models import F, Q
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
+from usuarios.decoradores import rol_requerido
 
 from artesanos.models import Artesano, TendenciaBusqueda
-from .forms import ProductoForm, ComentarioForm
+from .forms import ProductoForm, ComentarioForm, PerfilArtesanoForm
 from .models import Producto, Like
 from .visitante import obtener_visitor_id, guardar_cookie
 
@@ -177,4 +178,26 @@ def perfil_artesano(request, artesano_id):
         'solicitud': artesano.solicitud,
         'productos': productos,
         'total_likes': total_likes,
+    })
+
+@rol_requerido('ARTESANO')
+def editar_perfil(request):
+    """El artesano logueado modifica los datos públicos de su emprendimiento."""
+    artesano = Artesano.objects.select_related('solicitud').filter(usuario=request.user).first()
+    if artesano is None:
+        messages.error(request, 'Tu cuenta todavía no está vinculada a un emprendimiento. Consultá con el administrador.')
+        return redirect('home')
+
+    if request.method == 'POST':
+        formulario = PerfilArtesanoForm(request.POST, instance=artesano.solicitud)
+        if formulario.is_valid():
+            formulario.save()
+            messages.success(request, 'Tu perfil se actualizó con éxito.')
+            return redirect('productos:editar_perfil')
+    else:
+        formulario = PerfilArtesanoForm(instance=artesano.solicitud)
+
+    return render(request, 'productos/editar_perfil.html', {
+        'artesano': artesano,
+        'formulario': formulario,
     })

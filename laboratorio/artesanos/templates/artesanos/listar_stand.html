@@ -1,0 +1,92 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block titulo %}Stands - Panel de Administrador{% endblock %}
+
+{% block contenido_principal %}
+    <link rel="stylesheet" href="{% static 'artesanos/estiloPaneles.css' %}">
+    <div class="container mt-5">
+
+        {% for mensaje in messages %}
+            <div class="alert alert-{% if mensaje.tags == 'error' %}danger{% else %}{{ mensaje.tags|default:'info' }}{% endif %} alert-dismissible fade show" role="alert">
+                {{ mensaje }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+            </div>
+        {% endfor %}
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0">Panel de Administrador - Stands</h2>
+            <a href="{% url 'artesanos:crear_stand' %}" class="btn btn-success">Cargar nuevo stand</a>
+        </div>
+
+        <div class="table-responsive bg-white p-4 rounded shadow-sm">
+            <table class="table table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Pabellón</th>
+                        <th>Puesto</th>
+                        <th>Dimensiones</th>
+                        <th>Estado</th>
+                        <th>Asignado a</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for stand in stands %}
+                    <tr>
+                        <td>{{ stand.pabellon }}</td>
+                        <td>{{ stand.numero_puesto }}</td>
+                        <td>{{ stand.dimensiones }}</td>
+                        <td>
+                            <span class="badge {% if stand.estado == 'Disponible' %}bg-success{% else %}bg-secondary{% endif %}">{{ stand.estado }}</span>
+                        </td>
+                        <td>{% if stand.artesanos %}{{ stand.artesanos.solicitud.nombre_emprendimiento }}{% else %}-{% endif %}</td>
+                        <td>
+                            <a href="{% url 'artesanos:modificar_stand' stand.id %}" class="btn btn-sm btn-primary">Modificar</a>
+                            <form action="{% url 'artesanos:eliminar_stand' stand.id %}" method="post" class="d-inline"
+                                  onsubmit="return confirm('¿Desea dar de baja este stand?');">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-danger">Dar de baja</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="6" class="text-center py-4">Todavía no hay stands cargados.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <h3 id="asignacion" class="mt-5 mb-3">Asignación de stands a artesanos</h3>
+        <div class="table-responsive bg-white p-4 rounded shadow-sm mb-5">
+            <table class="table table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Emprendimiento</th>
+                        <th>Titular</th>
+                        <th>Stand actual</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for artesano in artesanos %}
+                    <tr>
+                        <td><strong>{{ artesano.solicitud.nombre_emprendimiento }}</strong></td>
+                        <td>{{ artesano.solicitud.nombre_apellido }}</td>
+                        <td>
+                            {% if artesano.stand %}{{ artesano.stand.pabellon }} - Puesto {{ artesano.stand.numero_puesto }}
+                            {% else %}<span class="text-muted">Sin stand</span>{% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'artesanos:asignar_stand' artesano.id %}" class="btn btn-sm btn-primary">
+                                {% if artesano.stand %}Cambiar stand{% else %}Asignar stand{% endif %}
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="4" class="text-center py-4">Todavía no hay artesanos aprobados.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
