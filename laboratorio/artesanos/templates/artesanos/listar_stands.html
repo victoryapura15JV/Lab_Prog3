@@ -40,13 +40,21 @@
                             <span class="badge {% if stand.estado == 'Disponible' %}bg-success{% else %}bg-secondary{% endif %}">{{ stand.estado }}</span>
                         </td>
                         <td>{% if stand.artesanos %}{{ stand.artesanos.solicitud.nombre_emprendimiento }}{% else %}-{% endif %}</td>
-                        <td>
+                                                <td>
                             <a href="{% url 'artesanos:modificar_stand' stand.id %}" class="btn btn-sm btn-primary">Modificar</a>
-                            <form action="{% url 'artesanos:eliminar_stand' stand.id %}" method="post" class="d-inline"
-                                  onsubmit="return confirm('¿Desea dar de baja este stand?');">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-sm btn-danger">Dar de baja</button>
-                            </form>
+                            {% if stand.estado == 'Ocupado' %}
+                                <form action="{% url 'artesanos:liberar_stand' stand.id %}" method="post" class="d-inline"
+                                    onsubmit="return confirm('¿Dar de baja este stand? El artesano dejará de tenerlo asignado y el stand quedará disponible.');">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-danger">Dar de baja</button>
+                                </form>
+                            {% else %}
+                                <form action="{% url 'artesanos:eliminar_stand' stand.id %}" method="post" class="d-inline"
+                                    onsubmit="return confirm('¿Eliminar este stand definitivamente?');">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                                </form>
+                            {% endif %}
                         </td>
                     </tr>
                     {% empty %}

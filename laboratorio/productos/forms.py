@@ -1,11 +1,9 @@
 import os
-
 import re
-
-from artesanos.models import Solicitud
 
 from django import forms
 
+from artesanos.models import Solicitud
 from .models import Producto, Comentario
 
 EXTENSIONES_VALIDAS = ('.jpg', '.jpeg', '.png', '.webp')
@@ -52,6 +50,7 @@ class ProductoForm(forms.ModelForm):
                 raise forms.ValidationError(f'La imagen no puede superar los {TAMANIO_MAXIMO_MB} MB.')
         return imagen
 
+
 class ComentarioForm(forms.ModelForm):
     class Meta:
         model = Comentario
@@ -73,10 +72,11 @@ class ComentarioForm(forms.ModelForm):
             raise forms.ValidationError('El comentario es demasiado corto.')
         return texto
 
-    class PerfilArtesanoForm(forms.ModelForm):
-        class Meta:
-            model = Solicitud
-            fields = ['nombre_emprendimiento', 'localidad', 'historia_emprendimiento', 'productos_principales', 'telefono']
+
+class PerfilArtesanoForm(forms.ModelForm):
+    class Meta:
+        model = Solicitud
+        fields = ['nombre_emprendimiento', 'localidad', 'historia_emprendimiento', 'productos_principales', 'telefono']
         labels = {
             'nombre_emprendimiento': 'Nombre del emprendimiento',
             'localidad': 'Localidad',

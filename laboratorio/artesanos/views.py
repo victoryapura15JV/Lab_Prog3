@@ -7,6 +7,7 @@ from django.db.models import Count
 from .models import Solicitud, Artesano, Stand, TendenciaBusqueda
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
+from django.db import transaction
 def crear_solicitud(request):
     if request.method == 'POST':
         dni_ingresado = request.POST.get('dni')
@@ -43,6 +44,7 @@ def evaluar_solicitud(request, solicitud_id):
     return render(request, 'artesanos/evaluar_solicitud.html', {'solicitud': solicitud})
 
 
+@rol_requerido('ADMINISTRADOR')
 def asignar_stand(request, artesano_id):
     artesano = get_object_or_404(Artesano, id=artesano_id)
     stands_disponibles = Stand.objects.filter(estado='Disponible')
@@ -53,11 +55,13 @@ def asignar_stand(request, artesano_id):
                 stand_id_viejo = artesano.stand.id
                 artesano.stand = None
                 artesano.save()
+
                 stand_viejo = Stand.objects.get(id=stand_id_viejo)
                 stand_viejo.estado = 'Disponible'
                 stand_viejo.save()
 
-            return redirect('artesanos:listar_solicitudes')
+            return redirect('artesanos:listar_stands')
+
         stand_id = request.POST.get('stand_id')
         if stand_id:
             if artesano.stand:
@@ -73,7 +77,7 @@ def asignar_stand(request, artesano_id):
             stand_elegido.estado = 'Ocupado'
             stand_elegido.save()
 
-            return redirect('artesanos:listar_solicitudes')
+            return redirect('artesanos:listar_stands')
 
     return render(request, 'artesanos/asignar_stand.html', {
         'artesano': artesano,
@@ -185,8 +189,20 @@ def modificar_stand(request, stand_id):
 def eliminar_stand(request, stand_id):
     stand = get_object_or_404(Stand, id=stand_id)
     if Artesano.objects.filter(stand=stand).exists():
-        messages.error(request, 'No se puede dar de baja un stand asignado. Quitáselo primero al artesano.')
+        messages.error(request, 'No se puede eliminar un stand asignado. Dalo de baja primero para liberarlo.')
     else:
         stand.delete()
         messages.success(request, 'Stand dado de baja.')
+    return redirect('artesanos:listar_stands')
+
+@rol_requerido('ADMINISTRADOR')
+@require_POST
+def liberar_stand(request, stand_id):
+    """Da de baja la asignación: el artesano pierde el stand y el stand queda Disponible."""
+    stand = get_object_or_404(Stand, id=stand_id)
+    with transaction.atomic():
+        Artesano.objects.filter(stand=stand).update(stand=None)
+        stand.estado = 'Disponible'
+        stand.save()
+    messages.success(request, 'Stand dado de baja: quedó disponible y el artesano ya no lo tiene asignado.')
     return redirect('artesanos:listar_stands')

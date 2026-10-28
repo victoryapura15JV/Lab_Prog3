@@ -14,4 +14,5 @@ urlpatterns = [
     path('panel/stands/nuevo/', views.crear_stand, name='crear_stand'),
     path('panel/stands/<int:stand_id>/modificar/', views.modificar_stand, name='modificar_stand'),
     path('panel/stands/<int:stand_id>/eliminar/', views.eliminar_stand, name='eliminar_stand'),
+    path('panel/stands/<int:stand_id>/liberar/', views.liberar_stand, name='liberar_stand'),
 ]
