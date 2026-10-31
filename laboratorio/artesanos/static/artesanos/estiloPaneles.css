@@ -444,11 +444,26 @@ main .card-body > h4 {
     }
 }
 
-main .card:has(> .card-body.p-5) {
-    border: 3px solid var(--amarillo-mostaza);
+
+main .card.shadow {
+    border: 3px solid var(--amarillo-mostaza) !important;
 }
 
-/* El h2 trae color inline desde la plantilla: se pisa con !important */
+/* Guardas de poncho arriba y abajo, más anchas que en el resto de los paneles */
+main .card.shadow::before,
+main .card.shadow::after {
+    content: "";
+    flex: 0 0 14px;
+    height: 14px;
+    background: var(--franja-poncho);
+}
+
+main .card-body.p-5 {
+    background-color: var(--crema);
+}
+
+/* Nombre del emprendimiento: píldora azul con aro mostaza.
+   El h2 trae color inline desde la plantilla: se pisa con !important */
 main .card-body.p-5 h2 {
     display: inline-block;
     max-width: 100%;
@@ -456,11 +471,48 @@ main .card-body.p-5 h2 {
     padding: 0.55rem 1.75rem;
     color: var(--blanco) !important;
     background-color: var(--azul-oscuro);
+    border: 2px solid var(--amarillo-mostaza);
     border-radius: 30px;
+    box-shadow: 0 8px 16px -10px rgba(42, 53, 78, 0.7);
     font-size: clamp(1.35rem, 1rem + 1.2vw, 1.8rem);
 }
 
-/* "Volver al inicio": azul, y mostaza */
+/* "Estado actual:" con una línea mostaza que se desvanece a cada lado */
+main .card-body.p-5 > h4 {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    max-width: 20rem;
+    margin: 0 auto 0.9rem;
+    color: var(--azul-oscuro);
+}
+
+main .card-body.p-5 > h4::before,
+main .card-body.p-5 > h4::after {
+    content: "";
+    flex: 1;
+    height: 2px;
+    border-radius: 2px;
+}
+
+main .card-body.p-5 > h4::before {
+    background: linear-gradient(90deg, transparent, var(--amarillo-mostaza));
+}
+
+main .card-body.p-5 > h4::after {
+    background: linear-gradient(270deg, transparent, var(--amarillo-mostaza));
+}
+
+main .card-body.p-5 .badge {
+    box-shadow: 0 0 0 5px var(--mostaza-claro);
+}
+
+/* Menos aire vacío entre el estado y el botón */
+main .card-body.p-5 .mt-5 {
+    margin-top: 2rem !important;
+}
+
+/* "Volver al inicio": azul, y mostaza al pasar el mouse */
 main .card-body.p-5 .btn-outline-secondary {
     --bs-btn-color: var(--blanco);
     --bs-btn-bg: var(--azul-oscuro);
