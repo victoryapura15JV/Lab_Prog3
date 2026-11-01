@@ -10,15 +10,17 @@
                 <h4 class="mb-0 py-2">Consultar Estado</h4>
             </div>
         <div class="card-body p-4">
-            <p class="text-center text-muted mb-4">Ingrese su número de solicitud y DNI para verificar el estado de su postulación.</p>
-            
+            <p class="text-center text-muted mb-4">Ingrese su número de DNI para verificar el estado de su postulación.</p>
+            {% if messages %}
+                {% for mensaje in messages %}
+                    <div class="alert alert-{% if mensaje.tags == 'error' %}danger{% elif mensaje.tags == 'success' %}success{% else %}info{% endif %} text-center alert-dismissible fade show" role="alert">
+                        {{ mensaje }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
             <form method="POST">
                 {% csrf_token %}
-                <div class="mb-3">
-                    <label for="numero_solicitud" class="form-label fw-bold">Número de Solicitud (ID):</label>
-                    <input type="number" name="numero_solicitud" id="numero_solicitud" class="form-control input-redondeado" required>
-                </div>
-                
                 <div class="mb-4">
                     <label for="dni" class="form-label fw-bold">DNI del Titular:</label>
                     <input type="text" name="dni" id="dni" class="form-control input-redondeado" required>

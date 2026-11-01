@@ -8,18 +8,19 @@ from .models import Solicitud, Artesano, Stand, TendenciaBusqueda
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.db import transaction
+
 def crear_solicitud(request):
     if request.method == 'POST':
         dni_ingresado = request.POST.get('dni')
         solicitud_existente = Solicitud.objects.filter(dni=dni_ingresado).first()
 
         if solicitud_existente:
-            messages.info(request,f'Ya estás inscripto. Tu número de solicitud es: {solicitud_existente.id} Podes consultar el estado de tu solicitud en la seccion "Consultar Estado"')
+            messages.warning(request,f'Este dni ya se encuentra registrado. Podes consultar tu estado en el apartado con tu dni')
             return redirect('artesanos:crear_solicitud')
         formulario = SolicitudForm(request.POST)
         if formulario.is_valid():
             formulario.save()
-            messages.success(request, 'Solicitud enviada con exito!Tu número de solicitud es: f{nueva_solicitud.id}. Anotalo para consultar tu estado.')
+            messages.success(request, f'Solicitud enviada con exito! Podes consultar tu estado con tu DNI')
             return redirect('artesanos:crear_solicitud')
     else:
         formulario = SolicitudForm()
@@ -34,12 +35,18 @@ def evaluar_solicitud(request, solicitud_id):
     if request.method == 'POST':
         nuevo_estado = request.POST.get('nuevo_estado')
         if nuevo_estado:
+            justificacion = request.POST.get('justificacion','')
+            if nuevo_estado in ['Modificacion','Rechazado']and justificacion == '':
+                messages.error(request, 'Tenes que escribir una justificación del motivo de tu evaluacion')
+                return render(request, 'artesanos/evaluar_solicitud.html', {'solicitud': solicitud})
+
             solicitud.estado = nuevo_estado
-            justificacion = request.POST.get('justificacion')
             solicitud.justificacion = justificacion
             solicitud.save()
             if nuevo_estado == 'Aprobado':
                 Artesano.objects.get_or_create(solicitud=solicitud)
+
+            messages.success(request, f'El resultado de tu evaluacion fue enviada, resultado: {nuevo_estado}')
             return redirect('artesanos:listar_solicitudes')
     return render(request, 'artesanos/evaluar_solicitud.html', {'solicitud': solicitud})
 
@@ -133,12 +140,13 @@ def dashboard_cliente(request):
 
 def estado_solicitud(request):
     if request.method == 'POST':
-        id_ingresado = request.POST.get('numero_solicitud')
         dni_ingresado = request.POST.get('dni')
-        solicitud = get_object_or_404(Solicitud, id=id_ingresado, dni=dni_ingresado)
-
-        return render(request, 'artesanos/resultado_estado.html', {'solicitud': solicitud})
-
+        solicitud = Solicitud.objects.filter(dni=dni_ingresado).first()
+        if solicitud:
+            return render(request, 'artesanos/resultado_estado.html', {'solicitud':solicitud})
+        else:
+            messages.error(request, 'No se encontro ninguna solicitud con ese dni.')
+            return render(request,'artesanos/consultar_estado.html')
     return render(request, 'artesanos/consultar_estado.html')
 
 @rol_requerido('ADMINISTRADOR')
@@ -206,3 +214,29 @@ def liberar_stand(request, stand_id):
         stand.save()
     messages.success(request, 'Stand dado de baja: quedó disponible y el artesano ya no lo tiene asignado.')
     return redirect('artesanos:listar_stands')
+
+
+def corregir_solicitud(request, solicitud_id):
+    solicitud = get_object_or_404(Solicitud, id=solicitud_id)
+    if solicitud.estado != 'Modificacion':
+        messages.error(request, 'Esta solicitud no requiere modificaciones.')
+        return redirect('home')
+
+    if request.method == 'POST':
+        formulario = SolicitudForm(request.POST, request.FILES, instance=solicitud)
+
+        if formulario.is_valid():
+            solicitud_actualizada = formulario.save(commit=False)
+            solicitud_actualizada.estado = 'Pendiente'
+            solicitud_actualizada.justificacion = ''
+            solicitud_actualizada.save()
+
+            messages.success(request, 'Tu solicitud fue enviada nuevamente para su revisión.')
+            return redirect('artesanos:estado_solicitud')
+    else:
+        formulario = SolicitudForm(instance=solicitud)
+
+    return render(request, 'artesanos/solicitud_artesano.html', {
+        'formulario': formulario,
+        'modo_edicion': True
+    })

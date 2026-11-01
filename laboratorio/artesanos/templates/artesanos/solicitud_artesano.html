@@ -15,9 +15,10 @@
         </div>
         <section class="conteiner-fluid  px-4 my-5">
             {% if messages %}
-                {% for message in messages %}
-                    <div class="alert alert-success text-center">
-                        {{ message }}
+                {% for mensaje in messages %}
+                    <div class="alert alert-{% if mensaje.tags == 'error' %}danger{% elif mensaje.tags %}{{ mensaje.tags }}{% else %}info{% endif %} text-center alert-dismissible fade show" role="alert">
+                        {{ mensaje }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
                     </div>
                 {% endfor %}
             {% endif %}
@@ -27,23 +28,23 @@
                 <div class="col-12 col-md-6">
                     <fieldset>
                         <legend>DATOS PERSONALES</legend><br>
-                        <label for="nomyape_artesano">Nombre y Apellido: </label>
+                        <label for="id_nombre_apellido">Nombre y Apellido: </label>
                         {{ formulario.nombre_apellido }}
                         <span id="error_nombre" style="color:red; display: block"></span><br>
 
-                        <label for="dni_artesano">DNI: </label>
+                        <label for="id_dni">DNI: </label>
                         {{ formulario.dni }}
                         <span id="error_dni" style="color:red; display: block"></span><br>
 
-                        <label for="fecha_nacimiento">Fecha de Nacimiento: </label>
+                        <label for="id_fecha_nacimiento">Fecha de Nacimiento: </label>
                         {{ formulario.fecha_nacimiento }}<br>
                         <span id="error_fecha" style="color:red"></span><br>
 
-                        <label for="tel_artesano">Telefono: </label>
+                        <label for="id_telefono">Telefono: </label>
                         {{ formulario.telefono }}
                         <span id="error_tel" style="color:red; display: block"></span><br>
 
-                        <label for="gmail_artesano">Correo Electronico: </label>
+                        <label for="id_email">Correo Electronico: </label>
                         {{ formulario.email }}
                         <span id="error_email" style="color:red; display: block"></span>
                     </fieldset>
@@ -52,11 +53,11 @@
                 <div class="col-12 col-md-6">
                     <fieldset>
                         <legend>LUGAR DE PROCEDENCIA</legend><br>
-                        <label for="provincia_artesano">Provincia: </label>
+                        <label for="id_provincia">Provincia: </label>
                         {{ formulario.provincia }}
                         <span id="error_provincia" style="color:red; display: block"></span><br>
 
-                        <label for="localidad_artesano">Localidad: </label>
+                        <label for="id_localidad">Localidad: </label>
                         {{ formulario.localidad }}
                         <span id="error_localidad" style="color:red; display: block"></span>
                     </fieldset>
@@ -65,15 +66,15 @@
                 <div class="col-12 col-md-6">
                     <fieldset>
                         <legend>EMPRENDIMIENTO</legend>
-                        <label for="nom_emprendimiento">Nombre del emprendimiento: </label>
+                        <label for="id_nombre_emprendimiento">Nombre del emprendimiento: </label>
                         {{ formulario.nombre_emprendimiento }}
                         <span id="error_nom_emp" style="color:red; display: block"></span><br>
 
-                        <label for="tiempo_trayectoria">Años de trayectoria: </label>
+                        <label for="id_anios_trayectoria">Años de trayectoria: </label>
                         {{ formulario.anios_trayectoria }}
                         <span id="error_trayectoria" style="color:red; display: block"></span><br>
 
-                        <label for="historia_emprendimiento">Contanos sobre tu emprendimiento:</label><br><br>
+                        <label for="id_historia_emprendimiento">Contanos sobre tu emprendimiento:</label><br><br>
                         {{ formulario.historia_emprendimiento }}
                         <span id="error_historia" style="color:red; display: block"></span>
                     </fieldset>
@@ -82,11 +83,11 @@
                 <div class="col-12 col-md-6">
                     <fieldset>
                         <legend>PRODUCTOS</legend>
-                        <label for="rubro_producto">Rubro: </label>
+                        <label for="id_rubro">Rubro: </label>
                         {{ formulario.rubro }}
                         <br>
                         <span id="error_rubro" style="color:red; display: block"></span><br>
-                        <label for="productos">Productos principales: </label>
+                        <label for="id_productos_principales">Productos principales: </label>
                         {{ formulario.productos_principales }}
                         <span id="error_productos" style="color:red; display: block"></span>
                     </fieldset>
