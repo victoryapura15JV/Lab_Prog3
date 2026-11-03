@@ -26,10 +26,12 @@ def crear_solicitud(request):
         formulario = SolicitudForm()
     return render(request,'artesanos/solicitud_artesano.html',{'formulario':formulario})
 
+@rol_requerido('ADMINISTRADOR')
 def listar_solicitudes(request):
     solicitudes = Solicitud.objects.all()
     return render(request, 'artesanos/listar_solicitudes.html', {'solicitudes': solicitudes})
 
+@rol_requerido('ADMINISTRADOR')
 def evaluar_solicitud(request, solicitud_id):
     solicitud = get_object_or_404(Solicitud, id=solicitud_id)
     if request.method == 'POST':
@@ -94,37 +96,35 @@ def asignar_stand(request, artesano_id):
 @login_required
 def dashboard_cliente(request):
     """
-    Vista exclusiva para el rol Cliente.
-    Cumple con HU-16 (Panel Estratégico) y HU-17 (Tendencias).
+    Vista exclusiva para el rol Cliente institucional.
     """
-    # Validación estricta de seguridad (RNF-05)
     if not request.user.rol or request.user.rol.nombre != 'CLIENTE':
         raise PermissionDenied("Acceso denegado. Esta vista es exclusiva para el Cliente institucional.")
 
-    # 1. Cálculos de Stands (Ocupación)
-    total_stands = Stand.objects.count()
-    # 1. Cálculos de Stands (Ocupación)
+    # 1. Cantidad de stands ocupados y disponibles
     total_stands = Stand.objects.count()
     stands_ocupados = Stand.objects.filter(estado='Ocupado').count()
     stands_disponibles = Stand.objects.filter(estado='Disponible').count()
+    porcentaje_ocupacion = round((stands_ocupados / total_stands) * 100, 1) if total_stands > 0 else 0
 
-    porcentaje_ocupacion = 0
-    if total_stands > 0:
-        porcentaje_ocupacion = round((stands_ocupados / total_stands) * 100, 1)
+    # 2. Artesanos registrados por localidad y rubro
+    artesanos_por_localidad = Solicitud.objects.filter(estado='Aprobado').values('localidad').annotate(total=Count('id')).order_by('-total')
+    artesanos_por_rubro = Solicitud.objects.filter(estado='Aprobado').values('rubro').annotate(total=Count('id')).order_by('-total')
 
-    # 2. Agrupación de Artesanos Aprobados por Localidad y Rubro
-    artesanos_por_localidad = Solicitud.objects.filter(estado='Aprobado').values('localidad').annotate(
-        total=Count('id')).order_by('-total')
-    artesanos_por_rubro = Solicitud.objects.filter(estado='Aprobado').values('rubro').annotate(
-        total=Count('id')).order_by('-total')
+    # 3. Total de Artesanos registrados
+    total_artesanos = Artesano.objects.count()
 
-    # 3. Top 10 Stands más visitados (Popularidad)
+    # 4. Estadísticas completas por artesano (Productos y Likes)
+    artesanos_stats = Artesano.objects.annotate(
+        total_productos=Count('productos', distinct=True),
+        total_likes=Count('productos__likes', distinct=True)
+    ).select_related('solicitud').order_by('-visitas')
+
+    # 5. Extras (Top búsquedas y visitas generales)
     top_artesanos = Artesano.objects.order_by('-visitas')[:10]
-
-    # 4. Top 10 Términos más buscados por los visitantes
     top_busquedas = TendenciaBusqueda.objects.values('termino').annotate(total=Count('id')).order_by('-total')[:10]
 
-    # Empaquetamos todo para enviarlo al HTML
+    # Consolidación final en un ÚNICO diccionario de contexto
     contexto = {
         'total_stands': total_stands,
         'stands_ocupados': stands_ocupados,
@@ -132,12 +132,13 @@ def dashboard_cliente(request):
         'porcentaje_ocupacion': porcentaje_ocupacion,
         'artesanos_por_localidad': artesanos_por_localidad,
         'artesanos_por_rubro': artesanos_por_rubro,
+        'total_artesanos': total_artesanos,
+        'artesanos_stats': artesanos_stats,  # Esta es la que lee la tabla del HTML
         'top_artesanos': top_artesanos,
         'top_busquedas': top_busquedas,
     }
 
     return render(request, 'artesanos/dashboard_cliente.html', contexto)
-
 def estado_solicitud(request):
     if request.method == 'POST':
         dni_ingresado = request.POST.get('dni')
@@ -240,3 +241,27 @@ def corregir_solicitud(request, solicitud_id):
         'formulario': formulario,
         'modo_edicion': True
     })
+
+
+@rol_requerido('ADMINISTRADOR')
+def reportes_operativos(request):
+    """
+    Vista exclusiva para el Administrador.
+    Cumple con CU-03 (Tendencias) y CU-04 (Reportes Operativos).
+    """
+    # CU-03: Tendencias de búsqueda globales
+    tendencias = TendenciaBusqueda.objects.values('termino').annotate(total=Count('id')).order_by('-total')[:15]
+
+    # CU-04: Reportes operativos accionables (Lo que el Admin necesita resolver)
+    artesanos_sin_stand = Artesano.objects.filter(stand__isnull=True).select_related('solicitud')
+    stands_disponibles = Stand.objects.filter(estado='Disponible').order_by('pabellon', 'numero_puesto')
+    solicitudes_atascadas = Solicitud.objects.filter(estado__in=['Pendiente', 'Modificacion']).order_by('-envio')
+
+    contexto = {
+        'tendencias': tendencias,
+        'artesanos_sin_stand': artesanos_sin_stand,
+        'stands_disponibles': stands_disponibles,
+        'solicitudes_atascadas': solicitudes_atascadas,
+    }
+
+    return render(request, 'artesanos/reportes_operativos.html', contexto)

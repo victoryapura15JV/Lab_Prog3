@@ -25,21 +25,12 @@ main h2, main h3 {
     font-weight: bold;
 }
 
-.fw-bold {
-    transition: 0.3s;
-}
-
-.fw-bold:hover {
-    color: #FFFFFF !important;
-    cursor: pointer;
-}
-
 header {
     background-color: var(--azul-oscuro);
     padding: 2.5rem 15px;
     margin-top: 0 !important;
     max-width: 100% !important;
-    position: relative; /* Agregado */
+    position: relative;
     z-index: 10;
 }
 
@@ -69,7 +60,7 @@ footer {
     margin-bottom: 0 !important;
     max-width: 100% !important;
     border-top: none !important;
-    position: relative; /* Agregado */
+    position: relative;
     z-index: 10;
 }
 
@@ -146,16 +137,10 @@ nav a:hover, .nav-link:hover {
     color: var(--azul-oscuro) !important;
 }
 
-/* =========================================
-   ESTILOS DE PÍLDORA DERECHA (SESIÓN INICIADA)
-   ========================================= */
-
-/* 1. Contenedor principal de la píldora (Siempre Azul) */
 ul.nav-pildora-azul {
     background-color: var(--azul-oscuro) !important;
 }
 
-/* 2. Botones interactivos (Fondo azul, letras blancas -> Hover mostaza) */
 .btn-pildora-interactiva {
     background-color: var(--azul-oscuro) !important;
     color: var(--blanco) !important;
@@ -163,7 +148,7 @@ ul.nav-pildora-azul {
     font-weight: bold !important;
     padding: 8px 18px !important;
     transition: all 0.3s ease !important;
-    border: 1px solid rgba(255, 255, 255, 0.15); /* Borde sutil para que parezcan píldoras separadas */
+    border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .btn-pildora-interactiva:hover,
@@ -173,7 +158,6 @@ ul.nav-pildora-azul {
     border-color: var(--amarillo-mostaza) !important;
 }
 
-/* 3. Botón del nombre de usuario (Fondo blanco, letras mostaza) */
 .badge-pildora {
     background-color: var(--blanco) !important;
     color: var(--amarillo-mostaza) !important;
@@ -182,42 +166,81 @@ ul.nav-pildora-azul {
     padding: 8px 18px !important;
     cursor: default;
 }
-/* =========================================
-   ESTILOS PARA MENÚS DESPLEGABLES (DROPDOWNS Y DROPUPS)
-   ========================================= */
 .dropdown-menu-azul {
-    background-color: transparent !important;
+    background-color: var(--azul-oscuro) !important;
     border: none !important;
-    padding: 0 !important;
-    margin-top: 12px !important;
-    display: flex;
-    flex-direction: column;
-    gap: 8px; /* Separación entre botones desplegados */
+    border-radius: 20px !important;
+    padding: 12px !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3) !important;
 }
 
-/* Para que la gota invertida (celular) no se pegue al botón */
+.dropdown .dropdown-menu-azul {
+    top: 100% !important;
+    bottom: auto !important;
+    margin-top: 12px !important;
+}
+
+.dropdown .dropdown-menu-azul::before {
+    content: "";
+    position: absolute;
+    top: -15px;
+    left: 0;
+    width: 100%;
+    height: 15px;
+}
+
+
 .dropup .dropdown-menu-azul {
+    top: auto !important;
+    bottom: 100% !important;
     margin-bottom: 12px !important;
 }
 
-/* Botones del menú (Fondo azul, texto blanco -> Hover: mostaza, texto blanco) */
+.dropup .dropdown-menu-azul::after {
+    content: "";
+    position: absolute;
+    bottom: -15px;
+    left: 0;
+    width: 100%;
+    height: 15px;
+}
+
+
+.nav-item.dropdown:hover .dropdown-menu-azul,
+.dropdown-menu-azul.show {
+    display: flex !important;
+    flex-direction: column;
+    gap: 8px;
+}
+
+@media (min-width: 992px) {
+    .nav-item.dropdown:hover .dropdown-menu-azul {
+        animation: aparecerSuave 0.3s ease-out forwards;
+    }
+}
+
+@keyframes aparecerSuave {
+    0% { opacity: 0; transform: translateY(15px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
 .dropdown-item-azul {
     background-color: var(--azul-oscuro) !important;
     color: var(--blanco) !important;
     border-radius: 30px !important;
+    border: 1px solid var(--blanco) !important;
     font-weight: bold;
     text-align: center;
     padding: 10px 20px !important;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.15);
 }
 
 .dropdown-item-azul:hover {
     background-color: var(--amarillo-mostaza) !important;
     color: var(--blanco) !important;
+    border-color: var(--amarillo-mostaza) !important;
 }
 
-/* Ajuste sutil para que el buscador encaje perfecto dentro de la píldora */
 .buscador-nav-pildora {
     margin: 0;
     height: 100%;

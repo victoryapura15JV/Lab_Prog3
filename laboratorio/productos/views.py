@@ -1,3 +1,4 @@
+from django.core.exceptions import PermissionDenied
 from django.contrib import messages
 from django.db import IntegrityError, transaction
 from django.db.models import F, Q
@@ -37,9 +38,11 @@ def catalogo(request):
     })
 
 
+@rol_requerido('ARTESANO')
 def gestionar_productos(request, artesano_id):
-    """Vista del artesano: formulario de carga + listado de sus productos."""
     artesano = get_object_or_404(Artesano.objects.select_related('solicitud'), id=artesano_id)
+    if artesano.usuario != request.user:
+        raise PermissionDenied("Acceso bloqueado: No tienes permiso para gestionar los productos de otro artesano.")
 
     if request.method == 'POST':
         formulario = ProductoForm(request.POST, request.FILES)
@@ -58,9 +61,12 @@ def gestionar_productos(request, artesano_id):
         'productos': artesano.productos.all(),
     })
 
-
+@rol_requerido('ARTESANO')
 def modificar_producto(request, producto_id):
     producto = get_object_or_404(Producto.objects.select_related('artesano__solicitud'), id=producto_id)
+
+    if producto.artesano.usuario != request.user:
+        raise PermissionDenied("Acceso bloqueado: No tienes permiso para modificar este producto.")
 
     if request.method == 'POST':
         formulario = ProductoForm(request.POST, request.FILES, instance=producto)
@@ -78,11 +84,14 @@ def modificar_producto(request, producto_id):
     })
 
 
+@rol_requerido('ARTESANO')
 def eliminar_producto(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
     artesano_id = producto.artesano_id
 
-    
+    if producto.artesano.usuario != request.user:
+        raise PermissionDenied("Acceso bloqueado: No tienes permiso para eliminar este producto.")
+
     if request.method == 'POST':
         producto.delete()
         messages.success(request, 'Producto eliminado.')
