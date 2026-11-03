@@ -5,7 +5,7 @@
 {% block contenido_principal %}
     <link rel="stylesheet" href="{% static 'css/estiloProductos.css' %}">
 
-    <section class="perfil-encabezado mb-4">
+    <section class="perfil-encabezado panel-blanco">
         <span class="badge etiqueta-categoria mb-2">{{ solicitud.rubro }}</span>
         <h2>{{ solicitud.nombre_emprendimiento }}</h2>
         <p class="text-muted mb-2">
@@ -15,7 +15,7 @@
         <p class="fs-5 mb-0">♥ {{ total_likes }} Me gusta en total</p>
     </section>
 
-    <section class="row g-4 mb-5">
+    <section class="row g-4 mb-4 panel-blanco mx-0">
         <div class="col-12 col-md-7">
             <h3 class="h5">Nuestra historia</h3>
             <p>{{ solicitud.historia_emprendimiento|linebreaksbr }}</p>
@@ -28,17 +28,16 @@
                         {% if artesano.stand %}
                             <li><strong>Stand:</strong> {{ artesano.stand.pabellon }}, puesto {{ artesano.stand.numero_puesto }}</li>
                         {% endif %}
-                        {% if artesano.materiales %}<li><strong>Materiales:</strong> {{ artesano.materiales }}</li>{% endif %}
-                        {% if artesano.horarios_asistencia %}<li><strong>Horarios:</strong> {{ artesano.horarios_asistencia }}</li>{% endif %}
-                        {% if artesano.contacto %}<li><a href="{{ artesano.contacto }}" target="_blank" rel="noopener noreferrer">Contacto</a></li>{% endif %}
-                        {% if artesano.redes %}<li><a href="{{ artesano.redes }}" target="_blank" rel="noopener noreferrer">Redes sociales</a></li>{% endif %}
+                        {% if artesano.horarios %}<li><strong>Horario:</strong> {{ artesano.horarios }}</li>{% endif %}
+                        {% if artesano.instagram %}<li><a href="{{ artesano.instagram }}" target="_blank" rel="noopener noreferrer">Instagram</a></li>{% endif %}
+                        {% if artesano.facebook %}<li><a href="{{ artesano.facebook }}" target="_blank" rel="noopener noreferrer">Facebook</a></li>{% endif %}
                     </ul>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="productos-artesano">
+    <section id="productos-artesano" class="panel-blanco">
         <h3 class="mb-3">Productos de {{ solicitud.nombre_emprendimiento }}</h3>
         <div class="row g-4">
             {% for producto in productos %}

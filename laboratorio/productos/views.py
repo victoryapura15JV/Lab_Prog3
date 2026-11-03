@@ -7,7 +7,7 @@ from django.views.decorators.http import require_POST
 from usuarios.decoradores import rol_requerido
 
 from artesanos.models import Artesano, TendenciaBusqueda
-from .forms import ProductoForm, ComentarioForm, PerfilArtesanoForm
+from .forms import ProductoForm, ComentarioForm, PerfilArtesanoForm, RedesHorarioForm
 from .models import Producto, Like
 from .visitante import obtener_visitor_id, guardar_cookie
 
@@ -190,14 +190,18 @@ def editar_perfil(request):
 
     if request.method == 'POST':
         formulario = PerfilArtesanoForm(request.POST, instance=artesano.solicitud)
-        if formulario.is_valid():
+        form_extra = RedesHorarioForm(request.POST, instance=artesano)
+        if formulario.is_valid() and form_extra.is_valid():
             formulario.save()
+            form_extra.save()
             messages.success(request, 'Tu perfil se actualizó con éxito.')
             return redirect('productos:editar_perfil')
     else:
         formulario = PerfilArtesanoForm(instance=artesano.solicitud)
+        form_extra = RedesHorarioForm(instance=artesano)
 
     return render(request, 'productos/editar_perfil.html', {
         'artesano': artesano,
         'formulario': formulario,
+        'form_extra': form_extra,
     })

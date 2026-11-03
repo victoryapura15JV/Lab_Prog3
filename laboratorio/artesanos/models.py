@@ -96,7 +96,9 @@ class Artesano(models.Model):
     )
     usuario = models.OneToOneField('usuarios.Usuario', on_delete=models.PROTECT, null=True, blank=True, related_name='artesanos')
     visitas = models.IntegerField(default=0)
-
+    horarios = models.CharField(max_length=100, blank=True)
+    instagram = models.URLField(blank=True)
+    facebook = models.URLField(blank=True)
     class Meta:
         ordering = ('solicitud',)
 

@@ -3,7 +3,7 @@ import re
 
 from django import forms
 
-from artesanos.models import Solicitud
+from artesanos.models import Artesano, Solicitud
 from .models import Producto, Comentario
 
 EXTENSIONES_VALIDAS = ('.jpg', '.jpeg', '.png', '.webp')
@@ -109,3 +109,18 @@ class PerfilArtesanoForm(forms.ModelForm):
         if not re.fullmatch(r'[0-9+\-\s]{6,20}', telefono):
             raise forms.ValidationError('Ingresá un teléfono válido (solo números, espacios, + o -).')
         return telefono
+
+class RedesHorarioForm(forms.ModelForm):
+    class Meta:
+        model = Artesano
+        fields = ['horarios', 'instagram', 'facebook']
+        labels = {
+            'horarios': 'Horario en que el stand permanece abierto',
+            'instagram': 'Instagram (enlace)',
+            'facebook': 'Facebook (enlace)',
+        }
+        widgets = {
+            'horarios': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ej: Lunes a sábado de 18 a 23 hs'}),
+            'instagram': forms.URLInput(attrs={'class': 'form-control', 'placeholder': 'https://instagram.com/tu_usuario'}),
+            'facebook': forms.URLInput(attrs={'class': 'form-control', 'placeholder': 'https://facebook.com/tu_pagina'}),
+        }

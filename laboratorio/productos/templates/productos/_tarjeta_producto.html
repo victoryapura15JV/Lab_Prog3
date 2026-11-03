@@ -9,8 +9,15 @@
         </h3>
         <p class="card-text">{{ producto.descripcion|truncatechars:140 }}</p>
     </div>
-    <div class="card-footer small text-muted d-flex justify-content-between">
-        <a href="{% url 'productos:perfil' producto.artesano.id %}" class="enlace-sin-estilo">{{ producto.artesano.solicitud.nombre_emprendimiento }}</a>
-        <span>♥ {{ producto.likes.count }}</span>
+    <div class="card-footer bg-white">
+        <p class="mb-1 small">
+            <span class="text-muted">Por:</span>
+            <a href="{% url 'productos:perfil' producto.artesano.id %}" class="fw-bold enlace-sin-estilo">
+                {{ producto.artesano.solicitud.nombre_emprendimiento }}
+            </a>
+        </p>
+        <p class="mb-0 small text-muted">
+            ♥ {{ producto.likes.count }}
+        </p>
     </div>
 </div>

@@ -5,7 +5,7 @@
 {% block contenido_principal %}
     <link rel="stylesheet" href="{% static 'css/estiloProductos.css' %}">
 
-    <section id="seccion-catalogo">
+    <section id="seccion-catalogo" class="panel-blanco">
         <h2 class="text-center mb-4">
             {% if q %}Resultados para "{{ q }}"{% else %}Productos de la feria{% endif %}
         </h2>
