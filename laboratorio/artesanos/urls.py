@@ -16,4 +16,5 @@ urlpatterns = [
     path('panel/stands/<int:stand_id>/eliminar/', views.eliminar_stand, name='eliminar_stand'),
     path('panel/stands/<int:stand_id>/liberar/', views.liberar_stand, name='liberar_stand'),
     path('corregir/<int:solicitud_id>/', views.corregir_solicitud, name='corregir_solicitud'),
+    path('panel/reportes-operativos/', views.reportes_operativos, name='reportes_operativos'),
 ]

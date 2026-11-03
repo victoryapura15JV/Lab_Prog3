@@ -4,159 +4,103 @@
 {% block titulo %}Panel Estratégico - Cliente{% endblock %}
 
 {% block contenido_principal %}
-<!-- Importamos Chart.js para los gráficos interactivos -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <div class="container-fluid py-4">
-    <!-- Encabezado y Botones de Exportación (HU-18) -->
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold mb-3 mb-md-0" style="color: var(--azul-oscuro);">Panel Estratégico y de Tendencias</h2>
-        <div>
-            <!-- Botones inactivos temporalmente, los activaremos en el Paso 5 -->
-            <button class="btn btn-danger me-2 shadow-sm" disabled>📄 Exportar PDF</button>
-            <button class="btn btn-success shadow-sm" disabled>📊 Exportar Excel</button>
-        </div>
-    </div>
-    
-    <!-- Tarjetas de KPIs (Indicadores Clave) -->
-    <div class="row g-4 mb-5">
-        <div class="col-12 col-sm-6 col-lg-3">
-            <div class="card text-center shadow-sm h-100 border-0" style="background-color: var(--azul-oscuro); color: var(--blanco); border-radius: 15px;">
-                <div class="card-body">
-                    <h5 class="card-title">Total de Stands</h5>
-                    <p class="display-4 fw-bold mb-0">{{ total_stands }}</p>
-                </div>
+    <div class="card p-4 p-md-5" id="dashboard-content" style="background-color: var(--blanco); border: 2px solid var(--amarillo-mostaza); border-radius: 18px; box-shadow: 0 14px 30px -18px rgba(42, 53, 78, 0.45);">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-5 pb-3 border-bottom" data-html2canvas-ignore="true">
+            <h2 class="mb-3 mb-md-0" style="color: var(--azul-oscuro); font-weight: 800; font-size: 1.8rem; margin: 0;">Panel Estratégico y de Tendencias</h2>
+            <div>
+                <button id="btn-export-pdf" class="btn btn-destacado me-2 shadow-sm px-4">📄 Exportar PDF</button>
+                <button id="btn-export-excel" class="btn shadow-sm px-4" style="background-color: var(--amarillo-mostaza); color: white; border-radius: 30px; font-weight: bold; border: 2px solid var(--amarillo-mostaza); transition: 0.3s;">📊 Exportar Excel</button>
             </div>
         </div>
-        <div class="col-12 col-sm-6 col-lg-3">
-            <div class="card text-center shadow-sm h-100 border-0" style="background-color: #198754; color: var(--blanco); border-radius: 15px;">
-                <div class="card-body">
-                    <h5 class="card-title">Stands Ocupados</h5>
-                    <p class="display-4 fw-bold mb-0">{{ stands_ocupados }}</p>
+        <div class="row g-4 mb-5">
+            <div class="col-12 col-sm-6 col-lg-4">
+                <div class="card text-center shadow-sm h-100 border-0" style="background-color: var(--azul-oscuro); color: var(--blanco); border-radius: 15px;">
+                    <div class="card-body py-4">
+                        <h5 class="card-title mb-3" style="font-weight: 600; border: none;">Artesanos Registrados</h5>
+                        <p class="display-4 fw-bold mb-0">{{ total_artesanos }}</p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-12 col-sm-6 col-lg-3">
-            <div class="card text-center shadow-sm h-100 border-0" style="background-color: #6c757d; color: var(--blanco); border-radius: 15px;">
-                <div class="card-body">
-                    <h5 class="card-title">Stands Disponibles</h5>
-                    <p class="display-4 fw-bold mb-0">{{ stands_disponibles }}</p>
+            <div class="col-12 col-sm-6 col-lg-4">
+                <div class="card text-center shadow-sm h-100 border-0" style="background-color: #198754; color: var(--blanco); border-radius: 15px;">
+                    <div class="card-body py-4">
+                        <h5 class="card-title mb-3" style="font-weight: 600; border: none;">Stands Ocupados / Disponibles</h5>
+                        <p class="display-4 fw-bold mb-0">{{ stands_ocupados }} <span class="fs-4 fw-normal">/ {{ stands_disponibles }}</span></p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-12 col-sm-6 col-lg-3">
-            <div class="card text-center shadow-sm h-100 border-0" style="background-color: var(--amarillo-mostaza); color: var(--blanco); border-radius: 15px;">
-                <div class="card-body">
-                    <h5 class="card-title">Ocupación Total</h5>
-                    <p class="display-4 fw-bold mb-0">{{ porcentaje_ocupacion }}%</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Fila de Gráficos Interactivos (HU-16) -->
-    <div class="row g-4 mb-5">
-        <div class="col-12 col-lg-4">
-            <div class="card shadow-sm h-100 border-0" style="border-radius: 15px;">
-                <div class="card-body">
-                    <h5 class="card-title text-center mb-4 fw-bold" style="color: var(--azul-oscuro);">Estado de Stands</h5>
-                    <div style="position: relative; height: 300px;">
-                        <canvas id="graficoStands"></canvas>
+            <div class="col-12 col-sm-6 col-lg-4">
+                <div class="card text-center shadow-sm h-100 border-0" style="background-color: var(--amarillo-mostaza); color: var(--blanco); border-radius: 15px;">
+                    <div class="card-body py-4">
+                        <h5 class="card-title mb-3" style="font-weight: 600; border: none;">Ocupación Total del Predio</h5>
+                        <p class="display-4 fw-bold mb-0">{{ porcentaje_ocupacion }}%</p>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-12 col-lg-4">
-            <div class="card shadow-sm h-100 border-0" style="border-radius: 15px;">
-                <div class="card-body">
-                    <h5 class="card-title text-center mb-4 fw-bold" style="color: var(--azul-oscuro);">Artesanos por Rubro</h5>
-                    <div style="position: relative; height: 300px;">
-                        <canvas id="graficoRubros"></canvas>
+        <div class="row g-4 mb-5">
+            <div class="col-12 col-lg-6">
+                <div class="card shadow-sm h-100" style="border: 1.5px solid var(--borde-campo); border-radius: 15px;">
+                    <div class="card-body">
+                        <h5 class="card-title text-center mb-4 fw-bold" style="color: var(--azul-oscuro); border-bottom: 2px solid var(--amarillo-mostaza); display: inline-block; padding-bottom: 5px;">Artesanos por Rubro</h5>
+                        <div style="position: relative; height: 300px;">
+                            <canvas id="graficoRubros"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-12 col-lg-4">
-            <div class="card shadow-sm h-100 border-0" style="border-radius: 15px;">
-                <div class="card-body">
-                    <h5 class="card-title text-center mb-4 fw-bold" style="color: var(--azul-oscuro);">Distribución Geográfica</h5>
-                    <div style="position: relative; height: 300px;">
-                        <canvas id="graficoLocalidades"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Fila de Tablas Top 10 (HU-17) -->
-    <div class="row g-4">
-        <div class="col-12 col-lg-6">
-            <div class="card shadow-sm border-0" style="border-radius: 15px;">
-                <div class="card-body">
-                    <h5 class="card-title mb-3 fw-bold" style="color: var(--amarillo-mostaza);">Top 10: Tendencias de Búsqueda</h5>
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle">
-                            <thead class="table-dark" style="background-color: var(--azul-oscuro);">
-                                <tr>
-                                    <th>Ranking</th>
-                                    <th>Término Buscado</th>
-                                    <th>Consultas</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for busqueda in top_busquedas %}
-                                <tr>
-                                    <td>#{{ forloop.counter }}</td>
-                                    <td class="fw-bold">{{ busqueda.termino|title }}</td>
-                                    <td>{{ busqueda.total }}</td>
-                                </tr>
-                                {% empty %}
-                                <tr>
-                                    <td colspan="3" class="text-center text-muted py-3">Aún no hay búsquedas registradas.</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+            <div class="col-12 col-lg-6">
+                <div class="card shadow-sm h-100" style="border: 1.5px solid var(--borde-campo); border-radius: 15px;">
+                    <div class="card-body">
+                        <h5 class="card-title text-center mb-4 fw-bold" style="color: var(--azul-oscuro); border-bottom: 2px solid var(--amarillo-mostaza); display: inline-block; padding-bottom: 5px;">Artesanos por Localidad</h5>
+                        <div style="position: relative; height: 300px;">
+                            <canvas id="graficoLocalidades"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-12 col-lg-6">
-            <div class="card shadow-sm border-0" style="border-radius: 15px;">
-                <div class="card-body">
-                    <h5 class="card-title mb-3 fw-bold" style="color: var(--amarillo-mostaza);">Top 10: Stands Más Visitados</h5>
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle">
-                            <thead class="table-dark" style="background-color: var(--azul-oscuro);">
-                                <tr>
-                                    <th>Ranking</th>
-                                    <th>Emprendimiento</th>
-                                    <th>Ubicación</th>
-                                    <th>Visitas</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for artesano in top_artesanos %}
-                                <tr>
-                                    <td>#{{ forloop.counter }}</td>
-                                    <td class="fw-bold">{{ artesano.solicitud.nombre_emprendimiento }}</td>
-                                    <td>
-                                        {% if artesano.stand %}
-                                            {{ artesano.stand.pabellon }} - Puesto {{ artesano.stand.numero_puesto }}
-                                        {% else %}
-                                            <span class="badge bg-warning text-dark">Sin Asignar</span>
-                                        {% endif %}
-                                    </td>
-                                    <td>{{ artesano.visitas }}</td>
-                                </tr>
-                                {% empty %}
-                                <tr>
-                                    <td colspan="4" class="text-center text-muted py-3">Aún no hay artesanos con visitas.</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+        <!-- Reporte General de Artesanos -->
+        <div class="row g-4 mb-3">
+            <div class="col-12">
+                <div class="card shadow-sm" style="border: 1.5px solid var(--borde-campo); border-radius: 15px;">
+                    <div class="card-body">
+                        <h5 class="card-title mb-4 fw-bold" style="color: var(--azul-oscuro);">Reporte de Rendimiento por Artesano</h5>
+                        <p class="text-muted small mb-3" data-html2canvas-ignore="true">💡 Haz clic en los encabezados de las columnas para ordenar los datos.</p>
+
+                        <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                            <table class="table table-hover align-middle" id="tabla-artesanos">
+                                <thead class="table-dark" style="background-color: var(--azul-oscuro); position: sticky; top: 0; z-index: 1;">
+                                    <tr style="cursor: pointer; user-select: none;">
+                                        <th>#</th>
+                                        <th class="sortable" data-type="string">Emprendimiento <span class="sort-icon text-warning">↕</span></th>
+                                        <th class="sortable text-center" data-type="number">Productos <span class="sort-icon text-warning">↕</span></th>
+                                        <th class="sortable text-center" data-type="number">Visitas <span class="sort-icon text-warning">↕</span></th>
+                                        <th class="sortable text-center" data-type="number">Popularidad (Likes) <span class="sort-icon text-warning">↕</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for artesano in artesanos_stats %}
+                                    <tr>
+                                        <td class="fw-bold">{{ forloop.counter }}</td>
+                                        <td>{{ artesano.solicitud.nombre_emprendimiento }}</td>
+                                        <td class="text-center"><span class="badge bg-secondary">{{ artesano.total_productos }}</span></td>
+                                        <td class="text-center"><span class="badge text-dark" style="background-color: var(--mostaza-claro);">👁️ {{ artesano.visitas }}</span></td>
+                                        <td class="text-center"><span class="badge" style="background-color: #A8423B;">♥ {{ artesano.total_likes }}</span></td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="5" class="text-center text-muted py-3">No hay artesanos registrados aún.</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -165,61 +109,129 @@
 </div>
 
 <script>
-    // Gráfico de Stands (Circular)
-    const ctxStands = document.getElementById('graficoStands').getContext('2d');
-    new Chart(ctxStands, {
-        type: 'doughnut',
-        data: {
-            labels: ['Ocupados', 'Disponibles'],
-            datasets: [{
-                data: [{{ stands_ocupados }}, {{ stands_disponibles }}],
-                backgroundColor: ['#198754', '#6c757d'],
-                borderWidth: 0
-            }]
-        },
-        options: { responsive: true, maintainAspectRatio: false }
+// LÓGICA DE ORDENAMIENTO DE TABLA
+document.addEventListener('DOMContentLoaded', function() {
+    const table = document.getElementById('tabla-artesanos');
+    if (!table) return;
+
+    const headers = table.querySelectorAll('th.sortable');
+
+    headers.forEach(header => {
+        header.addEventListener('click', () => {
+            const tableBody = table.querySelector('tbody');
+            const rows = Array.from(tableBody.querySelectorAll('tr'));
+
+            if (rows.length === 1 && rows[0].cells.length === 1) return;
+
+            const index = Array.from(header.parentElement.children).indexOf(header);
+            const isNumeric = header.dataset.type === 'number';
+            const currentDirection = header.dataset.direction || 'desc';
+            const newDirection = currentDirection === 'desc' ? 'asc' : 'desc';
+
+            rows.sort((a, b) => {
+                const aCol = a.cells[index].textContent.trim().replace(/[^0-9.-]+/g,"");
+                const bCol = b.cells[index].textContent.trim().replace(/[^0-9.-]+/g,"");
+
+                const aVal = isNumeric ? parseFloat(aCol || 0) : a.cells[index].textContent.trim().toLowerCase();
+                const bVal = isNumeric ? parseFloat(bCol || 0) : b.cells[index].textContent.trim().toLowerCase();
+
+                if (aVal > bVal) return newDirection === 'asc' ? 1 : -1;
+                if (aVal < bVal) return newDirection === 'asc' ? -1 : 1;
+                return 0;
+            });
+
+            tableBody.append(...rows);
+
+            headers.forEach(h => {
+                h.dataset.direction = '';
+                h.querySelector('.sort-icon').textContent = '↕';
+            });
+
+            header.dataset.direction = newDirection;
+            header.querySelector('.sort-icon').textContent = newDirection === 'asc' ? '↑' : '↓';
+        });
     });
+});
 
-    // Gráfico de Rubros (Barras)
-    const rubrosLabels = [];
-    const rubrosData = [];
-    {% for item in artesanos_por_rubro %}
-        rubrosLabels.push('{{ item.rubro }}');
-        rubrosData.push({{ item.total }});
-    {% endfor %}
+//LÓGICA DE EXPORTACIÓN A PDF
+document.getElementById('btn-export-pdf').addEventListener('click', function() {
+    const elemento = document.getElementById('dashboard-content');
+    const opciones = {
+        margin:       0.2,
+        filename:     'Panel_Estrategico_PonchoDigital.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true },
+        jsPDF:        { unit: 'in', format: 'a4', orientation: 'landscape' }
+    };
 
-    new Chart(document.getElementById('graficoRubros').getContext('2d'), {
-        type: 'bar',
-        data: {
-            labels: rubrosLabels,
-            datasets: [{
-                label: 'Artesanos',
-                data: rubrosData,
-                backgroundColor: '#B0923D', // Amarillo Mostaza
-            }]
-        },
-        options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
-    });
+    html2pdf().set(opciones).from(elemento).save();
+});
 
-    // Gráfico de Localidades (Barras)
-    const localidadesLabels = [];
-    const localidadesData = [];
-    {% for item in artesanos_por_localidad %}
-        localidadesLabels.push('{{ item.localidad }}');
-        localidadesData.push({{ item.total }});
-    {% endfor %}
+//LÓGICA DE EXPORTACIÓN A EXCEL
+document.getElementById('btn-export-excel').addEventListener('click', function() {
+    let csv = [];
+    const filas = document.querySelectorAll("#tabla-artesanos tr");
 
-    new Chart(document.getElementById('graficoLocalidades').getContext('2d'), {
-        type: 'bar',
-        data: {
-            labels: localidadesLabels,
-            datasets: [{
-                label: 'Artesanos',
-                data: localidadesData,
-                backgroundColor: '#2A354E', // Azul Oscuro
-            }]
-        },
-        options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
-    });
+    for (let i = 0; i < filas.length; i++) {
+        let filaActual = [], columnas = filas[i].querySelectorAll("td, th");
+
+        for (let j = 0; j < columnas.length; j++) {
+            let textoLimpio = columnas[j].innerText.replace(/[\r\n]+/g, " ").trim();
+            textoLimpio = textoLimpio.replace(/[↕↑↓👁️♥]/g, "").trim();
+            filaActual.push('"' + textoLimpio + '"');
+        }
+        csv.push(filaActual.join(","));
+    }
+
+    const archivoCSV = new Blob(["\uFEFF" + csv.join("\n")], { type: "text/csv;charset=utf-8;" });
+    const linkDescarga = document.createElement("a");
+    linkDescarga.download = "Reporte_Artesanos_PonchoDigital.csv";
+    linkDescarga.href = window.URL.createObjectURL(archivoCSV);
+    linkDescarga.style.display = "none";
+    document.body.appendChild(linkDescarga);
+    linkDescarga.click();
+    document.body.removeChild(linkDescarga);
+});
+const rubrosLabels = [];
+const rubrosData = [];
+{% for item in artesanos_por_rubro %}
+    rubrosLabels.push('{{ item.rubro }}');
+    rubrosData.push({{ item.total }});
+{% endfor %}
+
+new Chart(document.getElementById('graficoRubros').getContext('2d'), {
+    type: 'bar',
+    data: {
+        labels: rubrosLabels,
+        datasets: [{
+            label: 'Cantidad de Artesanos',
+            data: rubrosData,
+            backgroundColor: '#B0923D',
+            borderRadius: 5
+        }]
+    },
+    options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }, plugins: { legend: { display: false } } }
+});
+
+const localidadesLabels = [];
+const localidadesData = [];
+{% for item in artesanos_por_localidad %}
+    localidadesLabels.push('{{ item.localidad }}');
+    localidadesData.push({{ item.total }});
+{% endfor %}
+
+new Chart(document.getElementById('graficoLocalidades').getContext('2d'), {
+    type: 'bar',
+    data: {
+        labels: localidadesLabels,
+        datasets: [{
+            label: 'Cantidad de Artesanos',
+            data: localidadesData,
+            backgroundColor: '#2A354E',
+            borderRadius: 5
+        }]
+    },
+    options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }, plugins: { legend: { display: false } } }
+});
 </script>
 {% endblock %}
