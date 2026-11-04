@@ -1,5 +1,5 @@
 from django.db import models
-
+import uuid
 class Stand(models.Model):
    pabellones = [
         ('Pabellon A', 'Pabellon A'),
@@ -74,7 +74,7 @@ class Solicitud(models.Model):
     estado = models.CharField(max_length=15, choices=estados_solicitud, default='Pendiente')
     justificacion = models.TextField(blank=True, null=True)
     envio = models.DateTimeField(auto_now_add=True)
-
+    token_acceso = models.UUIDField(default=uuid.uuid4, editable=False, null=True, unique=True)
     class Meta:
         ordering = ('envio',)
 

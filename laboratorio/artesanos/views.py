@@ -217,8 +217,8 @@ def liberar_stand(request, stand_id):
     return redirect('artesanos:listar_stands')
 
 
-def corregir_solicitud(request, solicitud_id):
-    solicitud = get_object_or_404(Solicitud, id=solicitud_id)
+def corregir_solicitud(request, token):
+    solicitud = get_object_or_404(Solicitud, token_acceso=token)
     if solicitud.estado != 'Modificacion':
         messages.error(request, 'Esta solicitud no requiere modificaciones.')
         return redirect('home')

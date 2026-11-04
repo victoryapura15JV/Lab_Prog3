@@ -30,7 +30,7 @@
                 <div class="mt-5">
                     <a href="{% url 'home' %}" class="btn btn-outline-secondary">Volver al inicio</a>
                     {% if solicitud.estado == 'Modificacion' %}
-                        <a href="{% url 'artesanos:corregir_solicitud' solicitud.id %}" class="btn btn-destacado" style="background-color: var(--amarillo-mostaza); color: var(--azul-oscuro); font-weight: bold;">
+                        <a href="{% url 'artesanos:corregir_solicitud' solicitud.token_acceso %}" class="btn btn-destacado" style="background-color: var(--amarillo-mostaza); color: var(--azul-oscuro); font-weight: bold;">
                             Corregir Solicitud
                         </a>
                     {% endif %}
