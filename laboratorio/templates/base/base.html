@@ -119,6 +119,11 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center justify-content-center p-2 text-white" href="{% url 'productos:catalogo' %}" aria-label="Catálogo de productos" title="Catálogo de productos">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bag-fill" viewBox="0 0 16 16"><path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5z"/></svg>
+                    </a>
+                </li>
 
                 {% if user.is_authenticated %}
                     {% if user.rol.nombre == 'CLIENTE' or user.rol.nombre == 'ARTESANO' %}
@@ -191,6 +196,11 @@
             </ul>
         </nav>
         <main class="container mt-5 pt-5 mb-4">
+            {% comment %}
+                Avisos (éxito/error) generados por la página actual. Es el ÚNICO lugar donde se
+                muestran, en todas las páginas, para que no queden pendientes y aparezcan en otra.
+            {% endcomment %}
+            <div id="contenedor-mensajes">{% include 'productos/_mensajes.html' %}</div>
             {% block contenido_principal %}
             {% endblock %}
         </main>
@@ -205,8 +215,12 @@
                         <p class="mb-4" style="color: var(--blanco); opacity: 0.85;">Inicia sesión y obtén beneficios para tu stand</p>
                         <form id="formLoginModal" action="/usuarios/login/" method="POST">
                             {% csrf_token %}
+                            <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                            {% if login_error %}
+                                <div class="alert alert-danger text-center py-2 mb-3" role="alert" id="loginError">{{ login_error }}</div>
+                            {% endif %}
                             <div class="form-floating mb-3">
-                                <input type="email" name="username" class="form-control input-redondeado" id="loginEmail" placeholder="name@example.com" required>
+                                <input type="email" name="username" class="form-control input-redondeado" id="loginEmail" placeholder="name@example.com" value="{{ login_email }}" required>
                                 <label for="loginEmail" style="color: var(--negro-texto);">Correo electrónico</label>
                             </div>
                             <div class="form-floating mb-3 position-relative">
@@ -224,7 +238,7 @@
                             </div>
                             <button type="submit" class="btn w-100 mb-3 fw-bold py-2 btn-login-modal">Iniciar sesión</button>
                             <div class="text-center mt-4">
-                                <a href="/artesanos/solicitud/" class="fw-bold" style="color: var(--amarillo-mostaza); text-decoration: none;">Inscripción para artesano / Registrarse</a>
+                                <a href="{% url 'artesanos:crear_solicitud' %}" class="fw-bold" style="color: var(--amarillo-mostaza); text-decoration: none;">Inscripción para artesano / Registrarse</a>
                             </div>
                         </form>
                     </div>
