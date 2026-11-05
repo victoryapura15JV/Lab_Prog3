@@ -6,12 +6,6 @@
     <link rel="stylesheet" href="{% static 'artesanos/estiloPaneles.css' %}">
     <div class="container mt-5">
 
-        {% for mensaje in messages %}
-            <div class="alert alert-{% if mensaje.tags == 'error' %}danger{% else %}{{ mensaje.tags|default:'info' }}{% endif %} alert-dismissible fade show" role="alert">
-                {{ mensaje }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
-            </div>
-        {% endfor %}
 
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="mb-0">Panel de Administrador - Stands</h2>

@@ -9,8 +9,6 @@
         <h2 class="text-center mb-1">Modificar mi perfil</h2>
         <p class="text-center text-muted mb-4">{{ artesano.solicitud.nombre_emprendimiento }}</p>
 
-        {% include 'productos/_mensajes.html' %}
-
         <form method="post" novalidate>
             {% csrf_token %}
             {% for campo in formulario %}

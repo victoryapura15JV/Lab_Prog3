@@ -120,11 +120,9 @@ def dashboard_cliente(request):
         total_likes=Count('productos__likes', distinct=True)
     ).select_related('solicitud').order_by('-visitas')
 
-    # 5. Extras (Top búsquedas y visitas generales)
     top_artesanos = Artesano.objects.order_by('-visitas')[:10]
-    top_busquedas = TendenciaBusqueda.objects.values('termino').annotate(total=Count('id')).order_by('-total')[:10]
+    top_busquedas = TendenciaBusqueda.objects.values('termino').annotate(total=Count('id')).order_by('-total')[:15]
 
-    # Consolidación final en un ÚNICO diccionario de contexto
     contexto = {
         'total_stands': total_stands,
         'stands_ocupados': stands_ocupados,
@@ -133,7 +131,7 @@ def dashboard_cliente(request):
         'artesanos_por_localidad': artesanos_por_localidad,
         'artesanos_por_rubro': artesanos_por_rubro,
         'total_artesanos': total_artesanos,
-        'artesanos_stats': artesanos_stats,  # Esta es la que lee la tabla del HTML
+        'artesanos_stats': artesanos_stats,
         'top_artesanos': top_artesanos,
         'top_busquedas': top_busquedas,
     }
@@ -249,10 +247,8 @@ def reportes_operativos(request):
     Vista exclusiva para el Administrador.
     Cumple con CU-03 (Tendencias) y CU-04 (Reportes Operativos).
     """
-    # CU-03: Tendencias de búsqueda globales
     tendencias = TendenciaBusqueda.objects.values('termino').annotate(total=Count('id')).order_by('-total')[:15]
 
-    # CU-04: Reportes operativos accionables (Lo que el Admin necesita resolver)
     artesanos_sin_stand = Artesano.objects.filter(stand__isnull=True).select_related('solicitud')
     stands_disponibles = Stand.objects.filter(estado='Disponible').order_by('pabellon', 'numero_puesto')
     solicitudes_atascadas = Solicitud.objects.filter(estado__in=['Pendiente', 'Modificacion']).order_by('-envio')
