@@ -290,7 +290,7 @@ main .btn:focus-visible {
     box-shadow: none;
 }
 
-/* Acción principal: azul, y mostaza al pasar el mouse */
+/* azul, y mostaza al pasar el mouse */
 main .btn-primary {
     --bs-btn-color: #fff;
     --bs-btn-bg: var(--azul-oscuro);
@@ -409,7 +409,7 @@ main .alert p:last-child {
 }
 
 
-/* ---------- Resultado de la consulta (resultado_estado.html) ---------- */
+/* ---------- (resultado_estado.html) ---------- */
 
 main .card-body > h4 {
     margin-bottom: 0.75rem;
@@ -462,8 +462,7 @@ main .card-body.p-5 {
     background-color: var(--crema);
 }
 
-/* Nombre del emprendimiento: píldora azul con aro mostaza.
-   El h2 trae color inline desde la plantilla: se pisa con !important */
+/* Nombre del emprendimiento: píldora azul con aro mostaza */
 main .card-body.p-5 h2 {
     display: inline-block;
     max-width: 100%;

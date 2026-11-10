@@ -96,25 +96,25 @@ def asignar_stand(request, artesano_id):
 @login_required
 def dashboard_cliente(request):
     """
-    Vista exclusiva para el rol Cliente institucional.
+    Vista exclusiva para el rol Cliente
     """
     if not request.user.rol or request.user.rol.nombre != 'CLIENTE':
         raise PermissionDenied("Acceso denegado. Esta vista es exclusiva para el Cliente institucional.")
 
-    # 1. Cantidad de stands ocupados y disponibles
+    # Cantidad de stands ocupados y disponibles
     total_stands = Stand.objects.count()
     stands_ocupados = Stand.objects.filter(estado='Ocupado').count()
     stands_disponibles = Stand.objects.filter(estado='Disponible').count()
     porcentaje_ocupacion = round((stands_ocupados / total_stands) * 100, 1) if total_stands > 0 else 0
 
-    # 2. Artesanos registrados por localidad y rubro
+    # Artesanos registrados por localidad y rubro
     artesanos_por_localidad = Solicitud.objects.filter(estado='Aprobado').values('localidad').annotate(total=Count('id')).order_by('-total')
     artesanos_por_rubro = Solicitud.objects.filter(estado='Aprobado').values('rubro').annotate(total=Count('id')).order_by('-total')
 
-    # 3. Total de Artesanos registrados
+    # Total de Artesanos registrados
     total_artesanos = Artesano.objects.count()
 
-    # 4. Estadísticas completas por artesano (Productos y Likes)
+    # Estadísticas completas por artesano
     artesanos_stats = Artesano.objects.annotate(
         total_productos=Count('productos', distinct=True),
         total_likes=Count('productos__likes', distinct=True)
@@ -137,6 +137,7 @@ def dashboard_cliente(request):
     }
 
     return render(request, 'artesanos/dashboard_cliente.html', contexto)
+
 def estado_solicitud(request):
     if request.method == 'POST':
         dni_ingresado = request.POST.get('dni')
@@ -205,7 +206,7 @@ def eliminar_stand(request, stand_id):
 @rol_requerido('ADMINISTRADOR')
 @require_POST
 def liberar_stand(request, stand_id):
-    """Da de baja la asignación: el artesano pierde el stand y el stand queda Disponible."""
+    """Da de baja la asignación,el artesano pierde el stand y el stand queda Disponible."""
     stand = get_object_or_404(Stand, id=stand_id)
     with transaction.atomic():
         Artesano.objects.filter(stand=stand).update(stand=None)
@@ -245,7 +246,6 @@ def corregir_solicitud(request, token):
 def reportes_operativos(request):
     """
     Vista exclusiva para el Administrador.
-    Cumple con CU-03 (Tendencias) y CU-04 (Reportes Operativos).
     """
     tendencias = TendenciaBusqueda.objects.values('termino').annotate(total=Count('id')).order_by('-total')[:15]
 

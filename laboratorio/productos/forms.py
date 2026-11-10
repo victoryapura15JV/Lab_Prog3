@@ -22,7 +22,7 @@ class ProductoForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        # ids simples (nombre, categoria, ...) para que productos.js los encuentre
+        # ids simples para que productos.js los encuentre
         kwargs.setdefault('auto_id', '%s')
         super().__init__(*args, **kwargs)
         self.fields['categoria'].choices = [('', 'Seleccione una categoría')] + list(Producto.categorias)

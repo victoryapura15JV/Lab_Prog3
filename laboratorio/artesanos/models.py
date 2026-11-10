@@ -29,18 +29,49 @@ class Solicitud(models.Model):
         ('Catamarca', 'Catamarca'),
         ('Salta', 'Salta'),
         ('Tucuman', 'Tucumán'),
+        ('Jujuy', 'Jujuy'),
+        ('La Rioja', 'La Rioja'),
+        ('Santiago del Estero', 'Santiago del Estero'),
+        ('Cordoba', 'Córdoba'),
+        ('Santa Fe', 'Santa Fe'),
+        ('Buenos Aires', 'Buenos Aires'),
+        ('Mendoza', 'Mendoza'),
         ('Otra', 'Otra provincia'),
     ]
 
     localidades = [
+        # Catamarca
         ('Capital', 'Capital'),
         ('Valle Viejo', 'Valle Viejo'),
         ('Fray Mamerto Esquiu', 'Fray Mamerto Esquiú'),
         ('Belen', 'Belén'),
+        # Salta
         ('Cafayate', 'Cafayate'),
         ('Tartagal', 'Tartagal'),
+        # Tucumán
         ('Tafi del Valle', 'Tafí del Valle'),
         ('Yerba Buena', 'Yerba Buena'),
+        # Jujuy
+        ('San Salvador de Jujuy', 'San Salvador de Jujuy'),
+        ('Humahuaca', 'Humahuaca'),
+        # La Rioja
+        ('La Rioja Capital', 'La Rioja Capital'),
+        ('Chilecito', 'Chilecito'),
+        # Santiago del Estero
+        ('Santiago Capital', 'Santiago del Estero (Capital)'),
+        ('La Banda', 'La Banda'),
+        # Córdoba
+        ('Cordoba Capital', 'Córdoba (Capital)'),
+        ('Villa Carlos Paz', 'Villa Carlos Paz'),
+        # Santa Fe
+        ('Rosario', 'Rosario'),
+        ('Santa Fe Capital', 'Santa Fe (Capital)'),
+        # Buenos Aires
+        ('CABA', 'Ciudad Autónoma de Buenos Aires'),
+        ('La Plata', 'La Plata'),
+        # Mendoza
+        ('Mendoza Capital', 'Mendoza (Capital)'),
+        ('San Rafael', 'San Rafael'),
         ('Otra', 'Otra localidad'),
     ]
 

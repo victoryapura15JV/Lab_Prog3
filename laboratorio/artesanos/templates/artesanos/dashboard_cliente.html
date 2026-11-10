@@ -115,7 +115,7 @@
                 <div class="card shadow-sm" style="border: 1.5px solid var(--borde-campo); border-radius: 15px;">
                     <div class="card-body">
                         <h5 class="card-title mb-4 fw-bold" style="color: var(--azul-oscuro);">Reporte de Rendimiento por Artesano</h5>
-                        <p class="text-muted small mb-3" data-html2canvas-ignore="true">💡 Haz clic en los encabezados de las columnas para ordenar los datos.</p>
+                      
 
                         <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
                             <table class="table table-hover align-middle" id="tabla-artesanos">
@@ -134,7 +134,7 @@
                                         <td class="fw-bold">{{ forloop.counter }}</td>
                                         <td>{{ artesano.solicitud.nombre_emprendimiento }}</td>
                                         <td class="text-center"><span class="badge bg-secondary">{{ artesano.total_productos }}</span></td>
-                                        <td class="text-center"><span class="badge text-dark" style="background-color: var(--mostaza-claro);">👁️ {{ artesano.visitas }}</span></td>
+                                        <td class="text-center"><span class="badge text-dark" style="background-color: var(--mostaza-claro);"> {{ artesano.visitas }}</span></td>
                                         <td class="text-center"><span class="badge" style="background-color: #A8423B;">♥ {{ artesano.total_likes }}</span></td>
                                     </tr>
                                     {% empty %}

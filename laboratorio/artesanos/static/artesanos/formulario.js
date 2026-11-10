@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded",()=>{
-    //validacion de dni 
+
     const nomyape = document.getElementById("id_nombre_apellido");
     const errorNombre = document.getElementById("error_nombre");
     const dni = document.getElementById("id_dni");
@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     //Provincias con sus correspondientes localidades
     const provincia = document.getElementById("id_provincia");
     const localidad = document.getElementById("id_localidad");
-    provincia.addEventListener("change", () => {
+        provincia.addEventListener("change", () => {
         let provinciaElegida = provincia.value;
         if (provinciaElegida === "Catamarca") {
             localidad.innerHTML = `
@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded",()=>{
             `;
 
         } else if (provinciaElegida === "Salta") {
-            
+
             localidad.innerHTML = `
                 <option value="">Seleccione una localidad</option>
                 <option value="Capital">Capital</option>
@@ -111,12 +111,69 @@ document.addEventListener("DOMContentLoaded",()=>{
             `;
 
         } else if (provinciaElegida === "Tucuman") {
-            
+
             localidad.innerHTML = `
                 <option value="">Seleccione una localidad</option>
                 <option value="Capital">Capital</option>
                 <option value="Tafi del Valle">Tafí del Valle</option>
                 <option value="Yerba Buena">Yerba Buena</option>`;
+
+        } else if (provinciaElegida === "Jujuy") {
+
+            localidad.innerHTML = `
+                <option value="">Seleccione una localidad</option>
+                <option value="San Salvador de Jujuy">San Salvador de Jujuy</option>
+                <option value="Humahuaca">Humahuaca</option>
+            `;
+
+        } else if (provinciaElegida === "La Rioja") {
+
+            localidad.innerHTML = `
+                <option value="">Seleccione una localidad</option>
+                <option value="La Rioja Capital">La Rioja Capital</option>
+                <option value="Chilecito">Chilecito</option>
+            `;
+
+        } else if (provinciaElegida === "Santiago del Estero") {
+
+            localidad.innerHTML = `
+                <option value="">Seleccione una localidad</option>
+                <option value="Santiago Capital">Santiago del Estero (Capital)</option>
+                <option value="La Banda">La Banda</option>
+            `;
+
+        } else if (provinciaElegida === "Cordoba") {
+
+            localidad.innerHTML = `
+                <option value="">Seleccione una localidad</option>
+                <option value="Cordoba Capital">Córdoba (Capital)</option>
+                <option value="Villa Carlos Paz">Villa Carlos Paz</option>
+            `;
+
+        } else if (provinciaElegida === "Santa Fe") {
+
+            localidad.innerHTML = `
+                <option value="">Seleccione una localidad</option>
+                <option value="Rosario">Rosario</option>
+                <option value="Santa Fe Capital">Santa Fe (Capital)</option>
+            `;
+
+        } else if (provinciaElegida === "Buenos Aires") {
+
+            localidad.innerHTML = `
+                <option value="">Seleccione una localidad</option>
+                <option value="CABA">Ciudad Autónoma de Buenos Aires</option>
+                <option value="La Plata">La Plata</option>
+            `;
+
+        } else if (provinciaElegida === "Mendoza") {
+
+            localidad.innerHTML = `
+                <option value="">Seleccione una localidad</option>
+                <option value="Mendoza Capital">Mendoza (Capital)</option>
+                <option value="San Rafael">San Rafael</option>
+            `;
+
         } else {
             localidad.innerHTML = `
                 <option value="">Seleccione una localidad</option>

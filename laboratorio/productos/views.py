@@ -128,7 +128,6 @@ def detalle_producto(request, producto_id):
 
 @require_POST
 def dar_like(request, producto_id):
-    """Alterna el 'Me gusta' del visitante: el primer clic lo da y el segundo lo quita."""
     producto = get_object_or_404(Producto, id=producto_id)
     visitor_id, es_nuevo = obtener_visitor_id(request)
 
