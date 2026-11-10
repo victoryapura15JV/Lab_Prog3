@@ -1,0 +1,126 @@
+import os
+import re
+
+from django import forms
+
+from artesanos.models import Artesano, Solicitud
+from .models import Producto, Comentario
+
+EXTENSIONES_VALIDAS = ('.jpg', '.jpeg', '.png', '.webp')
+TAMANIO_MAXIMO_MB = 5
+
+
+class ProductoForm(forms.ModelForm):
+    class Meta:
+        model = Producto
+        fields = ['nombre', 'categoria', 'descripcion', 'imagen']
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
+            'categoria': forms.Select(attrs={'class': 'form-select'}),
+            'descripcion': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+            'imagen': forms.ClearableFileInput(attrs={'class': 'form-control', 'accept': 'image/*'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        # ids simples para que productos.js los encuentre
+        kwargs.setdefault('auto_id', '%s')
+        super().__init__(*args, **kwargs)
+        self.fields['categoria'].choices = [('', 'Seleccione una categoría')] + list(Producto.categorias)
+
+    def clean_nombre(self):
+        nombre = self.cleaned_data['nombre'].strip()
+        if not nombre:
+            raise forms.ValidationError('Debe ingresar el nombre del producto.')
+        return nombre
+
+    def clean_descripcion(self):
+        descripcion = self.cleaned_data['descripcion'].strip()
+        if len(descripcion) < 10:
+            raise forms.ValidationError('La descripción debe ser más detallada (mínimo 10 caracteres).')
+        return descripcion
+
+    def clean_imagen(self):
+        imagen = self.cleaned_data.get('imagen')
+        # Al modificar sin subir una imagen nueva, Django devuelve el archivo ya guardado.
+        if imagen and hasattr(imagen, 'size') and hasattr(imagen, 'content_type'):
+            extension = os.path.splitext(imagen.name)[1].lower()
+            if extension not in EXTENSIONES_VALIDAS:
+                raise forms.ValidationError('Formato no permitido. Use JPG, PNG o WEBP.')
+            if imagen.size > TAMANIO_MAXIMO_MB * 1024 * 1024:
+                raise forms.ValidationError(f'La imagen no puede superar los {TAMANIO_MAXIMO_MB} MB.')
+        return imagen
+
+
+class ComentarioForm(forms.ModelForm):
+    class Meta:
+        model = Comentario
+        fields = ['nombre', 'texto']
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Tu nombre'}),
+            'texto': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Escribí tu comentario'}),
+        }
+
+    def clean_nombre(self):
+        nombre = self.cleaned_data['nombre'].strip()
+        if len(nombre) < 2:
+            raise forms.ValidationError('Ingresá tu nombre.')
+        return nombre
+
+    def clean_texto(self):
+        texto = self.cleaned_data['texto'].strip()
+        if len(texto) < 3:
+            raise forms.ValidationError('El comentario es demasiado corto.')
+        return texto
+
+
+class PerfilArtesanoForm(forms.ModelForm):
+    class Meta:
+        model = Solicitud
+        fields = ['nombre_emprendimiento', 'localidad', 'historia_emprendimiento', 'productos_principales', 'telefono']
+        labels = {
+            'nombre_emprendimiento': 'Nombre del emprendimiento',
+            'localidad': 'Localidad',
+            'historia_emprendimiento': 'Nuestra historia',
+            'productos_principales': 'Productos principales',
+            'telefono': 'Teléfono de contacto',
+        }
+        widgets = {
+            'nombre_emprendimiento': forms.TextInput(attrs={'class': 'form-control'}),
+            'localidad': forms.Select(attrs={'class': 'form-select'}),
+            'historia_emprendimiento': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
+            'productos_principales': forms.TextInput(attrs={'class': 'form-control'}),
+            'telefono': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+    def clean_nombre_emprendimiento(self):
+        nombre = self.cleaned_data['nombre_emprendimiento'].strip()
+        if len(nombre) < 2:
+            raise forms.ValidationError('Ingresá el nombre del emprendimiento.')
+        return nombre
+
+    def clean_historia_emprendimiento(self):
+        historia = self.cleaned_data['historia_emprendimiento'].strip()
+        if len(historia) < 10:
+            raise forms.ValidationError('La historia debe ser más detallada (mínimo 10 caracteres).')
+        return historia
+
+    def clean_telefono(self):
+        telefono = self.cleaned_data['telefono'].strip()
+        if not re.fullmatch(r'[0-9+\-\s]{6,20}', telefono):
+            raise forms.ValidationError('Ingresá un teléfono válido (solo números, espacios, + o -).')
+        return telefono
+
+class RedesHorarioForm(forms.ModelForm):
+    class Meta:
+        model = Artesano
+        fields = ['horarios', 'instagram', 'facebook']
+        labels = {
+            'horarios': 'Horario en que el stand permanece abierto',
+            'instagram': 'Instagram (enlace)',
+            'facebook': 'Facebook (enlace)',
+        }
+        widgets = {
+            'horarios': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ej: Lunes a sábado de 18 a 23 hs'}),
+            'instagram': forms.URLInput(attrs={'class': 'form-control', 'placeholder': 'https://instagram.com/tu_usuario'}),
+            'facebook': forms.URLInput(attrs={'class': 'form-control', 'placeholder': 'https://facebook.com/tu_pagina'}),
+        }

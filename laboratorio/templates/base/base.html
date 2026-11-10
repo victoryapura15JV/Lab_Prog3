@@ -1,0 +1,275 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block titulo %}Poncho Digital - Fiesta Nacional e Internacional del Poncho{% endblock %}</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/estiloBase.css' %}?v=1.0">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/estiloIndex.css' %}?v=1.0">
+        <script src="{% static 'javaScript/index.js' %}?v=3.0" defer></script>
+    </head>
+    <body>
+        <header class="py-4 text-center">
+            <div class="container d-flex flex-column flex-md-row align-items-center justify-content-center gap-4">
+                <img src="{% static 'img/LogoPoncho/Logo.png' %}" alt="Logo Edición 55 Fiesta del Poncho" class="logo-header">
+                <h1>Poncho Digital</h1>
+                <p>Plataforma oficial de la Fiesta Nacional e Internacional del Poncho</p>
+            </div>
+        </header>
+
+        <div class="container my-4" id="main-nav-wrapper">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-4">
+                <ul class="nav flex-column flex-lg-row nav-pildora gap-2 align-items-center">
+                    <li class="nav-item w-100 w-lg-auto"><a class="nav-link text-start" href="{% url 'home' %}">Inicio</a></li>
+                    <li class="nav-item w-100 w-lg-auto"><a class="nav-link text-start" href="{% url 'productos:catalogo' %}">Productos</a></li>
+                    <li class="nav-item w-100 w-lg-auto"><a class="nav-link text-start" href="{% url 'home' %}#mapa-predio">Plano del Predio</a></li>
+                    {% if user.is_authenticated %}
+                        <li class="nav-item w-100 w-lg-auto ms-lg-2">
+                            <form class="buscador-nav w-100 buscador-nav-pildora" action="/productos/buscar/" method="GET">
+                                <input class="buscador-input" type="search" name="q" placeholder="Buscar..." aria-label="Buscar" required>
+                                <button class="buscador-btn" type="submit">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>
+                                </button>
+                            </form>
+                        </li>
+                    {% endif %}
+                </ul>
+            {% if user.is_authenticated %}
+                <ul class="nav flex-column flex-lg-row nav-pildora nav-pildora-azul gap-2 align-items-center">
+                    {% if user.rol.nombre == 'CLIENTE' %}
+                        <li class="nav-item w-100 w-lg-auto">
+                            <span class="nav-link text-center badge-pildora">{{ user.first_name|default:user.email }}</span>
+                        </li>
+                        <li class="nav-item w-100 w-lg-auto">
+                            <a class="nav-link text-center btn-pildora-interactiva" href="{% url 'artesanos:dashboard_cliente' %}">Panel Estratégico</a>
+                        </li>
+                    {% elif user.rol.nombre == 'ARTESANO' %}
+                        <li class="nav-item w-100 w-lg-auto">
+                            <span class="nav-link text-center badge-pildora">
+                                {% if user.artesanos %}{{ user.artesanos.solicitud.nombre_emprendimiento }}{% else %}Mi Emprendimiento{% endif %}
+                            </span>
+                        </li>
+                        <li class="nav-item dropdown w-100 w-lg-auto">
+                            <a class="nav-link dropdown-toggle text-center btn-pildora-interactiva" href="#" role="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">Mi perfil</a>
+                            <ul class="dropdown-menu dropdown-menu-azul shadow-lg">
+                                {% if user.artesanos %}
+                                    <li><a class="dropdown-item dropdown-item-azul" href="{% url 'productos:editar_perfil' %}">Modificar datos personales</a></li>
+                                    <li><a class="dropdown-item dropdown-item-azul" href="{% url 'productos:gestionar' user.artesanos.id %}">Gestionar productos</a></li>
+                                {% else %}
+                                    <li><span class="dropdown-item text-muted small px-3">Cuenta no vinculada</span></li>
+                                {% endif %}
+                            </ul>
+                        </li>
+                    {% elif user.rol.nombre == 'ADMINISTRADOR' %}
+                        <li class="nav-item w-100 w-lg-auto">
+                            <span class="nav-link text-center badge-pildora">{{ user.username }}</span>
+                        </li>
+                        <li class="nav-item w-100 w-lg-auto">
+                            <a class="nav-link text-center btn-pildora-interactiva" href="{% url 'artesanos:listar_solicitudes' %}">Solicitudes</a>
+                        </li>
+                        <li class="nav-item dropdown w-100 w-lg-auto">
+                            <a class="nav-link dropdown-toggle text-center btn-pildora-interactiva" href="#" role="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">Panel Administrador</a>
+                            <ul class="dropdown-menu dropdown-menu-azul shadow-lg">
+                                <li><a class="dropdown-item dropdown-item-azul" href="{% url 'artesanos:crear_stand' %}">Cargar Stand</a></li>
+                                <li><a class="dropdown-item dropdown-item-azul" href="{% url 'artesanos:listar_stands' %}">Ver y asignar Stands</a></li>
+                                <li><a class="dropdown-item dropdown-item-azul" href="{% url 'artesanos:reportes_operativos' %}">Reportes Operativos</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item w-100 w-lg-auto">
+                        <a class="nav-link text-center btn-pildora-interactiva" href="{% url 'usuarios:logout' %}">Cerrar sesión</a>
+                    </li>
+                </ul>
+
+            {% else %}
+                <ul class="nav flex-column flex-lg-row nav-pildora gap-2 align-items-center">
+                    <li class="nav-item w-100 w-lg-auto mb-2 mb-lg-0">
+                        <form class="buscador-nav w-100 buscador-nav-pildora" action="/productos/buscar/" method="GET">
+                            <input class="buscador-input" type="search" name="q" placeholder="Buscar..." aria-label="Buscar" required>
+                            <button class="buscador-btn" type="submit">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>
+                            </button>
+                        </form>
+                    </li>
+                    <li class="nav-item w-100 w-lg-auto">
+                        <a class="nav-link text-start btn-destacado" href="#" data-bs-toggle="modal" data-bs-target="#modalLogin">Iniciar sesion</a>
+                    </li>
+                    <li class="nav-item w-100 w-lg-auto">
+                        <a class="nav-link text-start" href="{% url 'artesanos:crear_solicitud' %}">Inscripción Artesanos</a>
+                    </li>
+                    <li class="nav-item w-100 w-lg-auto">
+                        <a href="{% url 'artesanos:estado_solicitud' %}" class="nav-link text-start">Consultar Estado</a>
+                    </li>
+                </ul>
+            {% endif %}
+            </div>
+        </div>
+
+        <nav id="mobile-bottom-nav" class="d-lg-none">
+            <ul class="nav justify-content-around p-2 align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center justify-content-center p-2 text-white" href="{% url 'home' %}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-house-door-fill" viewBox="0 0 16 16"><path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5Z"/></svg>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center justify-content-center p-2 text-white" href="#" data-bs-toggle="modal" data-bs-target="#modalBuscar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center justify-content-center p-2 text-white" href="{% url 'productos:catalogo' %}" aria-label="Catálogo de productos" title="Catálogo de productos">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bag-fill" viewBox="0 0 16 16"><path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5z"/></svg>
+                    </a>
+                </li>
+
+                {% if user.is_authenticated %}
+                    {% if user.rol.nombre == 'CLIENTE' or user.rol.nombre == 'ARTESANO' %}
+                    <li class="nav-item">
+                        <span class="nav-link d-flex align-items-center justify-content-center p-2" style="color: var(--amarillo-mostaza) !important;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-person-check-fill" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M15.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L12.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z"/><path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+                        </span>
+                    </li>
+                    {% endif %}
+                    {% if user.rol.nombre == 'CLIENTE' %}
+                        <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center justify-content-center p-2" style="color: var(--amarillo-mostaza) !important;" href="{% url 'artesanos:dashboard_cliente' %}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-bar-chart-line-fill" viewBox="0 0 16 16"><path d="M11 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h1V7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7h1V2z"/></svg>
+                            </a>
+                        </li>
+                    {% elif user.rol.nombre == 'ARTESANO' %}
+                        <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center justify-content-center p-2 text-white" href="{% url 'home' %}#mapa-predio">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-map-fill" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.598-.49L10.5.99 5.598.01a.5.5 0 0 0-.196 0l-5 1A.5.5 0 0 0 0 1.5v14a.5.5 0 0 0 .598.49l4.902-.98 4.902.98a.502.502 0 0 0 .196 0l5-1A.5.5 0 0 0 16 14.5V.5zM5 14.09V1.11l.5-.1.5.1v12.98l-.402-.08a.498.498 0 0 0-.196 0L5 14.09zm5 .8V1.91l.402.08a.5.5 0 0 0 .196 0L11 1.91v12.98l-.5.1-.5-.1z"/></svg>
+                            </a>
+                        </li>
+                        <li class="nav-item dropup">
+                            <a class="nav-link d-flex align-items-center justify-content-center p-2 dropdown-toggle" style="color: var(--amarillo-mostaza) !important;" href="#" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16"><path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z"/></svg>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-azul shadow-lg mb-2">
+                                {% if user.artesanos %}
+                                    <li><a class="dropdown-item dropdown-item-azul" href="{% url 'productos:editar_perfil' %}">Modificar perfil</a></li>
+                                    <li><a class="dropdown-item dropdown-item-azul" href="{% url 'productos:gestionar' user.artesanos.id %}">Gestionar productos</a></li>
+                                {% else %}
+                                    <li><span class="dropdown-item text-muted small px-3">Cuenta no vinculada</span></li>
+                                {% endif %}
+                            </ul>
+                        </li>
+                    {% elif user.rol.nombre == 'ADMINISTRADOR' %}
+                        <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center justify-content-center p-2" style="color: var(--amarillo-mostaza) !important;" href="{% url 'artesanos:listar_solicitudes' %}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-clipboard-check-fill" viewBox="0 0 16 16"><path d="M6.5 0A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3Zm3 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3Z"/><path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1A2.5 2.5 0 0 1 9.5 5h-3A2.5 2.5 0 0 1 4 2.5v-1Zm6.854 7.354-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708.708Z"/></svg>
+                            </a>
+                        </li>
+                        <li class="nav-item dropup">
+                            <a class="nav-link d-flex align-items-center justify-content-center p-2 dropdown-toggle" style="color: var(--amarillo-mostaza) !important;" href="#" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-shop" viewBox="0 0 16 16"><path d="M2.97 1.35A1 1 0 0 1 3.73 1h8.54a1 1 0 0 1 .76.35l2.609 3.044A1.5 1.5 0 0 1 16 5.37v.255a2.375 2.375 0 0 1-4.25 1.458A2.371 2.371 0 0 1 9.875 8 2.37 2.37 0 0 1 8 7.083 2.37 2.37 0 0 1 6.125 8a2.37 2.37 0 0 1-1.875-.917A2.375 2.375 0 0 1 0 5.625V5.37a1.5 1.5 0 0 1 .361-.976l2.61-3.045zm1.78 4.275a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 1 0 2.75 0V5.37a.5.5 0 0 0-.12-.325L12.27 2H3.73L1.12 5.045A.5.5 0 0 0 1 5.37v.255a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0zM1.5 8.5A.5.5 0 0 1 2 9v6h1v-5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v5h6V9a.5.5 0 0 1 1 0v6h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1V9a.5.5 0 0 1 .5-.5zM4 15h3v-5H4v5zm5-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3zm3 0h-2v3h2v-3z"/></svg>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-azul shadow-lg mb-2">
+                                <li><a class="dropdown-item dropdown-item-azul" href="{% url 'artesanos:crear_stand' %}">Cargar Stand</a></li>
+                                <li><a class="dropdown-item dropdown-item-azul" href="{% url 'artesanos:listar_stands' %}">Ver y asignar Stands</a></li>
+                                <li><a class="dropdown-item dropdown-item-azul" href="{% url 'artesanos:reportes_operativos' %}">Reportes Operativos</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link d-flex align-items-center justify-content-center p-2" style="color: var(--amarillo-mostaza) !important;" href="{% url 'usuarios:logout' %}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/><path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/></svg>
+                        </a>
+                    </li>
+
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link d-flex align-items-center justify-content-center p-2 text-white" href="{% url 'home' %}#mapa-predio">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-map-fill" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.598-.49L10.5.99 5.598.01a.5.5 0 0 0-.196 0l-5 1A.5.5 0 0 0 0 1.5v14a.5.5 0 0 0 .598.49l4.902-.98 4.902.98a.502.502 0 0 0 .196 0l5-1A.5.5 0 0 0 16 14.5V.5zM5 14.09V1.11l.5-.1.5.1v12.98l-.402-.08a.498.498 0 0 0-.196 0L5 14.09zm5 .8V1.91l.402.08a.5.5 0 0 0 .196 0L11 1.91v12.98l-.5.1-.5-.1z"/></svg>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link d-flex align-items-center justify-content-center p-2 text-white" href="#" data-bs-toggle="modal" data-bs-target="#modalLogin">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16"><path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/></svg>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+        <main class="container mt-5 pt-5 mb-4">
+            {% comment %}
+                Avisos (éxito/error) generados por la página actual. Es el ÚNICO lugar donde se
+                muestran, en todas las páginas, para que no queden pendientes y aparezcan en otra.
+            {% endcomment %}
+            <div id="contenedor-mensajes">{% include 'productos/_mensajes.html' %}</div>
+            {% block contenido_principal %}
+            {% endblock %}
+        </main>
+
+        <div class="modal fade" id="modalLogin" tabindex="-1" aria-labelledby="modalLoginLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content p-4 modal-fondo-azul" style="border-radius: 24px; border: 0;">
+                    <button type="button" class="btn-close btn-close-mostaza position-absolute top-0 end-0 m-3 z-3" data-bs-dismiss="modal" aria-label="Cerrar" style="padding: 12px; cursor: pointer;"></button>
+                    <div class="modal-body p-0">
+                        <img src="{% static 'img/LogoPoncho/Logo.png' %}" alt="Logo Poncho Digital" class="mb-3" style="width: 45px; border-radius: 8px;">
+                        <h2 id="modalLoginLabel" style="color: var(--blanco); font-size: 1.8rem;"><strong>Te damos la bienvenida al Poncho Digital</strong></h2>
+                        <p class="mb-4" style="color: var(--blanco); opacity: 0.85;">Inicia sesión y obtén beneficios para tu stand</p>
+                        <form id="formLoginModal" action="/usuarios/login/" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                            {% if login_error %}
+                                <div class="alert alert-danger text-center py-2 mb-3" role="alert" id="loginError">{{ login_error }}</div>
+                            {% endif %}
+                            <div class="form-floating mb-3">
+                                <input type="email" name="username" class="form-control input-redondeado" id="loginEmail" placeholder="name@example.com" value="{{ login_email }}" required>
+                                <label for="loginEmail" style="color: var(--negro-texto);">Correo electrónico</label>
+                            </div>
+                            <div class="form-floating mb-3 position-relative">
+                                <input type="password" name="password" class="form-control input-redondeado pe-5" id="loginPassword" placeholder="Contraseña" required>
+                                <label for="loginPassword" style="color: var(--negro-texto);">Contraseña</label>
+                                <button type="button" class="btn border-0 position-absolute top-50 end-0 translate-middle-y me-2" id="btnTogglePassword" style="color: var(--azul-oscuro);">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+                                        <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+                                        <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="mb-4">
+                                <a href="#" class="fw-bold" style="color: var(--amarillo-mostaza); text-decoration: none;">¿Olvidaste tu contraseña?</a>
+                            </div>
+                            <button type="submit" class="btn w-100 mb-3 fw-bold py-2 btn-login-modal">Iniciar sesión</button>
+                            <div class="text-center mt-4">
+                                <a href="{% url 'artesanos:crear_solicitud' %}" class="fw-bold" style="color: var(--amarillo-mostaza); text-decoration: none;">Inscripción para artesano / Registrarse</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modalBuscar" tabindex="-1" aria-labelledby="modalBuscarLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content p-4" style="border-radius: 24px; border: 0; background-color: var(--blanco);">
+                    <div class="modal-header border-0 pb-0 position-relative">
+                        <h3 class="modal-title fw-bold" id="modalBuscarLabel" style="color: var(--azul-oscuro);">Buscar</h3>
+                        <button type="button" class="btn-close position-absolute top-0 end-0 m-2" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="d-flex w-100 mt-2" action="/productos/buscar/" method="GET">
+                            <input class="form-control me-2 input-redondeado" style="border: 2px solid var(--azul-oscuro) !important;" type="search" name="q" placeholder="Artesanos, rubros, pabellones..." aria-label="Buscar" required>
+                            <button class="btn btn-destacado" type="submit">Buscar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="mt-4 text-center border-top">
+            <div class="container">
+                <p>
+                    &copy; 2027 <a href="https://micultura.catamarcacapital.gob.ar/" target="_blank" rel="noopener noreferrer">Ministerio de Cultura de la Provincia de Catamarca</a> - Poncho Digital
+                </p>
+            </div>
+        </footer>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>

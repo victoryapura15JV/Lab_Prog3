@@ -1,0 +1,53 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block titulo %}Panel de Administrador - Asignar Stand{% endblock %}
+
+{% block contenido_principal %}
+    <link rel="stylesheet" href="{% static 'artesanos/estiloPaneles.css' %}">
+    <div class="container mt-5" style="max-width: 600px;">
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark text-white">
+                <h4 class="mb-0">Panel Administrador - Asignar Stand</h4>
+            </div>
+            <div class="card-body">
+                <p><strong>Emprendimiento:</strong> {{ artesano.solicitud.nombre_emprendimiento }}</p>
+                <p><strong>Titular:</strong> {{ artesano.solicitud.nombre_apellido }}</p>
+                <hr>
+                {% if artesano.stand %}
+                    <div class="alert alert-info d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>Stand Asignado:</strong> {{ artesano.stand.pabellon }} - Puesto {{ artesano.stand.numero_puesto }}
+                        </div>
+                        <form method="POST" class="m-0">
+                            {% csrf_token %}
+                            <button type="submit" name="desasignar" class="btn btn-sm btn-danger">Quitar Stand</button>
+                        </form>
+                    </div>
+                {% else %}
+                    <div class="alert alert-warning py-2">Este artesano aún no tiene un stand asignado.</div>
+                {% endif %}
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-4">
+                        <label for="stand" class="form-label text-primary fw-bold">Seleccionar un Stand Disponible:</label>
+                        <select name="stand_id" id="stand" class="form-select" required>
+                            <option value="">-- Elegir Stand --</option>
+                            {% for stand in stands %}
+                                <option value="{{ stand.id }}">
+                                    {{ stand.pabellon }} - Puesto {{ stand.numero_puesto }} ({{ stand.dimensiones }})
+                                </option>
+                            {% empty %}
+                                <option value="" disabled>No hay stands disponibles en este momento</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'artesanos:listar_stands' %}" class="btn btn-outline-secondary">Cancelar</a>
+                        <button type="submit" class="btn btn-success">Guardar Asignacion</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

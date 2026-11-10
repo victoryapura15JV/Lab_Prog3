@@ -1,0 +1,112 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block titulo %} Inscripcion de Artesanos - Poncho Digital{% endblock%}
+    {% block contenido_principal %}
+        <link rel="stylesheet" href="{% static 'artesanos/estiloFormlario.css' %}?v=3">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <div class="text-center mb-5">
+        <h2 style="color: var(--amarillo-mostaza); font-weight: bold; text-transform: uppercase;">
+            Inscripción de artesanos
+        </h2>
+        <p class="mt-3">
+            A través de este formulario podrás postular tu emprendimiento para ser parte de la feria artesanal más grande del Norte Argentino.
+            Tu solicitud será evaluada detalladamente por nuestro equipo.
+        </p>
+        </div>
+        <section class="conteiner-fluid  px-4 my-5">
+            {% if formulario.errors %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>No se pudo enviar la solicitud. Revisá los siguientes datos:</strong>
+                    <ul class="mb-0 mt-2">
+                        {% for error in formulario.non_field_errors %}<li>{{ error }}</li>{% endfor %}
+                        {% for campo in formulario %}
+                            {% for error in campo.errors %}<li>{{ campo.label }}: {{ error }}</li>{% endfor %}
+                        {% endfor %}
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+                </div>
+            {% endif %}
+            <h2>Formulario de inscripción</h2>
+            <form action="#" method="post" class="row g-4">
+                 {% csrf_token %}
+                <div class="col-12 col-md-6">
+                    <fieldset>
+                        <legend>DATOS PERSONALES</legend><br>
+                        <label for="id_nombre_apellido">Nombre y Apellido: </label>
+                        {{ formulario.nombre_apellido }}
+                        <span id="error_nombre" style="color:red; display: block"></span><br>
+
+                        <label for="id_dni">DNI: </label>
+                        {{ formulario.dni }}
+                        <span id="error_dni" style="color:red; display: block"></span><br>
+
+                        <label for="id_fecha_nacimiento">Fecha de Nacimiento: </label>
+                        {{ formulario.fecha_nacimiento }}<br>
+                        <span id="error_fecha" style="color:red"></span><br>
+
+                        <label for="id_telefono">Telefono: </label>
+                        {{ formulario.telefono }}
+                        <span id="error_tel" style="color:red; display: block"></span><br>
+
+                        <label for="id_email">Correo Electronico: </label>
+                        {{ formulario.email }}
+                        <span id="error_email" style="color:red; display: block"></span>
+                    </fieldset>
+                </div>
+                <br>
+                <div class="col-12 col-md-6">
+                    <fieldset>
+                        <legend>LUGAR DE PROCEDENCIA</legend><br>
+                        <label for="id_provincia">Provincia: </label>
+                        {{ formulario.provincia }}
+                        <span id="error_provincia" style="color:red; display: block"></span><br>
+
+                        <label for="id_localidad">Localidad: </label>
+                        {{ formulario.localidad }}
+                        <span id="error_localidad" style="color:red; display: block"></span>
+                    </fieldset>
+                </div>
+                <br>
+                <div class="col-12 col-md-6">
+                    <fieldset>
+                        <legend>EMPRENDIMIENTO</legend>
+                        <label for="id_nombre_emprendimiento">Nombre del emprendimiento: </label>
+                        {{ formulario.nombre_emprendimiento }}
+                        <span id="error_nom_emp" style="color:red; display: block"></span><br>
+
+                        <label for="id_anios_trayectoria">Años de trayectoria: </label>
+                        {{ formulario.anios_trayectoria }}
+                        <span id="error_trayectoria" style="color:red; display: block"></span><br>
+
+                        <label for="id_historia_emprendimiento">Contanos sobre tu emprendimiento:</label><br><br>
+                        {{ formulario.historia_emprendimiento }}
+                        <span id="error_historia" style="color:red; display: block"></span>
+                    </fieldset>
+                </div>
+                <br>
+                <div class="col-12 col-md-6">
+                    <fieldset>
+                        <legend>PRODUCTOS</legend>
+                        <label for="id_rubro">Rubro: </label>
+                        {{ formulario.rubro }}
+                        <br>
+                        <span id="error_rubro" style="color:red; display: block"></span><br>
+                        <label for="id_productos_principales">Productos principales: </label>
+                        {{ formulario.productos_principales }}
+                        <span id="error_productos" style="color:red; display: block"></span>
+                    </fieldset>
+                </div>
+                <br>
+                <div class="col-12 col-md-6">
+                    <fieldset>
+                        <legend></legend>
+                        <input type="checkbox" id="terminos" required>
+                        <label for="terminos">Acepto todos los terminos y condiciones de este formuario</label><br><br>
+                        <span id="error_terminos" style="color:red; display: block"></span><br>
+                        <input type="submit" value="Enviar formulario">
+                    </fieldset>
+                </div>  
+            </form>
+        </section>
+    <script src="{% static 'artesanos/formulario.js' %}?v=2"></script>
+    {% endblock %}

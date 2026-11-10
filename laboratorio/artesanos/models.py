@@ -1,5 +1,5 @@
 from django.db import models
-
+import uuid
 class Stand(models.Model):
    pabellones = [
         ('Pabellon A', 'Pabellon A'),
@@ -29,18 +29,49 @@ class Solicitud(models.Model):
         ('Catamarca', 'Catamarca'),
         ('Salta', 'Salta'),
         ('Tucuman', 'Tucumán'),
+        ('Jujuy', 'Jujuy'),
+        ('La Rioja', 'La Rioja'),
+        ('Santiago del Estero', 'Santiago del Estero'),
+        ('Cordoba', 'Córdoba'),
+        ('Santa Fe', 'Santa Fe'),
+        ('Buenos Aires', 'Buenos Aires'),
+        ('Mendoza', 'Mendoza'),
         ('Otra', 'Otra provincia'),
     ]
 
     localidades = [
+        # Catamarca
         ('Capital', 'Capital'),
         ('Valle Viejo', 'Valle Viejo'),
         ('Fray Mamerto Esquiu', 'Fray Mamerto Esquiú'),
         ('Belen', 'Belén'),
+        # Salta
         ('Cafayate', 'Cafayate'),
         ('Tartagal', 'Tartagal'),
+        # Tucumán
         ('Tafi del Valle', 'Tafí del Valle'),
         ('Yerba Buena', 'Yerba Buena'),
+        # Jujuy
+        ('San Salvador de Jujuy', 'San Salvador de Jujuy'),
+        ('Humahuaca', 'Humahuaca'),
+        # La Rioja
+        ('La Rioja Capital', 'La Rioja Capital'),
+        ('Chilecito', 'Chilecito'),
+        # Santiago del Estero
+        ('Santiago Capital', 'Santiago del Estero (Capital)'),
+        ('La Banda', 'La Banda'),
+        # Córdoba
+        ('Cordoba Capital', 'Córdoba (Capital)'),
+        ('Villa Carlos Paz', 'Villa Carlos Paz'),
+        # Santa Fe
+        ('Rosario', 'Rosario'),
+        ('Santa Fe Capital', 'Santa Fe (Capital)'),
+        # Buenos Aires
+        ('CABA', 'Ciudad Autónoma de Buenos Aires'),
+        ('La Plata', 'La Plata'),
+        # Mendoza
+        ('Mendoza Capital', 'Mendoza (Capital)'),
+        ('San Rafael', 'San Rafael'),
         ('Otra', 'Otra localidad'),
     ]
 
@@ -72,8 +103,9 @@ class Solicitud(models.Model):
     productos_principales = models.CharField(max_length=200)
 
     estado = models.CharField(max_length=15, choices=estados_solicitud, default='Pendiente')
+    justificacion = models.TextField(blank=True, null=True)
     envio = models.DateTimeField(auto_now_add=True)
-
+    token_acceso = models.UUIDField(default=uuid.uuid4, editable=False, null=True, unique=True)
     class Meta:
         ordering = ('envio',)
 
@@ -84,25 +116,32 @@ class Artesano(models.Model):
     solicitud = models.OneToOneField(
         Solicitud,
         on_delete=models.PROTECT,
-        related_name='artesano'
+        related_name='artesanos'
     )
     stand = models.OneToOneField(
         Stand,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name='artesano'
+        related_name='artesanos'
     )
-    usuario = models.OneToOneField('usuarios.Usuario', on_delete=models.PROTECT, null=True, blank=True, related_name='artesano')
-
-    materiales = models.CharField(max_length=200, blank=True)
-    horarios_asistencia = models.CharField(max_length=150, blank=True)
-    contacto = models.URLField(blank=True)
-    redes = models.URLField(blank=True)
+    usuario = models.OneToOneField('usuarios.Usuario', on_delete=models.PROTECT, null=True, blank=True, related_name='artesanos')
     visitas = models.IntegerField(default=0)
-
+    horarios = models.CharField(max_length=100, blank=True)
+    instagram = models.URLField(blank=True)
+    facebook = models.URLField(blank=True)
     class Meta:
         ordering = ('solicitud',)
 
     def __str__(self):
         return f'Artesano: {self.solicitud.nombre_apellido} - {self.solicitud.nombre_emprendimiento}'
+
+class TendenciaBusqueda(models.Model):
+    termino = models.CharField(max_length=100)
+    fecha_busqueda = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ('-fecha_busqueda',)
+
+    def __str__(self):
+        return f"Búsqueda: {self.termino} ({self.fecha_busqueda.strftime('%d/%m/%Y %H:%M')})"
